@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import { finishOnboarding } from "../actions/onboarding";
 
 export default function OnboardingPage() {
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<UserProfileRole | null>(
+    null,
+  );
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 

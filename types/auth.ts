@@ -1,0 +1,1 @@
+type UserProfileRole = "cleaner" | "customer";
