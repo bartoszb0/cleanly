@@ -37,10 +37,10 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // 1. Define whitelist of public routes
   const publicRoutes = [
     "/confirm",
     "/error",
@@ -50,30 +50,67 @@ export async function updateSession(request: NextRequest) {
     "/sign-up-success",
     "/update-password",
   ];
-
-  // 2. Check if the current path is in the whitelist
-  const isPublicRoute = publicRoutes.some(
-    (route) =>
-      request.nextUrl.pathname === route ||
-      request.nextUrl.pathname.startsWith(route),
+  const isPublicRoute = publicRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route),
   );
 
+  // 1. Handle Unauthenticated Users
   if (!user && !isPublicRoute) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  const authPages = ["/login", "/sign-up", "/forgot-password"];
+  // 2. Handle Authenticated Users
+  if (user) {
+    // FETCH THE PROFILE DATA FROM THE PUBLIC TABLE
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarded, role")
+      .eq("id", user.id)
+      .single();
 
-  if (user && authPages.includes(request.nextUrl.pathname)) {
-    const url = request.nextUrl.clone();
+    const pathname = request.nextUrl.pathname;
+    const isOnboardingPage = pathname.startsWith("/onboarding");
+    const authPages = ["/login", "/sign-up", "/forgot-password"];
 
-    // TODO add here redirect based on user role
+    // A. ROOT PATH REDIRECTION ('/')
+    if (pathname === "/") {
+      const url = request.nextUrl.clone();
+      if (!profile?.onboarded) {
+        url.pathname = "/onboarding";
+      } else {
+        url.pathname = profile.role === "cleaner" ? "/cleaner" : "/customer";
+      }
+      return NextResponse.redirect(url);
+    }
 
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+    // B. Force Onboarding if not finished
+    if (!profile?.onboarded && !isOnboardingPage && !isPublicRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/onboarding";
+      return NextResponse.redirect(url);
+    }
+
+    // C. Prevent already onboarded users from seeing Auth/Onboarding pages
+    if (
+      profile?.onboarded &&
+      (authPages.includes(pathname) || isOnboardingPage)
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = profile.role === "cleaner" ? "/cleaner" : "/customer";
+      return NextResponse.redirect(url);
+    }
+
+    // D. ROLE PROTECTION (Cross-access prevention)
+    if (profile?.onboarded) {
+      if (pathname.startsWith("/cleaner") && profile.role !== "cleaner") {
+        return NextResponse.redirect(new URL("/customer", request.url));
+      }
+      if (pathname.startsWith("/customer") && profile.role !== "customer") {
+        return NextResponse.redirect(new URL("/cleaner", request.url));
+      }
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
