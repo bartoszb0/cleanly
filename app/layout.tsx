@@ -12,7 +12,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Cleanly",
-  description: "Book a cleaning instantly",
+  description: "Book a cleaning instantly or offer cleaning services",
 };
 
 const geistSans = Geist({
