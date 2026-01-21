@@ -21,7 +21,7 @@ export default function OnboardingPage() {
       if (result.error) {
         toast.error(result.error);
       } else {
-        router.replace(`/${selectedRole}`);
+        router.replace(`/onboarding/${selectedRole}`);
       }
     });
   };

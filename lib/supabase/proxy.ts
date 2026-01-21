@@ -54,6 +54,8 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(route),
   );
 
+  const authPages = ["/login", "/sign-up", "/forgot-password"];
+
   // 1. Handle Unauthenticated Users
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
@@ -63,7 +65,6 @@ export async function updateSession(request: NextRequest) {
 
   // 2. Handle Authenticated Users
   if (user) {
-    // FETCH THE PROFILE DATA FROM THE PUBLIC TABLE
     const { data: profile } = await supabase
       .from("profiles")
       .select("onboarded, role")
@@ -71,43 +72,56 @@ export async function updateSession(request: NextRequest) {
       .single();
 
     const pathname = request.nextUrl.pathname;
-    const isOnboardingPage = pathname.startsWith("/onboarding");
-    const authPages = ["/login", "/sign-up", "/forgot-password"];
+    const role = profile?.role; // "cleaner" | "customer" | null
+
+    // Define onboarding sub-paths
+    const isBaseOnboarding = pathname === "/onboarding";
+    const isRoleOnboarding = pathname.startsWith(`/onboarding/${role}`);
+    const isOnboardingPath = pathname.startsWith("/onboarding");
 
     // A. ROOT PATH REDIRECTION ('/')
     if (pathname === "/") {
       const url = request.nextUrl.clone();
       if (!profile?.onboarded) {
-        url.pathname = "/onboarding";
+        // Logic: If they have a role, send to step 2. Otherwise, step 1.
+        url.pathname = role ? `/onboarding/${role}` : "/onboarding";
       } else {
-        url.pathname = profile.role === "cleaner" ? "/cleaner" : "/customer";
+        url.pathname = role === "cleaner" ? "/cleaner" : "/customer";
       }
       return NextResponse.redirect(url);
     }
 
     // B. Force Onboarding if not finished
-    if (!profile?.onboarded && !isOnboardingPage && !isPublicRoute) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/onboarding";
-      return NextResponse.redirect(url);
+    if (!profile?.onboarded && !isPublicRoute) {
+      // If they have NO role and aren't on base onboarding -> send to /onboarding
+      if (!role && !isBaseOnboarding) {
+        return NextResponse.redirect(new URL("/onboarding", request.url));
+      }
+      // If they HAVE a role but aren't on their specific step 2 page -> redirect there
+      if (role && !isRoleOnboarding) {
+        return NextResponse.redirect(
+          new URL(`/onboarding/${role}`, request.url),
+        );
+      }
+      // Otherwise, they are where they belong (either /onboarding or /onboarding/[role])
     }
 
     // C. Prevent already onboarded users from seeing Auth/Onboarding pages
     if (
       profile?.onboarded &&
-      (authPages.includes(pathname) || isOnboardingPage)
+      (authPages.includes(pathname) || isOnboardingPath)
     ) {
       const url = request.nextUrl.clone();
-      url.pathname = profile.role === "cleaner" ? "/cleaner" : "/customer";
+      url.pathname = role === "cleaner" ? "/cleaner" : "/customer";
       return NextResponse.redirect(url);
     }
 
-    // D. ROLE PROTECTION (Cross-access prevention)
+    // D. ROLE PROTECTION (unchanged, but added a check for safety)
     if (profile?.onboarded) {
-      if (pathname.startsWith("/cleaner") && profile.role !== "cleaner") {
+      if (pathname.startsWith("/cleaner") && role !== "cleaner") {
         return NextResponse.redirect(new URL("/customer", request.url));
       }
-      if (pathname.startsWith("/customer") && profile.role !== "customer") {
+      if (pathname.startsWith("/customer") && role !== "customer") {
         return NextResponse.redirect(new URL("/cleaner", request.url));
       }
     }

@@ -15,7 +15,7 @@ export async function finishOnboarding(selectedRole: UserProfileRole) {
 
     const { error } = await supabase
       .from("profiles")
-      .update({ role: selectedRole, onboarded: true })
+      .update({ role: selectedRole })
       .eq("id", user.id);
 
     if (error) {
