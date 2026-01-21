@@ -1,17 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { hasEnvVars } from "../utils";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
-
-  // If the env vars are not set, skip proxy check. You can remove this
-  // once you setup the project.
-  if (!hasEnvVars) {
-    return supabaseResponse;
-  }
 
   // With Fluid compute, don't put this client in a global environment
   // variable. Always create a new one on each request.
@@ -47,15 +40,39 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
+  // 1. Define whitelist of public routes
+  const publicRoutes = [
+    "/confirm",
+    "/error",
+    "/forgot-password",
+    "/login",
+    "/sign-up",
+    "/sign-up-success",
+    "/update-password",
+  ];
+
+  // 2. Check if the current path is in the whitelist
+  const isPublicRoute = publicRoutes.some(
+    (route) =>
+      request.nextUrl.pathname === route ||
+      request.nextUrl.pathname.startsWith(route),
+  );
+
+  if (!user && !isPublicRoute) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  const authPages = ["/login", "/sign-up", "/forgot-password"];
+
+  if (user && authPages.includes(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+
+    // TODO add here redirect based on user role
+
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
