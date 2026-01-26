@@ -67,18 +67,25 @@
   }
 }
 
-/* CUSTOMER THEME */
+.onboarding-form input,
+.onboarding-form textarea,
+.onboarding-form button[role="combobox"] {
+  @apply border-slate-700 bg-slate-700/30 transition-colors !important;
+}
+
 .onboarding-form input,
 .onboarding-form button[role="combobox"] {
-  @apply border-slate-700 bg-slate-700/30 h-10 transition-colors !important;
+  @apply h-10 !important;
 }
 
 .onboarding-form input:focus,
+.onboarding-form textarea:focus,
 .onboarding-form button[role="combobox"]:focus {
   @apply border-slate-500 ring-1 ring-slate-500 !important;
 }
 
 .onboarding-form input[aria-invalid="true"],
+.onboarding-form textarea[aria-invalid="true"],
 .onboarding-form button[aria-invalid="true"] {
   @apply border-destructive ring-destructive !important;
 }
