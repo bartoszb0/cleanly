@@ -45,7 +45,7 @@
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 350.1 74.5% 49.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
@@ -65,4 +65,24 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* CUSTOMER THEME */
+.customer-form input,
+.customer-form button[role="combobox"] {
+  @apply border-slate-700 bg-slate-700/30 h-10 transition-colors !important;
+}
+
+.customer-form input:focus,
+.customer-form button[role="combobox"]:focus {
+  @apply border-slate-500 ring-1 ring-slate-500 !important;
+}
+
+.customer-form input[aria-invalid="true"],
+.customer-form button[aria-invalid="true"] {
+  @apply border-destructive ring-destructive !important;
+}
+
+.customer-dropdown {
+  @apply border-slate-700 bg-slate-800 !important;
 }
