@@ -1,3 +1,9 @@
+import { LogoutButton } from "@/components/logout-button";
+
 export default function CustomerPage() {
-  return <div>CustomerPage</div>;
+  return (
+    <div>
+      CustomerPage <LogoutButton />
+    </div>
+  );
 }
