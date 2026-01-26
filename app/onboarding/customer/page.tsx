@@ -171,7 +171,7 @@ export default function CustomerForm() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>Phone number</FieldLabel>
                 <div className="flex flex-row gap-2">
-                  <span className="flex items-center justify-center bg-slate-800 border border-slate-700 px-3 rounded-md text-slate-400">
+                  <span className="flex items-center justify-center w-20 bg-slate-800 border border-slate-700 px-3 rounded-md text-slate-400">
                     +48
                   </span>
                   <Input
