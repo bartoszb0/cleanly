@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import { getRequiredUser } from "@/lib/utils/getRequiredUser";
 
-export async function finishOnboarding(selectedRole: UserProfileRole) {
+export async function assignRole(selectedRole: UserProfileRole) {
   if (selectedRole !== "cleaner" && selectedRole !== "customer")
     return { success: false, error: "Invalid role selected" };
 

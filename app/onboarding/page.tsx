@@ -4,7 +4,7 @@ import { Bubbles, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { finishOnboarding } from "../actions/onboarding";
+import { assignRole } from "../actions/onboarding";
 
 export default function OnboardingPage() {
   const [selectedRole, setSelectedRole] = useState<UserProfileRole | null>(
@@ -17,7 +17,7 @@ export default function OnboardingPage() {
     if (!selectedRole) return;
 
     startTransition(async () => {
-      const result = await finishOnboarding(selectedRole);
+      const result = await assignRole(selectedRole);
       if (result.error) {
         toast.error(result.error);
       } else {
