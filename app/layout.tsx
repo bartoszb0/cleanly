@@ -36,7 +36,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster />
+          <Toaster
+            toastOptions={{
+              style: {
+                background: "#1e293b",
+                border: "1px solid #334155",
+              },
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>
