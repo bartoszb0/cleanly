@@ -1,5 +1,6 @@
 "use client";
 
+import { finishOnboarding } from "@/app/actions/onboarding";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -22,7 +23,10 @@ import { CustomerFormValues, CustomerSchema } from "@/lib/schemas/customerForm";
 import { formatPhoneNumber } from "@/lib/utils/formatPhoneNumber";
 import { formatPostCode } from "@/lib/utils/formatPostCode";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function CustomerForm() {
   const { control, handleSubmit } = useForm<CustomerFormValues>({
@@ -37,8 +41,20 @@ export default function CustomerForm() {
     },
   });
 
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   const onSubmit = (data: CustomerFormValues) => {
-    console.log(data);
+    startTransition(async () => {
+      const result = await finishOnboarding(data);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        router.push("/customer");
+        toast.success("Customer account set up succesfully");
+      }
+    });
   };
 
   return (
@@ -51,7 +67,7 @@ export default function CustomerForm() {
           </p>
         </div>
         <form className="customer-form" onSubmit={handleSubmit(onSubmit)}>
-          <fieldset className="flex flex-col gap-4 ">
+          <fieldset className="flex flex-col gap-4 " disabled={isPending}>
             {/* Full name */}
             <Controller
               name="fullName"
@@ -207,11 +223,11 @@ export default function CustomerForm() {
                 </Field>
               )}
             />
-          </fieldset>
 
-          <Button type="submit" className="mt-4">
-            Submit
-          </Button>
+            <Button type="submit" className="mt-4">
+              {isPending ? "Submitting..." : "Submit"}
+            </Button>
+          </fieldset>
         </form>
       </div>
     </div>
