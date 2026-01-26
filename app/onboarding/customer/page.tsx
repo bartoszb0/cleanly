@@ -64,7 +64,7 @@ export default function CustomerForm() {
       variant="customer"
     >
       <form className="onboarding-form" onSubmit={handleSubmit(onSubmit)}>
-        <fieldset className="flex flex-col gap-4 " disabled={isPending}>
+        <fieldset className="flex flex-col gap-4" disabled={isPending}>
           {/* Full name */}
           <Controller
             name="fullName"
@@ -104,7 +104,7 @@ export default function CustomerForm() {
                   >
                     <SelectValue placeholder="Choose city" />
                   </SelectTrigger>
-                  <SelectContent className="customer-dropdown">
+                  <SelectContent className="onboarding-dropdown">
                     {POLISH_CITIES.map((city) => (
                       <SelectItem value={city.value} key={city.value}>
                         {city.label}
