@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { OnboardingWrapper } from "../components/onboarding-wrapper";
 
 export default function CleanerForm() {
@@ -6,8 +7,10 @@ export default function CleanerForm() {
       description="Fill out your information to set up your profile"
       variant="cleaner"
     >
-      <form>
-        <h1>todo</h1>
+      <form className="onboarding-form">
+        <fieldset>
+          <Input />
+        </fieldset>
       </form>
     </OnboardingWrapper>
   );

@@ -63,7 +63,7 @@ export default function CustomerForm() {
       description="Fill out your information to order your first cleaning"
       variant="customer"
     >
-      <form className="customer-form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="onboarding-form" onSubmit={handleSubmit(onSubmit)}>
         <fieldset className="flex flex-col gap-4 " disabled={isPending}>
           {/* Full name */}
           <Controller

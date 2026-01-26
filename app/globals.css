@@ -68,21 +68,21 @@
 }
 
 /* CUSTOMER THEME */
-.customer-form input,
-.customer-form button[role="combobox"] {
+.onboarding-form input,
+.onboarding-form button[role="combobox"] {
   @apply border-slate-700 bg-slate-700/30 h-10 transition-colors !important;
 }
 
-.customer-form input:focus,
-.customer-form button[role="combobox"]:focus {
+.onboarding-form input:focus,
+.onboarding-form button[role="combobox"]:focus {
   @apply border-slate-500 ring-1 ring-slate-500 !important;
 }
 
-.customer-form input[aria-invalid="true"],
-.customer-form button[aria-invalid="true"] {
+.onboarding-form input[aria-invalid="true"],
+.onboarding-form button[aria-invalid="true"] {
   @apply border-destructive ring-destructive !important;
 }
 
-.customer-dropdown {
+.onboarding-dropdown {
   @apply border-slate-700 bg-slate-800 !important;
 }
