@@ -8,3 +8,5 @@ export const POLISH_CITIES = [
 ] as const;
 
 export const VALID_CITIES = POLISH_CITIES.map((c) => c.value);
+
+export type ValidCity = (typeof POLISH_CITIES)[number]["value"];
