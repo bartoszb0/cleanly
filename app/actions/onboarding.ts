@@ -28,7 +28,7 @@ export async function assignRole(selectedRole: UserProfileRole) {
   }
 }
 
-export async function finishOnboarding(userData: CustomerFormValues) {
+export async function finishCustomerOnboarding(userData: CustomerFormValues) {
   const validatedFields = CustomerSchema.safeParse(userData);
 
   if (!validatedFields.success) {

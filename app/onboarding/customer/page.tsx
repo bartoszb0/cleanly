@@ -1,6 +1,6 @@
 "use client";
 
-import { finishOnboarding } from "@/app/actions/onboarding";
+import { finishCustomerOnboarding } from "@/app/actions/onboarding";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -47,7 +47,7 @@ export default function CustomerForm() {
 
   const onSubmit = (data: CustomerFormValues) => {
     startTransition(async () => {
-      const result = await finishOnboarding(data);
+      const result = await finishCustomerOnboarding(data);
 
       if (result.error) {
         toast.error(result.error);

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { VALID_CITIES } from "../constants/cities";
+import { VALID_CITIES, ValidCity } from "../constants/cities";
 
 export const CustomerSchema = z.object({
   fullName: z
@@ -15,7 +15,7 @@ export const CustomerSchema = z.object({
   city: z
     .string()
     .min(1, "Please choose a city")
-    .refine((val) => VALID_CITIES.includes(val as any), {
+    .refine((val) => VALID_CITIES.includes(val as ValidCity), {
       message: "Please select a valid city",
     }),
 
