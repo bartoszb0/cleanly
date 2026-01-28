@@ -14,10 +14,7 @@ export function LogoutButton() {
   };
 
   return (
-    <Button
-      onClick={logout}
-      className="text-center w-full bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
-    >
+    <Button onClick={logout} className="w-full">
       Logout
     </Button>
   );
