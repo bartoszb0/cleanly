@@ -1,6 +1,5 @@
 "use client";
 
-import { finishCustomerOnboarding } from "@/app/actions/onboarding";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -18,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { finishCustomerOnboarding } from "@/lib/actions/onboarding";
 import { POLISH_CITIES } from "@/lib/constants/cities";
 import { CustomerFormValues, CustomerSchema } from "@/lib/schemas/customerForm";
 import { formatPhoneNumber } from "@/lib/utils/formatPhoneNumber";

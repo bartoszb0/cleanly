@@ -4,7 +4,7 @@ import { Bubbles, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { assignRole } from "../actions/onboarding";
+import { assignRole } from "../../lib/actions/onboarding";
 
 export default function OnboardingPage() {
   const [selectedRole, setSelectedRole] = useState<UserProfileRole | null>(

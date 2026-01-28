@@ -1,6 +1,5 @@
 "use client";
 
-import { finishCleanerOnboarding } from "@/app/actions/onboarding";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { finishCleanerOnboarding } from "@/lib/actions/onboarding";
 import { POLISH_CITIES } from "@/lib/constants/cities";
 import { CleanerFormValues, CleanerSchema } from "@/lib/schemas/cleanerForm";
 import { formatPhoneNumber } from "@/lib/utils/formatPhoneNumber";
