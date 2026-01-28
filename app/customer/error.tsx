@@ -20,14 +20,13 @@ export default function Error({
         Something went wrong!
       </h2>
 
-      {/* This displays the "Could not load cleaners" message you threw */}
       <p className="text-slate-400 mb-8 max-w-md">
         {error.message ||
           "An unexpected error occurred while fetching the data."}
       </p>
 
       <Button
-        onClick={() => reset()} // Attempts to re-render the segment
+        onClick={() => reset()}
         variant="default"
         className="bg-primary hover:bg-primary/90"
       >
