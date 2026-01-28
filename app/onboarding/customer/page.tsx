@@ -27,7 +27,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { OnboardingWrapper } from "../components/onboarding-wrapper";
+import { OnboardingWrapper } from "../../../components/onboarding/onboarding-wrapper";
 
 export default function CustomerForm() {
   const { control, handleSubmit } = useForm<CustomerFormValues>({
