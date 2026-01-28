@@ -1,4 +1,4 @@
-import { getCleanersByCity } from "@/lib/queries/cleaners";
+import { getCleanersByCity } from "@/lib/data/cleaners";
 import { Customer } from "@/types/supabase";
 import CleanerCard from "./cleaner-card";
 import { PaginationControls } from "./pagination-controls";
