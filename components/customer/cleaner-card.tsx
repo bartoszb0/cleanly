@@ -77,10 +77,8 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
                 /hour
               </span>
             </div>
-            <Button>
-              <Link href={`/customer/cleaners/${cleaner.id}`}>
-                View Profile
-              </Link>
+            <Button asChild>
+              <Link href={`/customer/cleaner/${cleaner.id}`}>View Profile</Link>
             </Button>
           </div>
         </div>
