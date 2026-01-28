@@ -23,3 +23,19 @@ export const getCleanersByCity = cache(
     return { cleaners: cleaners ?? [], count: count ?? 0 };
   },
 );
+
+export const getCleaner = cache(async (id: string) => {
+  const supabase = await createClient();
+
+  const { data: cleaner, error } = await supabase
+    .from("cleaners")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return cleaner;
+});
