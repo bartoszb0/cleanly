@@ -1,4 +1,4 @@
-import { LogoutButton } from "@/components/logout-button";
+import { LogoutButton } from "@/components/ui/logout-button";
 
 export default function ProtectedPage() {
   return (
