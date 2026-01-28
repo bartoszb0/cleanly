@@ -13,20 +13,16 @@ export async function assignRole(selectedRole: UserProfileRole) {
   const user = await getRequiredUser();
   const supabase = await createClient();
 
-  try {
-    const { error } = await supabase
-      .from("profiles")
-      .update({ role: selectedRole })
-      .eq("id", user.id);
+  const { error } = await supabase
+    .from("profiles")
+    .update({ role: selectedRole })
+    .eq("id", user.id);
 
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: getErrorMessage(error) };
+  if (error) {
+    return { success: false, error: error.message };
   }
+
+  return { success: true };
 }
 
 export async function finishCustomerOnboarding(userData: CustomerFormValues) {
