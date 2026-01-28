@@ -1,7 +1,7 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
 import { Customer } from "@/types/supabase";
+import { PaginationControls } from "../shared/pagination-controls";
 import CleanerCard from "./cleaner-card";
-import { PaginationControls } from "./pagination-controls";
 
 type CleanerListProps = {
   user: Customer;

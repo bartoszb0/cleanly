@@ -1,4 +1,4 @@
-import CleanersListSkeleton from "@/components/customer/cleaner-list-skeleton";
+import CleanersListSkeleton from "@/components/cleaner/cleaner-list-skeleton";
 import { Button } from "@/components/ui/button";
 
 export default function Loading() {
