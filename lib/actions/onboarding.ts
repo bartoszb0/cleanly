@@ -4,7 +4,7 @@ import { CleanerFormValues, CleanerSchema } from "@/lib/schemas/cleanerForm";
 import { CustomerFormValues, CustomerSchema } from "@/lib/schemas/customerForm";
 import { createClient } from "@/lib/supabase/server";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
-import { getRequiredUser } from "@/lib/utils/getRequiredUser";
+import { getRequiredUser } from "../data/auth";
 
 export async function assignRole(selectedRole: UserProfileRole) {
   if (selectedRole !== "cleaner" && selectedRole !== "customer")
