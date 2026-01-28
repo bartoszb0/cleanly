@@ -1,7 +1,7 @@
 import CleanersList from "@/components/customer/cleaner-list";
 import CleanerListSkeleton from "@/components/customer/cleaner-list-skeleton";
 import { Button } from "@/components/ui/button";
-import { getCurrentCustomer } from "@/lib/queries/user";
+import { getCurrentCustomer } from "@/lib/data/customer";
 import getUppercaseCityName from "@/lib/utils/getUppercaseCity";
 import { Suspense } from "react";
 
