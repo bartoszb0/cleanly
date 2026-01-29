@@ -1,5 +1,5 @@
 import { getCleaner } from "@/lib/data/cleaners";
-import getUppercaseCityName from "@/lib/utils/getUppercaseCity";
+import getUppercaseCityName from "@/lib/utils";
 import {
   Calendar,
   CheckCircle,
