@@ -1,4 +1,4 @@
-import { getUppercaseCityName } from "@/lib/utils";
+import { displayYearsOfExperience, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { Clock, MapPin, Package } from "lucide-react";
 import Image from "next/image";
@@ -55,8 +55,7 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
             <div className="flex items-center gap-2 text-sm">
               <Clock size={16} className="text-sky-400" />
               <span className="text-slate-300">
-                {cleaner.experience_years}{" "}
-                {cleaner.experience_years === 1 ? "year" : "years"}
+                {displayYearsOfExperience(cleaner.experience_years)}
               </span>
             </div>
             {cleaner.supplies_provided && (

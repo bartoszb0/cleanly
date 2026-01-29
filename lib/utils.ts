@@ -40,3 +40,13 @@ export function formatDate(date: string) {
   const formattedDate = dayjs(date).format("YYYY-MM-DD");
   return formattedDate;
 }
+
+export function displayYearsOfExperience(years: number) {
+  if (years <= 0) {
+    return "Less than 1 year";
+  } else if (years === 1) {
+    return "1 year";
+  } else {
+    return `${years} years`;
+  }
+}

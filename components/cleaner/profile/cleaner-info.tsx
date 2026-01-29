@@ -1,5 +1,9 @@
 import { getCleaner } from "@/lib/data/cleaners";
-import { getUppercaseCityName } from "@/lib/utils";
+import {
+  displayYearsOfExperience,
+  formatDate,
+  getUppercaseCityName,
+} from "@/lib/utils";
 import {
   Calendar,
   CheckCircle,
@@ -43,19 +47,19 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
 
           {/* Name and Location */}
           <div className="flex-1">
-            <h1 className="text-4xl font-bold text-white mb-3">
+            <h1 className="text-2xl font-bold text-white mb-3">
               {cleaner.name}
             </h1>
             <div className="flex items-center gap-2 text-slate-300 mb-4">
               <MapPin size={20} className="text-sky-400" />
-              <span className="text-lg">
+              <span className="text-md">
                 {getUppercaseCityName(cleaner.city)}
               </span>
             </div>
 
             {/* Price Tag */}
             <div className="inline-flex items-baseline gap-2 bg-sky-600/20 border border-sky-500/30 rounded-lg px-4 py-2">
-              <span className="text-3xl font-bold text-sky-400">
+              <span className="text-2xl font-bold text-sky-400">
                 {cleaner.hourly_rate} PLN
               </span>
               <span className="text-slate-400">/hour</span>
@@ -64,7 +68,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {/* Experience */}
         <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
@@ -74,8 +78,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
             <div>
               <p className="text-slate-400 text-sm">Experience</p>
               <p className="text-white font-semibold text-lg">
-                {cleaner.experience_years}{" "}
-                {cleaner.experience_years === 1 ? "year" : "years"}
+                {displayYearsOfExperience(cleaner.experience_years)}
               </p>
             </div>
           </div>
@@ -115,7 +118,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
             <div>
               <p className="text-slate-400 text-sm">Member since</p>
               <p className="text-white font-semibold text-sm">
-                {cleaner.created_at}
+                {formatDate(cleaner.created_at)}
               </p>
             </div>
           </div>
@@ -124,15 +127,15 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
 
       {/* Bio Section */}
       <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8 mb-6">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
           About Me
         </h2>
-        <p className="text-slate-300 leading-relaxed text-lg">{cleaner.bio}</p>
+        <p className="text-slate-300 leading-relaxed text-md">{cleaner.bio}</p>
       </div>
 
       {/* Contact Section */}
       <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-white mb-4">
+        <h2 className="text-xl font-bold text-white mb-4">
           Contact Information
         </h2>
         <div className="flex items-center gap-3">
