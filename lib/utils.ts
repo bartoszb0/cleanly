@@ -31,6 +31,6 @@ export const formatPostCode = (value: string): string => {
   return constrained;
 };
 
-export default function getUppercaseCityName(city: string) {
+export function getUppercaseCityName(city: string) {
   return city.charAt(0).toUpperCase() + city.slice(1);
 }

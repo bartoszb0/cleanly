@@ -1,4 +1,4 @@
-import getUppercaseCityName from "@/lib/utils";
+import { getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { Clock, MapPin, Package } from "lucide-react";
 import Image from "next/image";
