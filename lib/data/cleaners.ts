@@ -1,4 +1,5 @@
 import { cache } from "react";
+import z from "zod";
 import { createClient } from "../supabase/server";
 
 export const getCleanersByCity = cache(
@@ -25,13 +26,15 @@ export const getCleanersByCity = cache(
 );
 
 export const getCleaner = cache(async (id: string) => {
+  if (!z.uuid().safeParse(id).success) return null;
+
   const supabase = await createClient();
 
   const { data: cleaner, error } = await supabase
     .from("cleaners")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);

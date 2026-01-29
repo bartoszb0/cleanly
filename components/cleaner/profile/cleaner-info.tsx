@@ -14,6 +14,7 @@ import {
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 type CleanerInfoProps = {
   id: string;
@@ -21,6 +22,10 @@ type CleanerInfoProps = {
 
 export default async function CleanerInfo({ id }: CleanerInfoProps) {
   const cleaner = await getCleaner(id);
+
+  if (!cleaner) {
+    return notFound();
+  }
 
   return (
     <>
