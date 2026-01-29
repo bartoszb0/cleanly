@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,4 +34,9 @@ export const formatPostCode = (value: string): string => {
 
 export function getUppercaseCityName(city: string) {
   return city.charAt(0).toUpperCase() + city.slice(1);
+}
+
+export function formatDate(date: string) {
+  const formattedDate = dayjs(date).format("YYYY-MM-DD");
+  return formattedDate;
 }
