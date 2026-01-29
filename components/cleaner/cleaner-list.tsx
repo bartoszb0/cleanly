@@ -1,4 +1,5 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
+import { getUppercaseCityName } from "@/lib/utils";
 import { Customer } from "@/types/supabase";
 import { PaginationControls } from "../shared/pagination-controls";
 import CleanerCard from "./cleaner-card";
@@ -21,6 +22,19 @@ export default async function CleanersList({
     startingRange,
     endingRange,
   );
+
+  if (!count || count === 0) {
+    return (
+      <div className="mt-20 flex flex-col items-center justify-center text-center">
+        <div className="text-slate-400 mb-2">
+          No cleaners available in {getUppercaseCityName(user.city)}
+        </div>
+        <p className="text-sm text-slate-500">
+          Try adjusting your filters or checking a nearby area.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
