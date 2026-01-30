@@ -42,3 +42,39 @@ export const getCleaner = cache(async (id: string) => {
 
   return cleaner;
 });
+
+export const getCleanerOpinions = cache(
+  async (id: string, startingRange: number, endingRange: number) => {
+    if (!z.uuid().safeParse(id).success) return null;
+
+    const supabase = await createClient();
+
+    const {
+      data: opinions,
+      error,
+      count,
+    } = await supabase
+      .from("opinions")
+      .select(
+        `
+          id,
+          rating,
+          content,
+          created_at,
+          customers (
+            full_name
+          )
+        `,
+        { count: "exact" },
+      )
+      .eq("cleaner_id", id)
+      .range(startingRange, endingRange)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { opinions: opinions ?? [], count: count ?? 0 };
+  },
+);
