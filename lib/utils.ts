@@ -36,9 +36,13 @@ export function getUppercaseCityName(city: string) {
   return city.charAt(0).toUpperCase() + city.slice(1);
 }
 
-export function formatDate(date: string) {
-  const formattedDate = dayjs(date).format("YYYY-MM-DD");
-  return formattedDate;
+export function formatDate(date: string, variant: "full" | "short" = "short") {
+  const formats = {
+    full: "YYYY-MM-DD",
+    short: "MMMM YYYY",
+  };
+
+  return dayjs(date).format(formats[variant]);
 }
 
 export function displayYearsOfExperience(years: number) {
@@ -49,4 +53,15 @@ export function displayYearsOfExperience(years: number) {
   } else {
     return `${years} years`;
   }
+}
+
+export function getPaginationRange(page: number, itemsPerPage: number) {
+  const startingRange = (page - 1) * itemsPerPage;
+  const endingRange = startingRange + itemsPerPage - 1;
+
+  return { startingRange, endingRange };
+}
+
+export function getPaginationTotalPages(count: number, itemsPerPage: number) {
+  return Math.ceil(count / itemsPerPage);
 }

@@ -1,5 +1,5 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
-import { getUppercaseCityName } from "@/lib/utils";
+import { getPaginationRange, getUppercaseCityName } from "@/lib/utils";
 import { Customer } from "@/types/supabase";
 import { PaginationControls } from "../shared/pagination-controls";
 import CleanerCard from "./cleaner-card";
@@ -14,8 +14,7 @@ export default async function CleanersList({
   page = 1,
 }: CleanerListProps) {
   const itemsPerPage = 6;
-  const startingRange = (page - 1) * itemsPerPage;
-  const endingRange = startingRange + itemsPerPage - 1;
+  const { startingRange, endingRange } = getPaginationRange(page, itemsPerPage);
 
   const { cleaners, count } = await getCleanersByCity(
     user.city,
