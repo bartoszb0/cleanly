@@ -30,7 +30,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
   return (
     <>
       <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 mb-6">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+        <div className="flex flex-row gap-8 items-start">
           {/* Avatar */}
           <div className="flex-shrink-0">
             <div className="w-32 h-32 rounded-2xl overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-xl">
@@ -63,11 +63,16 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
             </div>
 
             {/* Price Tag */}
-            <div className="inline-flex items-baseline gap-2 bg-sky-600/20 border border-sky-500/30 rounded-lg px-4 py-2">
-              <span className="text-2xl font-bold text-sky-400">
-                {cleaner.hourly_rate} PLN
-              </span>
-              <span className="text-slate-400">/hour</span>
+            <div className="inline-flex items-baseline gap-2 bg-sky-600/20 border border-sky-500/30 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5">
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl sm:text-3xl font-bold text-sky-400 leading-none">
+                  {cleaner.hourly_rate}
+                </span>
+                <span className="text-sm sm:text-base text-sky-400/80 leading-none">
+                  PLN
+                </span>
+              </div>
+              <span className="text-xs sm:text-sm text-slate-400">/hour</span>
             </div>
           </div>
         </div>
