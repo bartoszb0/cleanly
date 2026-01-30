@@ -119,6 +119,48 @@ export type Database = {
           },
         ];
       };
+      opinions: {
+        Row: {
+          cleaner_id: string;
+          content: string;
+          created_at: string;
+          customer_id: string;
+          id: string;
+          rating: number;
+        };
+        Insert: {
+          cleaner_id: string;
+          content: string;
+          created_at?: string;
+          customer_id: string;
+          id?: string;
+          rating: number;
+        };
+        Update: {
+          cleaner_id?: string;
+          content?: string;
+          created_at?: string;
+          customer_id?: string;
+          id?: string;
+          rating?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "opinions_cleaner_id_fkey";
+            columns: ["cleaner_id"];
+            isOneToOne: false;
+            referencedRelation: "cleaners";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opinions_customer_id_fkey";
+            columns: ["customer_id"];
+            isOneToOne: false;
+            referencedRelation: "customers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           id: string;
