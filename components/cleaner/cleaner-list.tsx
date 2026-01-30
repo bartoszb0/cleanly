@@ -1,6 +1,7 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
 import { getPaginationRange, getUppercaseCityName } from "@/lib/utils";
 import { Customer } from "@/types/supabase";
+import { redirect } from "next/navigation";
 import { PaginationControls } from "../shared/pagination-controls";
 import CleanerCard from "./cleaner-card";
 
@@ -13,6 +14,8 @@ export default async function CleanersList({
   user,
   page = 1,
 }: CleanerListProps) {
+  if (page < 1) redirect("/customer?page=1");
+
   const itemsPerPage = 6;
   const { startingRange, endingRange } = getPaginationRange(page, itemsPerPage);
 
