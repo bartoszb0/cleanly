@@ -1,6 +1,6 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
 import { getPaginationRange, getUppercaseCityName } from "@/lib/utils";
-import { Customer } from "@/types/supabase";
+import { Customer } from "@/types";
 import { redirect } from "next/navigation";
 import { PaginationControls } from "../shared/pagination-controls";
 import CleanerCard from "./cleaner-card";
