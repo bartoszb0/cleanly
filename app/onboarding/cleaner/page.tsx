@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { finishCleanerOnboarding } from "@/lib/actions/onboarding";
 import { POLISH_CITIES } from "@/lib/constants/cities";
 import { CleanerFormValues, CleanerSchema } from "@/lib/schemas/cleanerForm";
-import { formatPhoneNumber } from "@/lib/utils/formatPhoneNumber";
+import { formatPhoneNumber } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";

@@ -20,8 +20,8 @@ import {
 import { finishCustomerOnboarding } from "@/lib/actions/onboarding";
 import { POLISH_CITIES } from "@/lib/constants/cities";
 import { CustomerFormValues, CustomerSchema } from "@/lib/schemas/customerForm";
-import { formatPhoneNumber } from "@/lib/utils/formatPhoneNumber";
-import { formatPostCode } from "@/lib/utils/formatPostCode";
+
+import { formatPhoneNumber, formatPostCode } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
