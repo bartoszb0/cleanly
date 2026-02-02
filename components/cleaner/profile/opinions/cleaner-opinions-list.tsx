@@ -64,16 +64,24 @@ export default function CleanerOpinionsList({
           value={sortBy}
           onValueChange={(value: OpinionSortOption) => handleSortChange(value)}
         >
-          <SelectTrigger className="w-[140px] text-slate-200 focus:ring-sky-500">
+          <SelectTrigger className="w-[180px] h-12 text-lg text-slate-200 focus:ring-sky-500">
             <SelectValue placeholder="Sort by" className="bg-slate-800" />
           </SelectTrigger>
           <SelectContent className="bg-slate-800">
             <SelectGroup>
-              <SelectLabel>Sort by</SelectLabel>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="oldest">Oldest</SelectItem>
-              <SelectItem value="highest">Highest Rated</SelectItem>
-              <SelectItem value="lowest">Lowest Rated</SelectItem>
+              <SelectLabel className="text-base px-3 py-2">Sort by</SelectLabel>
+              <SelectItem value="newest" className="text-base py-3">
+                Newest
+              </SelectItem>
+              <SelectItem value="oldest" className="text-base py-3">
+                Oldest
+              </SelectItem>
+              <SelectItem value="highest" className="text-base py-3">
+                Highest Rated
+              </SelectItem>
+              <SelectItem value="lowest" className="text-base py-3">
+                Lowest Rated
+              </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
