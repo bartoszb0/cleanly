@@ -323,5 +323,3 @@ export const Constants = {
     Enums: {},
   },
 } as const;
-
-export type Customer = Tables<"customers">;
