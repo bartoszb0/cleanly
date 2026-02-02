@@ -1,3 +1,4 @@
+import { OpinionSortOption } from "@/types";
 import { cache } from "react";
 import z from "zod";
 import { createClient } from "../supabase/server";
@@ -44,10 +45,28 @@ export const getCleaner = cache(async (id: string) => {
 });
 
 export const getCleanerOpinions = cache(
-  async (id: string, startingRange: number, endingRange: number) => {
+  async (
+    id: string,
+    startingRange: number,
+    endingRange: number,
+    sortBy: OpinionSortOption = "newest",
+  ) => {
     if (!z.uuid().safeParse(id).success) return null;
 
     const supabase = await createClient();
+
+    let column = "created_at";
+    let ascending = false;
+
+    if (sortBy === "oldest") {
+      ascending = true;
+    } else if (sortBy === "highest") {
+      column = "rating";
+      ascending = false;
+    } else if (sortBy === "lowest") {
+      column = "rating";
+      ascending = true;
+    }
 
     const {
       data: opinions,
@@ -69,7 +88,7 @@ export const getCleanerOpinions = cache(
       )
       .eq("cleaner_id", id)
       .range(startingRange, endingRange)
-      .order("created_at", { ascending: false });
+      .order(column, { ascending });
 
     if (error) {
       throw new Error(error.message);
