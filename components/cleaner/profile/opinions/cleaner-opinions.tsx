@@ -3,8 +3,10 @@ import CleanerAverageRating from "./cleaner-average-rating";
 import CleanerOpinionsList from "./cleaner-opinions-list";
 
 export default async function CleanerOpinions({ id }: { id: string }) {
-  const data = await getCleanerOpinions(id, 0, 4);
-  const ratingData = await getCleanerRating(id);
+  const [data, ratingData] = await Promise.all([
+    getCleanerOpinions(id, 0, 4),
+    getCleanerRating(id),
+  ]);
 
   if (!data || data.count === 0) {
     return (
