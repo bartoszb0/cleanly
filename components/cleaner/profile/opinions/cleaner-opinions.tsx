@@ -1,28 +1,9 @@
-import { PaginationControls } from "@/components/shared/pagination-controls";
-import { Button } from "@/components/ui/button";
 import { getCleanerOpinions } from "@/lib/data/cleaners";
-import { getPaginationRange } from "@/lib/utils";
-import { notFound, redirect } from "next/navigation";
-import CleanerOpinion from "./cleaner-opinion";
+import { notFound } from "next/navigation";
+import CleanerOpinionsList from "./cleaner-opinions-list";
 
-export default async function CleanerOpinions({
-  id,
-  page,
-}: {
-  id: string;
-  page: number;
-}) {
-  if (page < 1) {
-    redirect(`/customer/cleaner/${id}?page=1`);
-  }
-
-  const opinionsPerPage = 1;
-  const { startingRange, endingRange } = getPaginationRange(
-    page,
-    opinionsPerPage,
-  );
-
-  const data = await getCleanerOpinions(id, startingRange, endingRange);
+export default async function CleanerOpinions({ id }: { id: string }) {
+  const data = await getCleanerOpinions(id, 0, 4);
 
   if (!data) {
     return notFound();
@@ -41,17 +22,10 @@ export default async function CleanerOpinions({
   return (
     <div className="mt-14">
       <h1 className="text-3xl font-bold">Opinions</h1>
-      <div className="flex gap-2 mt-4">
-        <Button>Sort</Button>
-        <Button>Filter</Button>
-      </div>
-      {opinions.map((opinion) => (
-        <CleanerOpinion key={opinion.id} opinion={opinion} />
-      ))}
-
-      <PaginationControls
-        currentPage={page}
-        totalPages={Math.ceil((count || 0) / opinionsPerPage)}
+      <CleanerOpinionsList
+        cleanerId={id}
+        initialOpinions={opinions}
+        totalCount={count}
       />
     </div>
   );
