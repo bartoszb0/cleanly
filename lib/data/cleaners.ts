@@ -97,3 +97,22 @@ export const getCleanerOpinions = cache(
     return { opinions: opinions ?? [], count: count ?? 0 };
   },
 );
+
+export const getCleanerRating = cache(async (id: string) => {
+  if (!z.uuid().safeParse(id).success) return { average: 0, total: 0 };
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("opinions")
+    .select("rating")
+    .eq("cleaner_id", id);
+
+  if (error || !data || data.length === 0) return { average: 0, total: 0 };
+
+  const total = data.length;
+  const sum = data.reduce((acc, curr) => acc + curr.rating, 0);
+  const average = sum / total;
+
+  return { average, total };
+});
