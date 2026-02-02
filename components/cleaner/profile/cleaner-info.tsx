@@ -78,9 +78,9 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
         {/* Experience */}
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-sky-500/20 rounded-lg">
               <Clock size={24} className="text-sky-400" />
@@ -93,9 +93,8 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
             </div>
           </div>
         </div>
-
         {/* Supplies */}
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-green-500/20 rounded-lg">
               <Package size={24} className="text-green-400" />
@@ -118,9 +117,8 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
             </div>
           </div>
         </div>
-
         {/* Member Since */}
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-purple-500/20 rounded-lg">
               <Calendar size={24} className="text-purple-400" />
