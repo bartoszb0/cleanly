@@ -1,20 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { fetchMoreCleanerOpinions } from "@/lib/actions/cleaners";
 import { cn } from "@/lib/utils";
 import { Opinion, OpinionSortOption } from "@/types";
-import { SelectGroup } from "@radix-ui/react-select";
 import { useState, useTransition } from "react";
 import CleanerOpinion from "./cleaner-opinion";
+import SortOpinionsSelectBtn from "./sort-opinions-select";
 
 type CleanerOpinionsListProps = {
   cleanerId: string;
@@ -60,31 +52,10 @@ export default function CleanerOpinionsList({
   return (
     <div>
       <div className="flex gap-2 mt-4">
-        <Select
-          value={sortBy}
-          onValueChange={(value: OpinionSortOption) => handleSortChange(value)}
-        >
-          <SelectTrigger className="w-[180px] h-12 text-lg text-slate-200 focus:ring-sky-500">
-            <SelectValue placeholder="Sort by" className="bg-slate-800" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-800">
-            <SelectGroup>
-              <SelectLabel className="text-base px-3 py-2">Sort by</SelectLabel>
-              <SelectItem value="newest" className="text-base py-3">
-                Newest
-              </SelectItem>
-              <SelectItem value="oldest" className="text-base py-3">
-                Oldest
-              </SelectItem>
-              <SelectItem value="highest" className="text-base py-3">
-                Highest Rated
-              </SelectItem>
-              <SelectItem value="lowest" className="text-base py-3">
-                Lowest Rated
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <SortOpinionsSelectBtn
+          sortBy={sortBy}
+          handleSortChange={handleSortChange}
+        />
       </div>
       <div
         className={cn(
