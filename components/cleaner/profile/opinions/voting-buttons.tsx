@@ -12,16 +12,6 @@ export default function CleanerOpinionVotingButtons({
 
   const isOwner = customer.id === opinion.customer_id;
 
-  if (isOwner) {
-    return (
-      <div className="flex items-center">
-        <span className="text-sm italic text-slate-500 bg-slate-800/50 px-3 py-1 rounded-full border border-slate-700">
-          Your opinion
-        </span>
-      </div>
-    );
-  }
-
   const handleVote = (type: "like" | "dislike") => {
     console.log("Voting:", type);
   };
@@ -30,12 +20,14 @@ export default function CleanerOpinionVotingButtons({
     <div className="flex gap-2">
       <Button
         onClick={() => handleVote("like")}
+        disabled={isOwner}
         className={opinion.userVote === "like" ? "bg-sky-900" : ""}
       >
         <ThumbsUp /> {opinion.likes_count}
       </Button>
       <Button
         onClick={() => handleVote("dislike")}
+        disabled={isOwner}
         className={opinion.userVote === "dislike" ? "bg-sky-900" : ""}
       >
         <ThumbsDown /> {opinion.dislikes_count}
