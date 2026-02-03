@@ -1,11 +1,14 @@
+import { CustomerProvider } from "@/components/providers/customer-provider";
 import { getCleanerOpinions, getCleanerRating } from "@/lib/data/cleaners";
+import { getCurrentCustomer } from "@/lib/data/customer";
 import CleanerAverageRating from "./cleaner-average-rating";
 import CleanerOpinionsList from "./cleaner-opinions-list";
 
 export default async function CleanerOpinions({ id }: { id: string }) {
-  const [data, ratingData] = await Promise.all([
+  const [data, ratingData, customer] = await Promise.all([
     getCleanerOpinions(id, 0, 4),
     getCleanerRating(id),
+    getCurrentCustomer(),
   ]);
 
   if (!data || data.count === 0) {
@@ -24,11 +27,13 @@ export default async function CleanerOpinions({ id }: { id: string }) {
         <h1 className="text-3xl font-bold">Opinions</h1>
         <CleanerAverageRating ratingData={ratingData} />
       </div>
-      <CleanerOpinionsList
-        cleanerId={id}
-        initialOpinions={opinions}
-        totalCount={count}
-      />
+      <CustomerProvider customer={customer}>
+        <CleanerOpinionsList
+          cleanerId={id}
+          initialOpinions={opinions}
+          totalCount={count}
+        />
+      </CustomerProvider>
     </div>
   );
 }
