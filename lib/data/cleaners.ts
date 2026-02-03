@@ -1,7 +1,8 @@
-import { OpinionSortOption } from "@/types";
+import { Opinion, OpinionSortOption } from "@/types";
 import { cache } from "react";
 import z from "zod";
 import { createClient } from "../supabase/server";
+import { getCurrentCustomer } from "./customer";
 
 export const getCleanersByCity = cache(
   async (city: string, startingRange: number, endingRange: number) => {
@@ -54,6 +55,7 @@ export const getCleanerOpinions = cache(
     if (!z.uuid().safeParse(id).success) return null;
 
     const supabase = await createClient();
+    const customer = await getCurrentCustomer();
 
     let column = "created_at";
     let ascending = false;
@@ -78,15 +80,19 @@ export const getCleanerOpinions = cache(
         `
           id,
           rating,
+          cleaner_id,
+          customer_id,
           content,
           created_at,
-          customers (
-            full_name
-          )
+          likes_count,
+          dislikes_count,
+          customers (full_name),
+          opinion_likes (type)
         `,
         { count: "exact" },
       )
       .eq("cleaner_id", id)
+      .eq("opinion_likes.customer_id", customer.id)
       .range(startingRange, endingRange)
       .order(column, { ascending });
 
@@ -94,7 +100,19 @@ export const getCleanerOpinions = cache(
       throw new Error(error.message);
     }
 
-    return { opinions: opinions ?? [], count: count ?? 0 };
+    // Flatten the 'opinion_likes' join into a single 'userVote' string.
+    // This simplifies client-side state and validations by converting
+    // the database array structure into a flat 'like' | 'dislike' | null.
+    const formattedOpinions = opinions.map((op) => {
+      const { opinion_likes, ...rest } = op;
+
+      return {
+        ...rest,
+        userVote: (opinion_likes?.[0]?.type as Opinion["userVote"]) ?? null,
+      };
+    });
+
+    return { opinions: formattedOpinions ?? [], count: count ?? 0 };
   },
 );
 

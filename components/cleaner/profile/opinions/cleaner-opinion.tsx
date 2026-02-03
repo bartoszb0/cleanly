@@ -1,22 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import { StarIcon, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Opinion } from "@/types";
+import { StarIcon } from "lucide-react";
+import CleanerOpinionVotingButtons from "./voting-buttons";
 
-type OpinionWithAuthor = {
-  id: string;
-  rating: number;
-  content: string;
-  created_at: string;
-  customers: {
-    full_name: string;
-  };
-};
-
-export default function CleanerOpinion({
-  opinion,
-}: {
-  opinion: OpinionWithAuthor;
-}) {
+export default function CleanerOpinion({ opinion }: { opinion: Opinion }) {
   return (
     <div className="my-6 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 transition-all duration-300">
       <div className="flex gap-1">
@@ -37,18 +24,11 @@ export default function CleanerOpinion({
         })}
       </div>
 
-      <h3 className="mt-2 text-slate-400">{opinion.customers?.full_name}</h3>
+      <h3 className="mt-2 text-slate-400">{opinion.customers.full_name}</h3>
 
       <p className="mt-4">{opinion.content}</p>
       <div className="flex justify-between items-center mt-5">
-        <div className="flex gap-2">
-          <Button>
-            <ThumbsUp />
-          </Button>
-          <Button>
-            <ThumbsDown />
-          </Button>
-        </div>
+        <CleanerOpinionVotingButtons opinion={opinion} />
         <div>
           <p>{formatDate(opinion.created_at, "full")}</p>
         </div>
