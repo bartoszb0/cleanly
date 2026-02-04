@@ -8,33 +8,47 @@ export const getCleanersByCity = async (
   city: string,
   startingRange: number,
   endingRange: number,
+  searchName?: string,
 ) => {
   const supabase = await createClient();
 
-  // Get the total count first
-  const { count: totalCount } = await supabase
+  // Get the count first
+  let countQuery = supabase
     .from("cleaners")
     .select("*", { count: "exact", head: true })
     .eq("city", city);
 
+  if (searchName) {
+    countQuery = countQuery.ilike("name", `%${searchName}%`);
+  }
+
+  const { count: totalCount } = await countQuery;
+
+  // Return early if there's nobody found
   if (!totalCount || totalCount === 0) {
     return { cleaners: [], count: 0 };
   }
 
   // Try to get the actual data
-  const { data: cleaners, error } = await supabase
+  let dataQuery = supabase
     .from("cleaners")
     .select("*")
     .eq("city", city)
     .order("created_at", { ascending: false })
     .range(startingRange, endingRange);
 
-  // Still return the totalCount so the redirect logic can work.
-  if (error) {
-    return { cleaners: [], count: totalCount ?? 0 };
+  if (searchName) {
+    dataQuery = dataQuery.ilike("name", `%${searchName}%`);
   }
 
-  return { cleaners: cleaners ?? [], count: totalCount ?? 0 };
+  const { data: cleaners, error } = await dataQuery;
+
+  // If dataQuery errors (out of bounds) return the totalCount we got from step 1.
+  if (error) {
+    return { cleaners: [], count: totalCount };
+  }
+
+  return { cleaners: cleaners ?? [], count: totalCount };
 };
 
 export const getCleaner = cache(async (id: string) => {
