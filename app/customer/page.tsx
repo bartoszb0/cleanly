@@ -1,6 +1,6 @@
 import CleanersList from "@/components/cleaner/cleaner-list";
 import CleanerListSkeleton from "@/components/cleaner/cleaner-list-skeleton";
-import { Button } from "@/components/ui/button";
+import FilterControls from "@/components/cleaner/filter-controls";
 import { getCurrentCustomer } from "@/lib/data/customer";
 import { getUppercaseCityName } from "@/lib/utils";
 import { Suspense } from "react";
@@ -8,9 +8,9 @@ import { Suspense } from "react";
 export default async function CustomerPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; search: string }>;
 }) {
-  const { page } = await searchParams;
+  const { page, search } = await searchParams;
   const currentPage = Number(page) || 1;
   const user = await getCurrentCustomer();
 
@@ -19,14 +19,9 @@ export default async function CustomerPage({
       <h1 className="text-4xl font-bold mt-10 text-center">
         Cleaners in {getUppercaseCityName(user.city)}
       </h1>
-      <div className="flex flex-row gap-4 mt-5">
-        {/* TODO */}
-        <Button>Input - Search by name</Button>
-        <Button>Sort</Button>
-        <Button>Filter</Button>
-      </div>
+      <FilterControls />
       <Suspense fallback={<CleanerListSkeleton />}>
-        <CleanersList user={user} page={currentPage} />
+        <CleanersList user={user} page={currentPage} searchName={search} />
       </Suspense>
     </div>
   );
