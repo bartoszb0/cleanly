@@ -61,7 +61,3 @@ export function getPaginationRange(page: number, itemsPerPage: number) {
 
   return { startingRange, endingRange };
 }
-
-export function getPaginationTotalPages(count: number, itemsPerPage: number) {
-  return Math.ceil(count / itemsPerPage);
-}

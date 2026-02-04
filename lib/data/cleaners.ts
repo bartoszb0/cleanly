@@ -4,28 +4,38 @@ import z from "zod";
 import { createClient } from "../supabase/server";
 import { getCurrentCustomer } from "./customer";
 
-export const getCleanersByCity = cache(
-  async (city: string, startingRange: number, endingRange: number) => {
-    const supabase = await createClient();
+export const getCleanersByCity = async (
+  city: string,
+  startingRange: number,
+  endingRange: number,
+) => {
+  const supabase = await createClient();
 
-    const {
-      data: cleaners,
-      count,
-      error,
-    } = await supabase
-      .from("cleaners")
-      .select("*", { count: "exact" })
-      .eq("city", city)
-      .range(startingRange, endingRange)
-      .order("created_at", { ascending: false });
+  // Get the total count first
+  const { count: totalCount } = await supabase
+    .from("cleaners")
+    .select("*", { count: "exact", head: true })
+    .eq("city", city);
 
-    if (error) {
-      throw new Error(error.message);
-    }
+  if (!totalCount || totalCount === 0) {
+    return { cleaners: [], count: 0 };
+  }
 
-    return { cleaners: cleaners ?? [], count: count ?? 0 };
-  },
-);
+  // Try to get the actual data
+  const { data: cleaners, error } = await supabase
+    .from("cleaners")
+    .select("*")
+    .eq("city", city)
+    .order("created_at", { ascending: false })
+    .range(startingRange, endingRange);
+
+  // Still return the totalCount so the redirect logic can work.
+  if (error) {
+    return { cleaners: [], count: totalCount ?? 0 };
+  }
+
+  return { cleaners: cleaners ?? [], count: totalCount ?? 0 };
+};
 
 export const getCleaner = cache(async (id: string) => {
   if (!z.uuid().safeParse(id).success) return null;

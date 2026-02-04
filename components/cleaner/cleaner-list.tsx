@@ -31,11 +31,15 @@ export default async function CleanersList({
         <div className="text-slate-400 mb-2">
           No cleaners available in {getUppercaseCityName(user.city)}
         </div>
-        <p className="text-sm text-slate-500">
-          Try adjusting your filters or checking a nearby area.
-        </p>
+        <p className="text-sm text-slate-500">Try adjusting your filters.</p>
       </div>
     );
+  }
+
+  const totalPages = Math.ceil(count / itemsPerPage);
+
+  if (totalPages > 0 && page > totalPages) {
+    redirect(`/customer?page=${totalPages}`);
   }
 
   return (
@@ -45,10 +49,7 @@ export default async function CleanersList({
           <CleanerCard key={cleaner.id} cleaner={cleaner} />
         ))}
       </div>
-      <PaginationControls
-        currentPage={page}
-        totalPages={Math.ceil((count || 0) / itemsPerPage)}
-      />
+      <PaginationControls currentPage={page} totalPages={totalPages} />
     </div>
   );
 }
