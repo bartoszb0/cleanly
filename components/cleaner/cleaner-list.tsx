@@ -8,11 +8,13 @@ import CleanerCard from "./cleaner-card";
 type CleanerListProps = {
   user: Customer;
   page: number;
+  searchName?: string;
 };
 
 export default async function CleanersList({
   user,
   page = 1,
+  searchName,
 }: CleanerListProps) {
   if (page < 1) redirect("/customer?page=1");
 
@@ -23,6 +25,7 @@ export default async function CleanersList({
     user.city,
     startingRange,
     endingRange,
+    searchName,
   );
 
   if (!count || count === 0) {
