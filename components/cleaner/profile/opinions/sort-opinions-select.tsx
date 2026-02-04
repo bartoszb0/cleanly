@@ -23,7 +23,7 @@ export default function SortOpinionsSelectBtn({
       value={sortBy}
       onValueChange={(value: OpinionSortOption) => handleSortChange(value)}
     >
-      <SelectTrigger className="w-[180px] h-12 text-lg text-slate-200 focus:ring-sky-500">
+      <SelectTrigger className="w-[180px] h-12 text-lg text-slate-200 focus:ring-sky-500 border-none">
         <SelectValue placeholder="Sort by" className="bg-slate-800" />
       </SelectTrigger>
       <SelectContent className="bg-slate-800">
