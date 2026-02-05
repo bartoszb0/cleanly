@@ -12,3 +12,9 @@ export type Opinion = Tables<"opinions"> & {
 export type OpinionSortOption = "newest" | "oldest" | "lowest" | "highest";
 
 export type OpinionVoteType = "like" | "dislike";
+
+export type CleanersSortOption =
+  | "rating"
+  | "highest_price"
+  | "lowest_price"
+  | "experience";
