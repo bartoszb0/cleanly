@@ -1,6 +1,6 @@
-import { displayYearsOfExperience, getUppercaseCityName } from "@/lib/utils";
+import { getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
-import { Clock, MapPin, Package } from "lucide-react";
+import { BrushCleaning, MapPin, Package } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -53,10 +53,9 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="flex items-center gap-2 text-sm">
-              <Clock size={16} className="text-sky-400" />
-              <span className="text-slate-300">
-                {displayYearsOfExperience(cleaner.experience_years)}
-              </span>
+              <BrushCleaning size={16} className="text-sky-400" />
+              <span className="text-slate-300">Jobs: </span>
+              <span>{cleaner.completed_jobs_count}</span>
             </div>
             {cleaner.supplies_provided && (
               <div className="flex items-center gap-2 text-sm">

@@ -1,13 +1,9 @@
 import { getCleaner } from "@/lib/data/cleaners";
+import { formatDate, getUppercaseCityName } from "@/lib/utils";
 import {
-  displayYearsOfExperience,
-  formatDate,
-  getUppercaseCityName,
-} from "@/lib/utils";
-import {
+  BrushCleaning,
   Calendar,
   CheckCircle,
-  Clock,
   MapPin,
   Package,
   Phone,
@@ -83,12 +79,12 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
         <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-sky-500/20 rounded-lg">
-              <Clock size={24} className="text-sky-400" />
+              <BrushCleaning size={24} className="text-sky-400" />
             </div>
             <div>
-              <p className="text-slate-400 text-sm">Experience</p>
+              <p className="text-slate-400 text-sm">Completed jobs</p>
               <p className="text-white font-semibold text-lg">
-                {displayYearsOfExperience(cleaner.experience_years)}
+                {cleaner.completed_jobs_count}
               </p>
             </div>
           </div>

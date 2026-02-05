@@ -84,7 +84,6 @@ export async function finishCleanerOnboarding(userData: CleanerFormValues) {
     id: user.id,
     name: data.name,
     bio: data.bio,
-    experience_years: data.experience,
     hourly_rate: data.hourly_rate,
     city: data.city,
     phone: data.phone,

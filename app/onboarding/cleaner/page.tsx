@@ -37,7 +37,6 @@ export default function CleanerForm() {
       bio: "",
       city: "",
       phone: "",
-      experience: "",
       hourly_rate: undefined,
       supplies_provided: false,
     },
@@ -116,32 +115,6 @@ export default function CleanerForm() {
             <label>avatar</label>
             <Input placeholder="avatar" />
           </Field>
-
-          {/* Experience Years */}
-          <Controller
-            name="experience"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>
-                  Experience in years
-                </FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  value={field.value != null ? String(field.value) : ""}
-                  type="number"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="5"
-                  autoComplete="off"
-                  min={0}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
 
           {/* Hourly Rate */}
           <Controller

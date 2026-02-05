@@ -20,13 +20,6 @@ export const CleanerSchema = z.object({
 
   // avatar
 
-  experience: z.coerce
-    .number()
-    .min(0, "Experience cannot be negative")
-    .max(90, "Invalid number")
-    .int("Whole number is required")
-    .optional(),
-
   hourly_rate: z.coerce
     .number("Hourly rate is required")
     .min(1, "Hourly rate must be positive")
