@@ -19,6 +19,8 @@ type CleanerInfoProps = {
 export default async function CleanerInfo({ id }: CleanerInfoProps) {
   const cleaner = await getCleaner(id);
 
+  console.log(cleaner);
+
   if (!cleaner) {
     return notFound();
   }
