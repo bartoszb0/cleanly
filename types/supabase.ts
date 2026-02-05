@@ -42,39 +42,45 @@ export type Database = {
       cleaners: {
         Row: {
           avatar_url: string | null
+          average_rating: number
           bio: string
           city: string
+          completed_jobs_count: number
           created_at: string
-          experience_years: number
           hourly_rate: number
           id: string
           name: string
           phone: string
           supplies_provided: boolean | null
+          total_reviews: number
         }
         Insert: {
           avatar_url?: string | null
+          average_rating?: number
           bio: string
           city: string
+          completed_jobs_count?: number
           created_at?: string
-          experience_years?: number
           hourly_rate: number
           id?: string
           name: string
           phone: string
           supplies_provided?: boolean | null
+          total_reviews?: number
         }
         Update: {
           avatar_url?: string | null
+          average_rating?: number
           bio?: string
           city?: string
+          completed_jobs_count?: number
           created_at?: string
-          experience_years?: number
           hourly_rate?: number
           id?: string
           name?: string
           phone?: string
           supplies_provided?: boolean | null
+          total_reviews?: number
         }
         Relationships: []
       }
@@ -115,6 +121,54 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          address: string
+          cleaner_id: string
+          created_at: string
+          customer_id: string
+          id: string
+          price_snapshot: number
+          scheduled_at: string
+          status: string
+        }
+        Insert: {
+          address: string
+          cleaner_id: string
+          created_at?: string
+          customer_id: string
+          id?: string
+          price_snapshot: number
+          scheduled_at: string
+          status?: string
+        }
+        Update: {
+          address?: string
+          cleaner_id?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+          price_snapshot?: number
+          scheduled_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_cleaner_id_fkey"
+            columns: ["cleaner_id"]
+            isOneToOne: false
+            referencedRelation: "cleaners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
         ]
@@ -163,6 +217,7 @@ export type Database = {
           customer_id: string
           dislikes_count: number
           id: string
+          job_id: string
           likes_count: number
           rating: number
         }
@@ -173,6 +228,7 @@ export type Database = {
           customer_id: string
           dislikes_count?: number
           id?: string
+          job_id: string
           likes_count?: number
           rating: number
         }
@@ -183,6 +239,7 @@ export type Database = {
           customer_id?: string
           dislikes_count?: number
           id?: string
+          job_id?: string
           likes_count?: number
           rating?: number
         }
@@ -199,6 +256,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opinions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: true
+            referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
         ]
