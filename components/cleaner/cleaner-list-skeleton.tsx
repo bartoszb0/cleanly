@@ -36,7 +36,7 @@ function CleanerCardSkeleton() {
 
 export default function CleanersListSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-6 p-4 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-6 p-4 mt-4 w-full">
       {[...Array(6)].map((_, i) => (
         <CleanerCardSkeleton key={i} />
       ))}

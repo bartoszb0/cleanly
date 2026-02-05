@@ -47,7 +47,7 @@ export default async function CleanersList({
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-6 mt-10 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-6 mt-4 p-4">
         {cleaners.map((cleaner) => (
           <CleanerCard key={cleaner.id} cleaner={cleaner} />
         ))}
