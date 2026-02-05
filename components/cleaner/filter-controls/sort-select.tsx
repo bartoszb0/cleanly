@@ -7,19 +7,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
 
 export default function SortCleanersSelect() {
-  const [sortBy, setSortBy] = useState("rating");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [sortBy, setSortBy] = useState("highest_price");
+  const [isPending, startTransition] = useTransition();
 
   const handleSortChange = (value: any) => {
     setSortBy(value);
+
+    const params = new URLSearchParams(searchParams);
+
+    params.set("sort", value);
+
+    // reset to page 1 when searching
+    params.set("page", "1");
+
+    startTransition(() => {
+      router.push(`/customer?${params.toString()}`);
+    });
   };
 
   return (
     <Select
       value={sortBy}
       onValueChange={(value: any) => handleSortChange(value)}
+      disabled={isPending}
     >
       <SelectTrigger className="w-[180px] h-12  bg-sky-600 hover:bg-sky-700 text-white border-none rounded-lg font-medium transition-colors">
         <SelectValue placeholder="Sort by" />
@@ -29,7 +45,7 @@ export default function SortCleanersSelect() {
         <SelectGroup>
           <SelectLabel className="text-base px-3 py-2">Sort by</SelectLabel>
           <SelectItem value="rating" className="text-base py-3">
-            Best rated
+            Best rated - ADD THIS
           </SelectItem>
           <SelectItem value="highest_price" className="text-base py-3">
             Highest price
@@ -38,7 +54,7 @@ export default function SortCleanersSelect() {
             Lowest price
           </SelectItem>
           <SelectItem value="experience" className="text-base py-3">
-            Experience
+            Experience - ADD THIS
           </SelectItem>
         </SelectGroup>
       </SelectContent>

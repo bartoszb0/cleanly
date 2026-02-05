@@ -9,12 +9,14 @@ type CleanerListProps = {
   user: Customer;
   page: number;
   searchName?: string;
+  sortBy?: string;
 };
 
 export default async function CleanersList({
   user,
   page = 1,
   searchName,
+  sortBy,
 }: CleanerListProps) {
   if (page < 1) redirect("/customer?page=1");
 
@@ -26,6 +28,7 @@ export default async function CleanersList({
     startingRange,
     endingRange,
     searchName,
+    sortBy,
   );
 
   if (!count || count === 0) {

@@ -9,6 +9,7 @@ export const getCleanersByCity = async (
   startingRange: number,
   endingRange: number,
   searchName?: string,
+  sortBy?: string,
 ) => {
   const supabase = await createClient();
 
@@ -30,16 +31,23 @@ export const getCleanersByCity = async (
   }
 
   // Try to get the actual data
-  let dataQuery = supabase
-    .from("cleaners")
-    .select("*")
-    .eq("city", city)
-    .order("created_at", { ascending: false })
-    .range(startingRange, endingRange);
+  let dataQuery = supabase.from("cleaners").select("*").eq("city", city);
 
   if (searchName) {
     dataQuery = dataQuery.ilike("name", `%${searchName}%`);
   }
+
+  switch (sortBy) {
+    case "lowest_price":
+      dataQuery = dataQuery.order("hourly_rate", { ascending: true });
+      break;
+    case "highest_price":
+    default:
+      dataQuery = dataQuery.order("hourly_rate", { ascending: false });
+      break;
+  }
+
+  dataQuery = dataQuery.range(startingRange, endingRange);
 
   const { data: cleaners, error } = await dataQuery;
 

@@ -8,9 +8,9 @@ import { Suspense } from "react";
 export default async function CustomerPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string; search: string }>;
+  searchParams: Promise<{ page: string; search: string; sort: string }>;
 }) {
-  const { page, search } = await searchParams;
+  const { page, search, sort } = await searchParams;
   const currentPage = Number(page) || 1;
   const user = await getCurrentCustomer();
 
@@ -21,7 +21,12 @@ export default async function CustomerPage({
       </h1>
       <FilterControls />
       <Suspense fallback={<CleanerListSkeleton />}>
-        <CleanersList user={user} page={currentPage} searchName={search} />
+        <CleanersList
+          user={user}
+          page={currentPage}
+          searchName={search}
+          sortBy={sort}
+        />
       </Suspense>
     </div>
   );
