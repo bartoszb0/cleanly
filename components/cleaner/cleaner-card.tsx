@@ -1,6 +1,6 @@
 import { getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
-import { BrushCleaning, MapPin, Package } from "lucide-react";
+import { BrushCleaning, MapPin, Package, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -34,14 +34,26 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          {/* Name and Location */}
-          <div className="mb-2">
-            <h3 className="text-xl font-semibold text-white mb-1">
-              {cleaner.name}
-            </h3>
-            <div className="flex items-center gap-1 text-slate-400 text-sm">
-              <MapPin size={14} />
-              <span>{getUppercaseCityName(cleaner.city)}</span>
+          {/* Name, Location and Right Content */}
+          <div className="flex items-start justify-between mb-2">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-1">
+                {cleaner.name}
+              </h3>
+              <div className="flex items-center gap-1 text-slate-400 text-sm">
+                <MapPin size={14} />
+                <span>{getUppercaseCityName(cleaner.city)}</span>
+              </div>
+            </div>
+
+            {/* Right side content - add your content here */}
+            <div className="flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <StarIcon className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                <span className="text-lg font-semibold text-slate-100">
+                  {cleaner.average_rating.toFixed(1)}
+                </span>
+              </div>
             </div>
           </div>
 
