@@ -45,8 +45,11 @@ export const getCleanersByCity = async (
       dataQuery = dataQuery.order("completed_jobs_count", { ascending: false });
       break;
     case "highest_price":
-    default:
       dataQuery = dataQuery.order("hourly_rate", { ascending: false });
+      break;
+    case "rating":
+    default:
+      dataQuery = dataQuery.order("average_rating", { ascending: false });
       break;
   }
 
@@ -113,14 +116,7 @@ export const getCleanerOpinions = cache(
       .from("opinions")
       .select(
         `
-          id,
-          rating,
-          cleaner_id,
-          customer_id,
-          content,
-          created_at,
-          likes_count,
-          dislikes_count,
+          *,
           customers (full_name),
           opinion_likes (type)
         `,

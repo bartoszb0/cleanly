@@ -14,7 +14,7 @@ import { useState, useTransition } from "react";
 export default function SortCleanersSelect() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [sortBy, setSortBy] = useState("highest_price");
+  const [sortBy, setSortBy] = useState("rating");
   const [isPending, startTransition] = useTransition();
 
   const handleSortChange = (value: CleanersSortOption) => {
@@ -46,7 +46,7 @@ export default function SortCleanersSelect() {
         <SelectGroup>
           <SelectLabel className="text-base px-3 py-2">Sort by</SelectLabel>
           <SelectItem value="rating" className="text-base py-3">
-            Best rated - ADD THIS
+            Best rated
           </SelectItem>
           <SelectItem value="highest_price" className="text-base py-3">
             Highest price
