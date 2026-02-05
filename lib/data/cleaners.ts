@@ -41,6 +41,9 @@ export const getCleanersByCity = async (
     case "lowest_price":
       dataQuery = dataQuery.order("hourly_rate", { ascending: true });
       break;
+    case "experience":
+      dataQuery = dataQuery.order("completed_jobs_count", { ascending: false });
+      break;
     case "highest_price":
     default:
       dataQuery = dataQuery.order("hourly_rate", { ascending: false });
