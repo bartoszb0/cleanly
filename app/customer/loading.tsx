@@ -1,23 +1,21 @@
 import CleanersListSkeleton from "@/components/cleaner/cleaner-list-skeleton";
-import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="h-10 w-64 bg-slate-700/50 animate-pulse mt-10 rounded-lg"></div>
+      {/* Title Skeleton */}
+      <Skeleton className="h-10 w-72 mt-10" />
 
-      <div className="flex flex-row gap-4 mt-5">
-        <Button disabled className="opacity-50">
-          Input - Search by name
-        </Button>
-        <Button disabled className="opacity-50">
-          Sort
-        </Button>
-        <Button disabled className="opacity-50">
-          Filter
-        </Button>
+      {/* FilterControls Skeleton */}
+      <div className="mt-4 flex flex-row items-center gap-2">
+        {/* Match the Search Input width/height */}
+        <Skeleton className="h-12 w-[300px] md:w-[400px]" />
+        {/* Match the Filter Toggle Button */}
+        <Skeleton className="h-12 w-12" />
       </div>
 
+      {/* List Content */}
       <CleanersListSkeleton />
     </div>
   );
