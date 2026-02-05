@@ -45,16 +45,6 @@ export function formatDate(date: string, variant: "full" | "short" = "short") {
   return dayjs(date).format(formats[variant]);
 }
 
-export function displayYearsOfExperience(years: number) {
-  if (years <= 0) {
-    return "Less than 1 year";
-  } else if (years === 1) {
-    return "1 year";
-  } else {
-    return `${years} years`;
-  }
-}
-
 export function getPaginationRange(page: number, itemsPerPage: number) {
   const startingRange = (page - 1) * itemsPerPage;
   const endingRange = startingRange + itemsPerPage - 1;
