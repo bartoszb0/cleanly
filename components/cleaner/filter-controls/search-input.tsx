@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, SearchIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
 export default function SearchCleanerInput() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [inputValue, setInputValue] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -13,8 +14,7 @@ export default function SearchCleanerInput() {
     e.preventDefault();
     const sanitizedValue = inputValue.trim().toLowerCase();
 
-    // maybe useSearchParams from next, to avoid wiping out any other filters
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
 
     if (sanitizedValue) {
       params.set("search", sanitizedValue);
