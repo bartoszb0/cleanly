@@ -1,14 +1,13 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import { Loader2, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 export default function SearchCleanerInput() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +25,9 @@ export default function SearchCleanerInput() {
     // reset to page 1 when searching
     params.set("page", "1");
 
-    router.push(`/customer?${params.toString()}`);
+    startTransition(() => {
+      router.push(`/customer?${params.toString()}`);
+    });
   };
 
   return (
@@ -37,11 +38,15 @@ export default function SearchCleanerInput() {
       <Input
         onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
-        className="bg-sky-800 border-sky-900 h-12 text-base px-4 md:h-14 md:text-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
+        className="bg-sky-800 border-sky-900 h-12 text-base px-4 md:text-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
         placeholder="Search Cleaner by name"
       />
-      <Button className="h-12">
-        <SearchIcon />
+      <Button className="h-12" disabled={isPending}>
+        {isPending ? (
+          <Loader2 className="h-5 w-5 animate-spin" />
+        ) : (
+          <SearchIcon className="h-5 w-5" />
+        )}
       </Button>
     </form>
   );
