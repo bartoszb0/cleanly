@@ -16,10 +16,12 @@ export default async function CustomerPage({
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-4xl font-bold mt-10 text-center">
-        Cleaners in {getUppercaseCityName(user.city)}
-      </h1>
-      <FilterControls />
+      <div className="p-4">
+        <h1 className="text-4xl font-bold mt-10 text-center">
+          Cleaners in {getUppercaseCityName(user.city)}
+        </h1>
+        <FilterControls />
+      </div>
       <Suspense fallback={<CleanerListSkeleton />}>
         <CleanersList
           user={user}
