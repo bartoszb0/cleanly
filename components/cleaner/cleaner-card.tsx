@@ -49,10 +49,26 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
             {/* Right side content - add your content here */}
             <div className="flex-shrink-0">
               <div className="flex items-center gap-2">
-                <StarIcon className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                <span className="text-lg font-semibold text-slate-100">
-                  {cleaner.average_rating.toFixed(1)}
-                </span>
+                {cleaner.total_reviews > 0 ? (
+                  <>
+                    <StarIcon className="text-yellow-400 fill-yellow-400 w-4 h-4" />
+                    <span className="font-bold">
+                      {cleaner.average_rating.toFixed(1)}
+                    </span>
+                    <span className="text-slate-500 text-sm">
+                      ({cleaner.total_reviews})
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="bg-blue-50 text-blue-600 text-xs font-semibold px-2 py-0.5 rounded">
+                      NEW
+                    </span>
+                    <span className="text-slate-400 text-sm italic">
+                      No opinions yet
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
