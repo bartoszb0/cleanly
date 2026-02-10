@@ -60,14 +60,17 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
                     </span>
                   </>
                 ) : (
-                  <>
-                    <span className="bg-blue-50 text-blue-600 text-xs font-semibold px-2 py-0.5 rounded">
-                      NEW
-                    </span>
-                    <span className="text-slate-400 text-sm italic">
-                      No opinions yet
-                    </span>
-                  </>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
+                        New
+                      </span>
+                      {/* This text hides on mobile (hidden) and shows on small screens (sm:block) */}
+                      <span className="hidden sm:block text-slate-400 text-xs italic">
+                        No opinions yet
+                      </span>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
