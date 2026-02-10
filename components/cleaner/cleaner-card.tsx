@@ -15,17 +15,19 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
       <div className="flex gap-4">
         {/* Avatar */}
         <div className="flex-shrink-0">
-          <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
+          {/* Changed w-20 h-20 to w-14 h-14 on mobile, and sm:w-20 sm:h-20 for larger screens */}
+          <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
             {cleaner.avatar_url ? (
               <Image
                 src={cleaner.avatar_url}
                 alt={cleaner.name}
                 width={80}
                 height={80}
-                className="object-cover"
+                className="object-cover w-full h-full"
               />
             ) : (
-              <span className="text-white font-bold text-2xl">
+              /* Adjusted text size for smaller mobile circle */
+              <span className="text-white font-bold text-xl sm:text-2xl">
                 {cleaner.name.charAt(0).toUpperCase()}
               </span>
             )}
