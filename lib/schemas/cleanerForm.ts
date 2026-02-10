@@ -23,6 +23,7 @@ export const CleanerSchema = z.object({
   hourly_rate: z.coerce
     .number("Hourly rate is required")
     .min(1, "Hourly rate must be positive")
+    .max(300, "Hourly rate cannot exceed 300PLN")
     .multipleOf(0.01, "Maximum 2 decimal places allowed"),
 
   city: z
