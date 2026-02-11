@@ -3,14 +3,14 @@ import { formatDate, getUppercaseCityName } from "@/lib/utils";
 import {
   BrushCleaning,
   Calendar,
-  CheckCircle,
+  CircleOff,
   MapPin,
   Package,
   Phone,
-  XCircle,
 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import BookCleanerDialog from "./booking/book-dialog";
 
 type CleanerInfoProps = {
   id: string;
@@ -18,8 +18,6 @@ type CleanerInfoProps = {
 
 export default async function CleanerInfo({ id }: CleanerInfoProps) {
   const cleaner = await getCleaner(id);
-
-  console.log(cleaner);
 
   if (!cleaner) {
     return notFound();
@@ -30,8 +28,8 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
       <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 mb-6">
         <div className="flex flex-row gap-8 items-start">
           {/* Avatar */}
-          <div className="flex-shrink-0">
-            <div className="w-32 h-32 rounded-2xl overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-xl">
+          <div className="shrink-0">
+            <div className="w-32 h-32 rounded-2xl overflow-hidden bg-linear-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-xl">
               {cleaner.avatar_url ? (
                 <Image
                   src={cleaner.avatar_url}
@@ -94,23 +92,22 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
         {/* Supplies */}
         <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-green-500/20 rounded-lg">
-              <Package size={24} className="text-green-400" />
-            </div>
+            {cleaner.supplies_provided ? (
+              <div className="p-2 bg-green-500/20 rounded-lg">
+                <Package size={24} className="text-green-400" />
+              </div>
+            ) : (
+              <div className="p-2 bg-red-500/20 rounded-lg">
+                <CircleOff size={24} className="text-red-400" />
+              </div>
+            )}
+
             <div>
               <p className="text-slate-400 text-sm">Supplies</p>
               <div className="flex items-center gap-2">
-                {cleaner.supplies_provided ? (
-                  <>
-                    <CheckCircle size={18} className="text-green-400" />
-                    <p className="text-white font-semibold">Provided</p>
-                  </>
-                ) : (
-                  <>
-                    <XCircle size={18} className="text-red-500" />
-                    <p className="text-white font-semibold">Not included</p>
-                  </>
-                )}
+                <p className="text-white font-semibold">
+                  {cleaner.supplies_provided ? "Provied" : "Not provied"}
+                </p>
               </div>
             </div>
           </div>
@@ -162,10 +159,8 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mt-8">
-        <button className="flex-1 bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg shadow-lg hover:shadow-sky-500/20">
-          Book Now
-        </button>
-        <button className="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg border border-slate-600">
+        <BookCleanerDialog cleanerHourlyRate={cleaner.hourly_rate} />
+        <button className="flex-1 h-16 bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg border border-slate-600">
           Send Message
         </button>
       </div>
