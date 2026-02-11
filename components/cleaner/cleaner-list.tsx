@@ -1,5 +1,10 @@
 import { getCleanersByCity } from "@/lib/data/cleaners";
-import { getPaginationRange, getUppercaseCityName } from "@/lib/utils";
+import { SuppliesOptions } from "@/lib/schemas/filterCleaners";
+import {
+  getPaginationRange,
+  getUppercaseCityName,
+  parseUrlDate,
+} from "@/lib/utils";
 import { Customer } from "@/types";
 import { redirect } from "next/navigation";
 import { PaginationControls } from "../shared/pagination-controls";
@@ -10,6 +15,14 @@ type CleanerListProps = {
   page: number;
   searchName?: string;
   sortBy?: string;
+  filters: {
+    minPrice?: string;
+    maxPrice?: string;
+    rating?: string;
+    jobs?: string;
+    supplies?: SuppliesOptions;
+    date?: string;
+  };
 };
 
 export default async function CleanersList({
@@ -17,16 +30,29 @@ export default async function CleanersList({
   page = 1,
   searchName,
   sortBy,
+  filters,
 }: CleanerListProps) {
   if (page < 1) redirect("/customer?page=1");
 
   const itemsPerPage = 6;
   const { startingRange, endingRange } = getPaginationRange(page, itemsPerPage);
 
+  const activeFilters = {
+    priceRange: [
+      Number(filters.minPrice) || 0,
+      Number(filters.maxPrice) || 300,
+    ] as [number, number],
+    minRating: Number(filters.rating) || 0,
+    minJobs: Number(filters.jobs) || 0,
+    suppliesProvided: filters.supplies ?? "all",
+    date: parseUrlDate(filters.date ?? null),
+  };
+
   const { cleaners, count } = await getCleanersByCity(
     user.city,
     startingRange,
     endingRange,
+    activeFilters,
     searchName,
     sortBy,
   );
