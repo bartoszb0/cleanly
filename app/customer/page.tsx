@@ -2,16 +2,27 @@ import CleanersList from "@/components/cleaner/cleaner-list";
 import CleanerListSkeleton from "@/components/cleaner/cleaner-list-skeleton";
 import FilterControls from "@/components/cleaner/filter-controls";
 import { getCurrentCustomer } from "@/lib/data/customer";
+import { SuppliesOptions } from "@/lib/schemas/filterCleaners";
 import { getUppercaseCityName } from "@/lib/utils";
 import { Suspense } from "react";
 
 export default async function CustomerPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string; search: string; sort: string }>;
+  searchParams: Promise<{
+    page: string;
+    search: string;
+    sort: string;
+    minPrice?: string;
+    maxPrice?: string;
+    rating?: string;
+    jobs?: string;
+    supplies?: SuppliesOptions;
+    date?: string;
+  }>;
 }) {
-  const { page, search, sort } = await searchParams;
-  const currentPage = Number(page) || 1;
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
   const user = await getCurrentCustomer();
 
   return (
@@ -22,12 +33,20 @@ export default async function CustomerPage({
         </h1>
         <FilterControls />
       </div>
-      <Suspense fallback={<CleanerListSkeleton />}>
+      <Suspense key={JSON.stringify(params)} fallback={<CleanerListSkeleton />}>
         <CleanersList
           user={user}
           page={currentPage}
-          searchName={search}
-          sortBy={sort}
+          searchName={params.search}
+          sortBy={params.sort}
+          filters={{
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+            rating: params.rating,
+            jobs: params.jobs,
+            supplies: params.supplies,
+            date: params.date,
+          }}
         />
       </Suspense>
     </div>
