@@ -1,6 +1,12 @@
 import { getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
-import { BrushCleaning, MapPin, Package, StarIcon } from "lucide-react";
+import {
+  BrushCleaning,
+  CircleOff,
+  MapPin,
+  Package,
+  StarIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -90,12 +96,19 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
               <span className="text-slate-300">Jobs: </span>
               <span>{cleaner.completed_jobs_count}</span>
             </div>
-            {cleaner.supplies_provided && (
-              <div className="flex items-center gap-2 text-sm">
-                <Package size={16} className="text-green-400" />
-                <span className="text-slate-300">Brings supplies</span>
-              </div>
-            )}
+            <div className="flex items-center gap-2 text-sm">
+              {cleaner.supplies_provided ? (
+                <>
+                  <Package size={16} className="text-green-400" />
+                  <span className="text-slate-300">Brings supplies</span>
+                </>
+              ) : (
+                <>
+                  <CircleOff size={16} className="text-red-400" />
+                  <span className="text-slate-300">No supplies provied</span>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Price and Action */}
