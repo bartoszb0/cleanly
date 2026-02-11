@@ -38,7 +38,7 @@ export default function SortCleanersSelect() {
       onValueChange={(value: CleanersSortOption) => handleSortChange(value)}
       disabled={isPending}
     >
-      <SelectTrigger className="w-[180px] h-12  bg-sky-600 hover:bg-sky-700 text-white border-none rounded-lg font-medium transition-colors">
+      <SelectTrigger className="w-45 h-12  bg-sky-600 hover:bg-sky-700 text-white border-none rounded-lg font-medium transition-colors">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
 
