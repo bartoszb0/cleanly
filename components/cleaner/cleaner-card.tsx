@@ -20,9 +20,9 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
     <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:border-sky-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/10">
       <div className="flex gap-4">
         {/* Avatar */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           {/* Changed w-20 h-20 to w-14 h-14 on mobile, and sm:w-20 sm:h-20 for larger screens */}
-          <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
+          <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-linear-to-br from-sky-400 to-blue-600 flex items-center justify-center">
             {cleaner.avatar_url ? (
               <Image
                 src={cleaner.avatar_url}
@@ -55,7 +55,7 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
             </div>
 
             {/* Right side content - add your content here */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <div className="flex items-center gap-2">
                 {cleaner.total_reviews > 0 ? (
                   <>
