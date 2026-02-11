@@ -128,30 +128,39 @@ export type Database = {
       jobs: {
         Row: {
           address: string
+          city: Database["public"]["Enums"]["city_name"]
           cleaner_id: string
           created_at: string
           customer_id: string
+          duration_hours: number
           id: string
+          post_code: string
           price_snapshot: number
           scheduled_at: string
           status: string
         }
         Insert: {
           address: string
+          city: Database["public"]["Enums"]["city_name"]
           cleaner_id: string
           created_at?: string
           customer_id: string
+          duration_hours?: number
           id?: string
+          post_code: string
           price_snapshot: number
           scheduled_at: string
           status?: string
         }
         Update: {
           address?: string
+          city?: Database["public"]["Enums"]["city_name"]
           cleaner_id?: string
           created_at?: string
           customer_id?: string
+          duration_hours?: number
           id?: string
+          post_code?: string
           price_snapshot?: number
           scheduled_at?: string
           status?: string
@@ -265,6 +274,13 @@ export type Database = {
             referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "opinions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: true
+            referencedRelation: "jobs_with_end_time"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles: {
@@ -285,15 +301,109 @@ export type Database = {
         }
         Relationships: []
       }
+      unavailability: {
+        Row: {
+          cleaner_id: string
+          created_at: string | null
+          id: string
+          off_date: string
+        }
+        Insert: {
+          cleaner_id: string
+          created_at?: string | null
+          id?: string
+          off_date: string
+        }
+        Update: {
+          cleaner_id?: string
+          created_at?: string | null
+          id?: string
+          off_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unavailability_cleaner_id_fkey"
+            columns: ["cleaner_id"]
+            isOneToOne: false
+            referencedRelation: "cleaners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      jobs_with_end_time: {
+        Row: {
+          address: string | null
+          city: Database["public"]["Enums"]["city_name"] | null
+          cleaner_id: string | null
+          created_at: string | null
+          customer_id: string | null
+          duration_hours: number | null
+          end_time: string | null
+          id: string | null
+          post_code: string | null
+          price_snapshot: number | null
+          scheduled_at: string | null
+          status: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: Database["public"]["Enums"]["city_name"] | null
+          cleaner_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          duration_hours?: number | null
+          end_time?: never
+          id?: string | null
+          post_code?: string | null
+          price_snapshot?: number | null
+          scheduled_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: Database["public"]["Enums"]["city_name"] | null
+          cleaner_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          duration_hours?: number | null
+          end_time?: never
+          id?: string | null
+          post_code?: string | null
+          price_snapshot?: number | null
+          scheduled_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_cleaner_id_fkey"
+            columns: ["cleaner_id"]
+            isOneToOne: false
+            referencedRelation: "cleaners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      city_name:
+        | "warszawa"
+        | "krakow"
+        | "wroclaw"
+        | "gdansk"
+        | "poznan"
+        | "lodz"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -423,6 +533,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      city_name: ["warszawa", "krakow", "wroclaw", "gdansk", "poznan", "lodz"],
+    },
   },
 } as const
