@@ -1,6 +1,8 @@
 import { Opinion, OpinionSortOption } from "@/types";
+import { format } from "date-fns";
 import { cache } from "react";
 import z from "zod";
+import { FilterValues } from "../schemas/filterCleaners";
 import { createClient } from "../supabase/server";
 import { getCurrentCustomer } from "./customer";
 
@@ -8,35 +10,74 @@ export const getCleanersByCity = async (
   city: string,
   startingRange: number,
   endingRange: number,
+  filters: FilterValues,
   searchName?: string,
   sortBy?: string,
 ) => {
   const supabase = await createClient();
 
-  // Get the count first
-  let countQuery = supabase
-    .from("cleaners")
-    .select("*", { count: "exact", head: true })
-    .eq("city", city);
+  let busyCleanerIds: string[] = [];
 
-  if (searchName) {
-    countQuery = countQuery.ilike("name", `%${searchName}%`);
+  if (filters.date) {
+    const formattedDate = format(filters.date, "yyyy-MM-dd");
+    const { data: busyData } = await supabase
+      .from("unavailability")
+      .select("cleaner_id")
+      .eq("off_date", formattedDate);
+
+    busyCleanerIds = busyData?.map((item) => item.cleaner_id) || [];
   }
 
-  const { count: totalCount } = await countQuery;
+  // The Single Source of Truth for Filtering
+  const applyAllFilters = (query: any) => {
+    let q = query.eq("city", city);
 
-  // Return early if there's nobody found
+    if (searchName) q = q.ilike("name", `%${searchName}%`);
+
+    if (busyCleanerIds.length > 0) {
+      q = q.not("id", "in", `(${busyCleanerIds.join(",")})`);
+    }
+
+    if (filters.priceRange) {
+      q = q
+        .gte("hourly_rate", filters.priceRange[0])
+        .lte("hourly_rate", filters.priceRange[1]);
+    }
+
+    if ((filters.minRating ?? 0) > 0) {
+      const safeRating = Math.min(5, Number(filters.minRating));
+      q = q.gte("average_rating", safeRating);
+    }
+
+    if ((filters.minJobs ?? 0) > 0) {
+      q = q.gte("completed_jobs_count", Math.max(0, Number(filters.minJobs)));
+    }
+
+    if (filters.suppliesProvided === "true") {
+      q = q.eq("supplies_provided", true);
+    } else if (filters.suppliesProvided === "false") {
+      q = q.eq("supplies_provided", false);
+    }
+
+    return q;
+  };
+
+  // Get the count using the helper
+  const countQuery = supabase
+    .from("cleaners")
+    .select("*", { count: "exact", head: true });
+
+  const { count: totalCount } = await applyAllFilters(countQuery);
+
   if (!totalCount || totalCount === 0) {
     return { cleaners: [], count: 0 };
   }
 
-  // Try to get the actual data
-  let dataQuery = supabase.from("cleaners").select("*").eq("city", city);
+  // Get the data using the same helper
+  let dataQuery = supabase.from("cleaners").select("*");
+  dataQuery = applyAllFilters(dataQuery);
 
-  if (searchName) {
-    dataQuery = dataQuery.ilike("name", `%${searchName}%`);
-  }
-
+  // Handle Sorting
   switch (sortBy) {
     case "lowest_price":
       dataQuery = dataQuery.order("hourly_rate", { ascending: true });
@@ -47,18 +88,19 @@ export const getCleanersByCity = async (
     case "highest_price":
       dataQuery = dataQuery.order("hourly_rate", { ascending: false });
       break;
-    case "rating":
     default:
       dataQuery = dataQuery.order("average_rating", { ascending: false });
       break;
   }
 
-  dataQuery = dataQuery.range(startingRange, endingRange);
+  // Apply Range and Execute
+  const { data: cleaners, error } = await dataQuery.range(
+    startingRange,
+    endingRange,
+  );
 
-  const { data: cleaners, error } = await dataQuery;
-
-  // If dataQuery errors (out of bounds) return the totalCount we got from step 1.
   if (error) {
+    console.error("Supabase Error:", error);
     return { cleaners: [], count: totalCount };
   }
 
