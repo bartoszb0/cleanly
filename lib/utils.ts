@@ -51,3 +51,9 @@ export function getPaginationRange(page: number, itemsPerPage: number) {
 
   return { startingRange, endingRange };
 }
+
+export function parseUrlDate(dateStr: string | null) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  return !isNaN(d.getTime()) ? d : null;
+}
