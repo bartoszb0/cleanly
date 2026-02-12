@@ -207,3 +207,24 @@ export const getCleanerRating = cache(async (id: string) => {
 
   return { average, total };
 });
+
+export const getCleanerDaysOff = cache(async (id: string) => {
+  if (!z.uuid().safeParse(id).success) return { data: [] };
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("unavailability")
+    .select("off_date")
+    .eq("cleaner_id", id);
+
+  if (error) {
+    console.error("Supabase error:", error);
+    return { data: [] };
+  }
+
+  // Return the raw strings ["2026-02-20", "2026-02-21"]
+  const cleanedUpData = data.map((dates) => dates.off_date);
+
+  return { data: cleanedUpData };
+});
