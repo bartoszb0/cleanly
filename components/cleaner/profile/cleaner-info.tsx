@@ -1,4 +1,5 @@
-import { getCleaner } from "@/lib/data/cleaners";
+import { Button } from "@/components/ui/button";
+import { getCleaner, getCleanerDaysOff } from "@/lib/data/cleaners";
 import { formatDate, getUppercaseCityName } from "@/lib/utils";
 import {
   BrushCleaning,
@@ -18,6 +19,7 @@ type CleanerInfoProps = {
 
 export default async function CleanerInfo({ id }: CleanerInfoProps) {
   const cleaner = await getCleaner(id);
+  const daysOffData = await getCleanerDaysOff(id);
 
   if (!cleaner) {
     return notFound();
@@ -106,7 +108,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
               <p className="text-slate-400 text-sm">Supplies</p>
               <div className="flex items-center gap-2">
                 <p className="text-white font-semibold">
-                  {cleaner.supplies_provided ? "Provied" : "Not provied"}
+                  {cleaner.supplies_provided ? "Provided" : "Not provided"}
                 </p>
               </div>
             </div>
@@ -159,10 +161,17 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mt-8">
-        <BookCleanerDialog cleanerHourlyRate={cleaner.hourly_rate} />
-        <button className="flex-1 h-16 bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg border border-slate-600">
-          Send Message
-        </button>
+        <div className="flex-1">
+          <BookCleanerDialog
+            cleanerHourlyRate={cleaner.hourly_rate}
+            daysOffData={daysOffData.data}
+          />
+        </div>
+        <div className="flex-1">
+          <Button className="w-full h-16 bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg border border-slate-600">
+            Send Message
+          </Button>
+        </div>
       </div>
     </>
   );
