@@ -125,9 +125,9 @@ export default function FilterCleanersDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button asChild>
-        <DialogTrigger>Filters</DialogTrigger>
-      </Button>
+      <DialogTrigger asChild>
+        <Button>Filters</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Filter</DialogTitle>
