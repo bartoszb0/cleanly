@@ -1,6 +1,6 @@
-import { useCustomerContext } from "@/components/providers/customer-provider";
 import { Button } from "@/components/ui/button";
 import { opinionVote } from "@/lib/actions/opinions";
+import { useCustomerContext } from "@/lib/providers/customer-provider";
 import { Opinion, OpinionVoteType } from "@/types";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState, useTransition } from "react";
