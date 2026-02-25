@@ -18,3 +18,15 @@ export type CleanersSortOption =
   | "highest_price"
   | "lowest_price"
   | "experience";
+
+export type ExtendedBooking = Tables<"jobs"> & {
+  cleaner: {
+    name: string;
+  };
+};
+
+export type ScheduledBooking = {
+  scheduled_at: string;
+  end_time: string;
+  status: string;
+};
