@@ -11,7 +11,7 @@ export default function Sidebar() {
   const navLinks = [
     { href: "/customer", label: "Find Cleaners", icon: Bubbles },
     { href: "/customer/messages", label: "Messages", icon: MessageCircle },
-    { href: "/customer/history", label: "History", icon: History },
+    { href: "/customer/my-bookings", label: "My Bookings", icon: History },
     { href: "/about", label: "About", icon: Info },
   ];
 
