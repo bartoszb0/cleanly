@@ -1,17 +1,26 @@
-import { CustomerProvider } from "@/components/providers/customer-provider";
-import { getCleaner, getCleanerOpinions } from "@/lib/data/cleaners";
+import { getCleanerOpinions } from "@/lib/data/cleaners";
 import { getCurrentCustomer } from "@/lib/data/customer";
+import { CustomerProvider } from "@/lib/providers/customer-provider";
+import { Tables } from "@/types/supabase";
 import CleanerAverageRating from "./cleaner-average-rating";
 import CleanerOpinionsList from "./cleaner-opinions-list";
 
-export default async function CleanerOpinions({ id }: { id: string }) {
-  const [data, cleanerRatingData, customer] = await Promise.all([
-    getCleanerOpinions(id, 0, 4),
-    getCleaner(id),
+export default async function CleanerOpinions({
+  cleaner,
+}: {
+  cleaner: Tables<"cleaners">;
+}) {
+  const [data, customer] = await Promise.all([
+    getCleanerOpinions(cleaner.id, 0, 4),
     getCurrentCustomer(),
   ]);
 
-  if (!data || data.count === 0 || !cleanerRatingData) {
+  if (
+    !data ||
+    data.count === 0 ||
+    !cleaner.average_rating ||
+    !cleaner.total_reviews
+  ) {
     return (
       <p className="text-center mt-12 text-2xl italic text-slate-500">
         No opinions found
@@ -26,13 +35,13 @@ export default async function CleanerOpinions({ id }: { id: string }) {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Opinions</h1>
         <CleanerAverageRating
-          average={cleanerRatingData.average_rating}
-          total={cleanerRatingData.total_reviews}
+          average={cleaner.average_rating}
+          total={cleaner.total_reviews}
         />
       </div>
       <CustomerProvider customer={customer}>
         <CleanerOpinionsList
-          cleanerId={id}
+          cleanerId={cleaner.id}
           initialOpinions={opinions}
           totalCount={count}
         />
