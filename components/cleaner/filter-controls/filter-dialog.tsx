@@ -19,7 +19,7 @@ import {
   FilterValues,
   SuppliesOptions,
 } from "@/lib/schemas/filterCleaners";
-import { cn, parseUrlDate } from "@/lib/utils";
+import { cn, getTomorrowDate, parseUrlDate } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Loader2, StarIcon } from "lucide-react";
@@ -39,6 +39,8 @@ const getFiltersFromParams = (params: URLSearchParams) => ({
 });
 
 export default function FilterCleanersDialog() {
+  const tomorrow = getTomorrowDate();
+
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
 
@@ -325,9 +327,7 @@ export default function FilterCleanersDialog() {
                         mode="single"
                         selected={field.value || undefined}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
+                        disabled={[{ before: tomorrow }]}
                       />
                     </PopoverContent>
                   </Popover>
