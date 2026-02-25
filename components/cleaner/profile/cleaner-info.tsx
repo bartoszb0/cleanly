@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { getCleaner, getCleanerDaysOff } from "@/lib/data/cleaners";
+import { getCleanerDaysOff } from "@/lib/data/cleaners";
 import { formatDate, getUppercaseCityName } from "@/lib/utils";
+import { Tables } from "@/types/supabase";
 import {
   BrushCleaning,
   Calendar,
@@ -10,20 +11,14 @@ import {
   Phone,
 } from "lucide-react";
 import Image from "next/image";
-import { notFound } from "next/navigation";
 import BookCleanerDialog from "./booking/book-dialog";
 
-type CleanerInfoProps = {
-  id: string;
-};
-
-export default async function CleanerInfo({ id }: CleanerInfoProps) {
-  const cleaner = await getCleaner(id);
-  const daysOffData = await getCleanerDaysOff(id);
-
-  if (!cleaner) {
-    return notFound();
-  }
+export default async function CleanerInfo({
+  cleaner,
+}: {
+  cleaner: Tables<"cleaners">;
+}) {
+  const daysOffData = await getCleanerDaysOff(cleaner.id);
 
   return (
     <>
@@ -165,6 +160,7 @@ export default async function CleanerInfo({ id }: CleanerInfoProps) {
           <BookCleanerDialog
             cleanerHourlyRate={cleaner.hourly_rate}
             daysOffData={daysOffData.data}
+            cleanerId={cleaner.id}
           />
         </div>
         <div className="flex-1">
