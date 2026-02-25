@@ -133,11 +133,13 @@ export type Database = {
           created_at: string
           customer_id: string
           duration_hours: number
+          end_time: string
           id: string
           post_code: string
           price_snapshot: number
           scheduled_at: string
           status: string
+          total_price: number | null
         }
         Insert: {
           address: string
@@ -146,11 +148,13 @@ export type Database = {
           created_at?: string
           customer_id: string
           duration_hours?: number
+          end_time: string
           id?: string
           post_code: string
           price_snapshot: number
           scheduled_at: string
           status?: string
+          total_price?: number | null
         }
         Update: {
           address?: string
@@ -159,11 +163,13 @@ export type Database = {
           created_at?: string
           customer_id?: string
           duration_hours?: number
+          end_time?: string
           id?: string
           post_code?: string
           price_snapshot?: number
           scheduled_at?: string
           status?: string
+          total_price?: number | null
         }
         Relationships: [
           {
