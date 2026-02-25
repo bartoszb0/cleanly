@@ -204,5 +204,5 @@ export const getCleanerDaysOff = cache(async (id: string) => {
   // Return the raw strings ["2026-02-20", "2026-02-21"]
   const cleanedUpData = data.map((dates) => dates.off_date);
 
-  return { data: cleanedUpData };
+  return cleanedUpData;
 });

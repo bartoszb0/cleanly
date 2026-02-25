@@ -159,7 +159,7 @@ export default async function CleanerInfo({
         <div className="flex-1">
           <BookCleanerDialog
             cleanerHourlyRate={cleaner.hourly_rate}
-            daysOffData={daysOffData.data}
+            daysOffData={daysOffData}
             cleanerId={cleaner.id}
           />
         </div>
