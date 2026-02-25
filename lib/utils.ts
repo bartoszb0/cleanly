@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import dayjs from "dayjs";
+import { format, parseISO } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,13 +36,18 @@ export function getUppercaseCityName(city: string) {
   return city.charAt(0).toUpperCase() + city.slice(1);
 }
 
-export function formatDate(date: string, variant: "full" | "short" = "short") {
+export function formatDate(
+  date: string | Date,
+  variant: "full" | "short" = "short",
+) {
   const formats = {
-    full: "YYYY-MM-DD",
-    short: "MMMM YYYY",
+    full: "yyyy-MM-dd",
+    short: "MMMM yyyy",
   };
 
-  return dayjs(date).format(formats[variant]);
+  const dateObj = typeof date === "string" ? parseISO(date) : date;
+
+  return format(dateObj, formats[variant]);
 }
 
 export function getPaginationRange(page: number, itemsPerPage: number) {
@@ -56,4 +61,11 @@ export function parseUrlDate(dateStr: string | null) {
   if (!dateStr) return null;
   const d = new Date(dateStr);
   return !isNaN(d.getTime()) ? d : null;
+}
+
+export function getTomorrowDate() {
+  const tomorrow = new Date();
+  tomorrow.setHours(0, 0, 0, 0);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow;
 }
