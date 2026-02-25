@@ -5,7 +5,6 @@ import { FilterValues } from "../schemas/filterCleaners";
 import { createClient } from "../supabase/server";
 import { getCurrentCustomer } from "./customer";
 
-//ok
 export const getCleanersByCity = async (
   city: string,
   startingRange: number,
@@ -111,7 +110,6 @@ export const getCleanersByCity = async (
   return { cleaners: cleaners ?? [], count: totalCount };
 };
 
-// ok
 export const getCleaner = cache(async (id: string) => {
   const supabase = await createClient();
 
@@ -191,7 +189,6 @@ export const getCleanerOpinions = cache(
   },
 );
 
-// ok
 export const getCleanerDaysOff = cache(async (id: string) => {
   const supabase = await createClient();
 
