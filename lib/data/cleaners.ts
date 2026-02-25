@@ -1,11 +1,11 @@
 import { Opinion, OpinionSortOption } from "@/types";
 import { format } from "date-fns";
 import { cache } from "react";
-import z from "zod";
 import { FilterValues } from "../schemas/filterCleaners";
 import { createClient } from "../supabase/server";
 import { getCurrentCustomer } from "./customer";
 
+//ok
 export const getCleanersByCity = async (
   city: string,
   startingRange: number,
@@ -20,10 +20,12 @@ export const getCleanersByCity = async (
 
   if (filters.date) {
     const formattedDate = format(filters.date, "yyyy-MM-dd");
-    const { data: busyData } = await supabase
+    const { data: busyData, error: busyError } = await supabase
       .from("unavailability")
       .select("cleaner_id")
       .eq("off_date", formattedDate);
+
+    if (busyError) throw new Error(busyError.message);
 
     busyCleanerIds = busyData?.map((item) => item.cleaner_id) || [];
   }
@@ -67,7 +69,10 @@ export const getCleanersByCity = async (
     .from("cleaners")
     .select("*", { count: "exact", head: true });
 
-  const { count: totalCount } = await applyAllFilters(countQuery);
+  const { count: totalCount, error: countError } =
+    await applyAllFilters(countQuery);
+
+  if (countError) throw new Error(countError.message);
 
   if (!totalCount || totalCount === 0) {
     return { cleaners: [], count: 0 };
@@ -100,16 +105,14 @@ export const getCleanersByCity = async (
   );
 
   if (error) {
-    console.error("Supabase Error:", error);
-    return { cleaners: [], count: totalCount };
+    throw new Error(error.message);
   }
 
   return { cleaners: cleaners ?? [], count: totalCount };
 };
 
+// ok
 export const getCleaner = cache(async (id: string) => {
-  if (!z.uuid().safeParse(id).success) return null;
-
   const supabase = await createClient();
 
   const { data: cleaner, error } = await supabase
@@ -125,6 +128,7 @@ export const getCleaner = cache(async (id: string) => {
   return cleaner;
 });
 
+// do this
 export const getCleanerOpinions = cache(
   async (
     id: string,
@@ -132,8 +136,6 @@ export const getCleanerOpinions = cache(
     endingRange: number,
     sortBy: OpinionSortOption = "newest",
   ) => {
-    if (!z.uuid().safeParse(id).success) return null;
-
     const supabase = await createClient();
     const customer = await getCurrentCustomer();
 
@@ -189,28 +191,8 @@ export const getCleanerOpinions = cache(
   },
 );
 
-export const getCleanerRating = cache(async (id: string) => {
-  if (!z.uuid().safeParse(id).success) return { average: 0, total: 0 };
-
-  const supabase = await createClient();
-
-  const { data, error } = await supabase
-    .from("opinions")
-    .select("rating")
-    .eq("cleaner_id", id);
-
-  if (error || !data || data.length === 0) return { average: 0, total: 0 };
-
-  const total = data.length;
-  const sum = data.reduce((acc, curr) => acc + curr.rating, 0);
-  const average = sum / total;
-
-  return { average, total };
-});
-
+// ok
 export const getCleanerDaysOff = cache(async (id: string) => {
-  if (!z.uuid().safeParse(id).success) return { data: [] };
-
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -219,8 +201,7 @@ export const getCleanerDaysOff = cache(async (id: string) => {
     .eq("cleaner_id", id);
 
   if (error) {
-    console.error("Supabase error:", error);
-    return { data: [] };
+    throw new Error(error.message);
   }
 
   // Return the raw strings ["2026-02-20", "2026-02-21"]
