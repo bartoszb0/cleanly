@@ -42,9 +42,6 @@ export async function createBookingRequest(
 
   const { date, startHour, startMinute, duration } = validatedFields.data;
 
-  ////////
-
-  // Replace your manual string building with this:
   const localDate = new Date(
     date.getFullYear(),
     date.getMonth(),
@@ -56,7 +53,7 @@ export async function createBookingRequest(
   const scheduled_at = fromZonedTime(localDate, "Europe/Warsaw"); // correctly converts to UTC
   const end_time = addHours(scheduled_at, Number(duration));
 
-  // 4. Run the conflict check
+  // Run the conflict check
   const { data: conflict } = await supabase
     .from("jobs")
     .select("id")
@@ -69,12 +66,11 @@ export async function createBookingRequest(
   if (conflict && conflict.length > 0)
     return { success: false, error: "Slot already taken" };
 
-  /////////
-
   // Insert data if there is no conflict
 
-  // Typescript Error on insert happens because there is a trigger that automatically pulls the
-  // addres and city from customers profile based on his ID, probably should just ignore it
+  // Typescript Error on insert happens because there is a supabase trigger that
+  // automatically pulls the addres and city from customers profile based on his ID,
+  // probably should just ignore it
   const { error } = await supabase.from("jobs").insert({
     customer_id: user.id,
     cleaner_id: cleanerId,
