@@ -40,7 +40,7 @@ export default function Loading() {
         <h1 className="text-4xl font-bold mt-10 text-center">My Bookings</h1>
       </div>
 
-      <div className="w-full mt-10 p-4">
+      <div className="w-full mt-10 p-4 max-w-4xl mx-auto">
         {/* Tabs list */}
         <Skeleton className="h-10 w-full rounded-md bg-slate-900/50" />
 

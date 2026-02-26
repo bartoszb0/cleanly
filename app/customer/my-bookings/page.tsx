@@ -15,7 +15,10 @@ export default async function History() {
       <div>
         <h1 className="text-4xl font-bold mt-10 text-center">My Bookings</h1>
       </div>
-      <Tabs defaultValue="pending" className="w-full mt-10 p-4">
+      <Tabs
+        defaultValue="pending"
+        className="w-full mt-10 p-4 max-w-4xl mx-auto"
+      >
         <TabsList
           className="grid w-full grid-cols-4 bg-slate-900/50 h-10"
           variant="line"
