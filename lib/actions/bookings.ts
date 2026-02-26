@@ -78,7 +78,7 @@ export async function createBookingRequest(
     duration_hours: Number(validatedFields.data.duration),
     end_time: end_time.toISOString(),
     status: "pending",
-  });
+  } as any); // to prevent typescript error
 
   if (error) return { success: false, error: error.message };
 
