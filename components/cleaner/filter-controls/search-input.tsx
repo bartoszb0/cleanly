@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, SearchIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -31,23 +30,26 @@ export default function SearchCleanerInput() {
   };
 
   return (
-    <form
-      onSubmit={(e) => handleSubmit(e)}
-      className="flex flex-row items-center gap-2"
-    >
-      <Input
-        onChange={(e) => setInputValue(e.target.value)}
-        value={inputValue}
-        className="bg-sky-800 border-sky-900 h-12 text-base px-4 md:text-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
-        placeholder="Search Cleaner by name"
-      />
-      <Button className="h-12" disabled={isPending}>
-        {isPending ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          <SearchIcon className="h-5 w-5" />
-        )}
-      </Button>
+    <form onSubmit={(e) => handleSubmit(e)} className="flex items-center">
+      <div className="relative flex items-center">
+        <Input
+          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValue}
+          className="bg-sky-900/40 border-sky-800/60 hover:border-sky-700 focus-visible:border-sky-600 h-12 pl-4 pr-12 w-70 md:w-105 lg:w-140 rounded-xl text-slate-200 placeholder:text-slate-500 text-base md:text-lg"
+          placeholder="Search cleaner by name..."
+        />
+        <button
+          type="submit"
+          className="absolute right-3 text-slate-400 hover:text-sky-400 transition-colors disabled:opacity-50 cursor-pointer"
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <SearchIcon className="h-4 w-4" />
+          )}
+        </button>
+      </div>
     </form>
   );
 }
