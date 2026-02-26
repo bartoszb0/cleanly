@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 import {
   filterSchema,
   FilterValues,
@@ -22,7 +23,7 @@ import {
 import { cn, getTomorrowDate, parseUrlDate } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2, StarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -192,27 +193,12 @@ export default function FilterCleanersDialog() {
                       {field.value !== 0 && field.value !== 5 && "+"}
                     </span>
                   </div>
-                  <div className="flex justify-center items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() =>
-                          field.onChange(field.value === star ? 0 : star)
-                        }
-                        className="focus:outline-none transition-transform active:scale-90"
-                      >
-                        <StarIcon
-                          size={32}
-                          className={cn(
-                            star <= (field.value ?? 0)
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-slate-600",
-                            isPending && "opacity-40 grayscale-[0.5] scale-95",
-                          )}
-                        />
-                      </button>
-                    ))}
+                  <div className="flex justify-center items-center">
+                    <StarRating
+                      value={field.value ?? 0}
+                      onChange={field.onChange}
+                      disabled={isPending}
+                    />
                   </div>
                 </Field>
               )}
