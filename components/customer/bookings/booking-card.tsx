@@ -5,6 +5,7 @@ import { Calendar, Clock, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import CancelDialog from "./cancel-dialog";
+import OpinionDialog from "./opinion-dialog";
 
 const STATUS_CONFIG: Record<
   string,
@@ -118,6 +119,9 @@ export const BookingHistoryCard = ({ job }: { job: ExtendedBooking }) => {
 
           {(job.status === "pending" || job.status === "confirmed") && (
             <CancelDialog jobId={job.id} />
+          )}
+          {job.status === "completed" && !job.review && (
+            <OpinionDialog jobId={job.id} cleanerName={job.cleaner.name} />
           )}
         </div>
       </div>
