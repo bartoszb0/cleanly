@@ -23,6 +23,7 @@ export type ExtendedBooking = Tables<"jobs"> & {
   cleaner: {
     name: string;
   };
+  review: { id: string } | null;
 };
 
 export type ScheduledBooking = {
