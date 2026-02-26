@@ -35,7 +35,7 @@ export default function SearchCleanerInput() {
         <Input
           onChange={(e) => setInputValue(e.target.value)}
           value={inputValue}
-          className="bg-sky-900/40 border-sky-800/60 hover:border-sky-700 focus-visible:border-sky-600 h-12 pl-4 pr-12 w-70 md:w-105 lg:w-140 rounded-xl text-slate-200 placeholder:text-slate-500 text-base md:text-lg"
+          className="bg-sky-700/40 border-none  h-12 pl-4 pr-12 w-70 md:w-105 lg:w-140 rounded-xl text-slate-200 placeholder:text-slate-500 text-base md:text-lg"
           placeholder="Search cleaner by name..."
         />
         <button

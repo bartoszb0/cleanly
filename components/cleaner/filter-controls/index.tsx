@@ -12,10 +12,10 @@ export default function FilterControls() {
 
   return (
     <div className="mt-4">
-      <div className="flex flex-row items-center justify-center gap-2">
+      <div className="flex flex-row items-center justify-center gap-2 p-2">
         <SearchCleanerInput />
         <Button
-          className={`h-12 transition-colors ${open ? "bg-sky-700" : ""}`}
+          className={`h-12 transition-colors bg-sky-700/40 hover:bg-sky-900`}
           onClick={() => setOpen(!open)}
         >
           <SlidersHorizontal />
