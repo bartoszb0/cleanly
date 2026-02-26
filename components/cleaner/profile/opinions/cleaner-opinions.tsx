@@ -15,12 +15,7 @@ export default async function CleanerOpinions({
     getCurrentCustomer(),
   ]);
 
-  if (
-    !data ||
-    data.count === 0 ||
-    !cleaner.average_rating ||
-    !cleaner.total_reviews
-  ) {
+  if (!data || data.opinions.length === 0) {
     return (
       <p className="text-center mt-12 text-2xl italic text-slate-500">
         No opinions found
