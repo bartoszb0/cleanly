@@ -101,6 +101,14 @@
       #1e293b
     );
   }
+
+  button,
+  [role="button"],
+  a,
+  select,
+  label[for] {
+    cursor: pointer;
+  }
 }
 
 .onboarding-form input,
