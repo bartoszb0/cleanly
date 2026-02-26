@@ -1,7 +1,9 @@
 "use server";
 
 import { OpinionVoteType } from "@/types";
+import { revalidatePath } from "next/cache";
 import { getCurrentCustomer } from "../data/customer";
+import { ReviewFormValues, ReviewSchema } from "../schemas/reviewForm";
 import { createClient } from "../supabase/server";
 
 export async function opinionVote(opinionId: string, type: OpinionVoteType) {
@@ -36,6 +38,33 @@ export async function opinionVote(opinionId: string, type: OpinionVoteType) {
 
     if (error) return { success: false, error: error.message };
   }
+
+  return { success: true };
+}
+
+export async function createOpinion(jobId: string, formData: ReviewFormValues) {
+  const validatedFields = ReviewSchema.safeParse(formData);
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      error: "Invalid form data",
+    };
+  }
+
+  const supabase = await createClient();
+
+  // Typescript Error on insert happens because there is a supabase trigger that
+  // automatically pulls rest of data
+  const { error } = await supabase.from("opinions").insert({
+    job_id: jobId,
+    rating: validatedFields.data.rating,
+    content: validatedFields.data.review,
+  } as any); // to prevent typescript error
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/customer/my-bookings");
 
   return { success: true };
 }
