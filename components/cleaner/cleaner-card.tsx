@@ -90,7 +90,8 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
           </p>
 
           {/* Info Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 xs:grid-cols-1 gap-2 sm:gap-3 mb-4">
+            {" "}
             <div className="flex items-center gap-2 text-sm">
               <BrushCleaning size={16} className="text-sky-400" />
               <span className="text-slate-300">Jobs: </span>
