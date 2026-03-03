@@ -112,18 +112,22 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
           </div>
 
           {/* Price and Action */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-3 border-t border-slate-700/50 gap-4">
-            <div>
-              <span className="text-xl sm:text-2xl font-bold text-white">
-                {cleaner.hourly_rate} PLN
-              </span>
-              <span className="text-slate-400 text-xs sm:text-sm ml-1">
-                /hour
-              </span>
+          <div className="flex flex-col sm:flex-row sm:items-center  pt-3 border-t border-slate-700/50 gap-4">
+            <div className="flex justify-between items-center w-full">
+              <div>
+                <span className="text-xl sm:text-2xl font-bold text-white">
+                  {cleaner.hourly_rate} PLN
+                </span>
+                <span className="text-slate-400 text-xs sm:text-sm ml-1">
+                  /h
+                </span>
+              </div>
+              <Button asChild>
+                <Link href={`/customer/cleaner/${cleaner.id}`}>
+                  View Profile
+                </Link>
+              </Button>
             </div>
-            <Button asChild>
-              <Link href={`/customer/cleaner/${cleaner.id}`}>View Profile</Link>
-            </Button>
           </div>
         </div>
       </div>
