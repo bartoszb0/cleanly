@@ -105,7 +105,7 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
               ) : (
                 <>
                   <CircleOff size={16} className="text-red-400" />
-                  <span className="text-slate-300">No supplies provied</span>
+                  <span className="text-slate-300">No supplies provided</span>
                 </>
               )}
             </div>
