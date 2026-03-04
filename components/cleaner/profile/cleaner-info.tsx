@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { getCleanerDaysOff } from "@/lib/data/cleaners";
 import { formatDate, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
@@ -11,7 +10,8 @@ import {
   Phone,
 } from "lucide-react";
 import Image from "next/image";
-import BookCleanerDialog from "./booking/book-dialog";
+import OpenChat from "../../conversations/open-chat";
+import { ProfileBooking } from "../booking/profile-booking";
 
 export default async function CleanerInfo({
   cleaner,
@@ -157,16 +157,14 @@ export default async function CleanerInfo({
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mt-8">
         <div className="flex-1">
-          <BookCleanerDialog
+          <ProfileBooking
+            cleanerId={cleaner.id}
             cleanerHourlyRate={cleaner.hourly_rate}
             daysOffData={daysOffData}
-            cleanerId={cleaner.id}
           />
         </div>
         <div className="flex-1">
-          <Button className="w-full h-16 bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-xl transition-colors duration-200 font-semibold text-lg border border-slate-600">
-            Send Message
-          </Button>
+          <OpenChat cleanerId={cleaner.id} />
         </div>
       </div>
     </>
