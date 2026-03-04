@@ -11,7 +11,7 @@ function ConversationItemSkeleton() {
 
 export default function ChatLayoutSkeleton() {
   return (
-    <nav className="flex flex-col overflow-y-auto space-y-1">
+    <nav className="flex flex-col overflow-y-auto space-y-1 p-2">
       {[...Array(6)].map((_, i) => (
         <ConversationItemSkeleton key={i} />
       ))}
