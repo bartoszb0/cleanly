@@ -1,0 +1,56 @@
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import { getCurrentCustomer } from "../data/customer";
+
+export async function getOrCreateConversation(cleanerId: string) {
+  const supabase = await createClient();
+  const user = await getCurrentCustomer();
+
+  // 1. Check if a conversation already exists
+  const { data: existing, error: findError } = await supabase
+    .from("conversations")
+    .select("id")
+    .eq("customer_id", user.id)
+    .eq("cleaner_id", cleanerId)
+    .single();
+
+  if (existing) {
+    return { conversationId: existing.id };
+  }
+
+  // 2. If not, create a new one
+  const { data: newRoom, error: createError } = await supabase
+    .from("conversations")
+    .insert({
+      customer_id: user.id,
+      cleaner_id: cleanerId,
+    })
+    .select("id")
+    .single();
+
+  if (createError) {
+    return { error: "Could not start a conversation." };
+  }
+
+  return { conversationId: newRoom.id };
+}
+
+export async function saveMessage(conversationId: string, content: string) {
+  const supabase = await createClient();
+  const user = await getCurrentCustomer();
+
+  const { data, error } = await supabase
+    .from("messages")
+    .insert({
+      sender_id: user.id,
+      conversation_id: conversationId,
+      content: content,
+    } as any) // To prevent typescript not knowing about supabase error
+    .select("*")
+    .single();
+
+  if (error) return { data: null, error: error.message };
+
+  return { data: data };
+}
