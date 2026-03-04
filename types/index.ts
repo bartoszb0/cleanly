@@ -31,3 +31,28 @@ export type ScheduledBooking = {
   end_time: string;
   status: string;
 };
+
+export type Conversation = {
+  id: string;
+  last_message_at: string;
+  cleaners: {
+    name: string;
+  };
+};
+
+export type ExtendedChatData = Tables<"conversations"> & {
+  cleaners: {
+    name: string;
+  };
+};
+
+export type ChatMessage = {
+  id: string;
+  content: string;
+  user: {
+    name: string;
+  };
+  createdAt: string;
+  isPending?: boolean;
+  hasError?: boolean;
+};
