@@ -1,37 +1,12 @@
+import { STATUS_CONFIG } from "@/lib/constants/status-config";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { ExtendedBooking } from "@/types";
 import { addHours, format } from "date-fns";
-import { Calendar, Clock, MessageCircle } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../../ui/button";
 import CancelDialog from "./cancel-dialog";
+import { MessageCleanerButton } from "./message-cleaner-btn";
 import OpinionDialog from "./opinion-dialog";
-
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; className: string; accent: string }
-> = {
-  pending: {
-    label: "Pending Approval",
-    className: "bg-amber-500/10 text-amber-400 border-amber-500/25",
-    accent: "from-amber-500/0 via-amber-500/50 to-amber-500/0",
-  },
-  confirmed: {
-    label: "Confirmed",
-    className: "bg-sky-500/10 text-sky-400 border-sky-500/25",
-    accent: "from-sky-500/0 via-sky-500/50 to-sky-500/0",
-  },
-  completed: {
-    label: "Completed",
-    className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/25",
-    accent: "from-emerald-500/0 via-emerald-500/50 to-emerald-500/0",
-  },
-  cancelled: {
-    label: "Cancelled",
-    className: "bg-red-500/10 text-red-400 border-red-500/25",
-    accent: "from-red-500/0 via-red-500/50 to-red-500/0",
-  },
-};
 
 export const BookingHistoryCard = ({ job }: { job: ExtendedBooking }) => {
   const config = STATUS_CONFIG[job.status] || {
@@ -109,13 +84,7 @@ export const BookingHistoryCard = ({ job }: { job: ExtendedBooking }) => {
 
         {/* Actions */}
         <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row gap-2 sm:justify-end">
-          <Button
-            variant="outline"
-            className="sm:w-auto gap-1.5 h-9 text-xs font-medium border-slate-700 text-slate-300 hover:text-slate-100 hover:bg-slate-800 hover:border-slate-600 bg-transparent"
-          >
-            <MessageCircle className="w-3.5 h-3.5" />
-            Message Cleaner
-          </Button>
+          <MessageCleanerButton cleanerId={job.cleaner_id} />
 
           {(job.status === "pending" || job.status === "confirmed") && (
             <CancelDialog jobId={job.id} />
