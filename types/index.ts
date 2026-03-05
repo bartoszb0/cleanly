@@ -55,4 +55,5 @@ export type ChatMessage = {
   createdAt: string;
   isPending?: boolean;
   hasError?: boolean;
+  booking_id: string | null;
 };
