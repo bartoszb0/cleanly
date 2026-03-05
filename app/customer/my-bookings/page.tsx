@@ -20,11 +20,15 @@ export default async function History() {
         className="w-full mt-10 p-4 max-w-4xl mx-auto"
       >
         <TabsList
-          className="grid w-full grid-cols-4 bg-slate-900/50 h-10"
+          className="grid w-full grid-cols-5 bg-slate-900/50 h-10"
           variant="line"
         >
           {BOOKING_STATUS.map((status) => (
-            <TabsTrigger value={status} key={status} className="capitalize">
+            <TabsTrigger
+              value={status}
+              key={status}
+              className="capitalize text-[11px]"
+            >
               {status}
             </TabsTrigger>
           ))}
