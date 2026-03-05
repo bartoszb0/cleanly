@@ -12,7 +12,7 @@ export async function fetchDaySchedule(date: Date, cleanerId: string) {
     .from("jobs")
     .select("scheduled_at, end_time, status")
     .eq("cleaner_id", cleanerId)
-    .neq("status", "cancelled")
+    .not("status", "in", '("cancelled","pending")')
     .gte("scheduled_at", start)
     .lte("scheduled_at", end)
     .order("scheduled_at");
