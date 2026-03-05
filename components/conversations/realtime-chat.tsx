@@ -106,6 +106,7 @@ export const RealtimeChat = ({
           },
           isPending: false,
           hasError: false,
+          booking_id: null,
         };
 
         confirmMessage(tempId, confirmedMessage);
