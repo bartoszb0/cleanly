@@ -72,6 +72,7 @@ export function useRealtimeChat({
         user: { name: username },
         createdAt: new Date().toISOString(),
         isPending: true, // Mark as pending initially
+        booking_id: null,
       };
 
       await channel.send({
