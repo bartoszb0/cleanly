@@ -51,7 +51,6 @@ export default function OpinionDialog({
         toast.success("Review submitted successfully");
       }
     });
-    handleOpenChange(false);
   };
 
   const handleOpenChange = (val: boolean) => {
