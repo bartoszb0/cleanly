@@ -9,4 +9,5 @@ export const BOOKING_STATUS = [
   "confirmed",
   "completed",
   "cancelled",
+  "expired",
 ];
