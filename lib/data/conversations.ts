@@ -33,9 +33,10 @@ export async function getCleanerByConversationId(conversationId: string) {
     .from("conversations")
     .select(`cleaners (*)`)
     .eq("id", conversationId)
-    .single();
+    .maybeSingle();
 
   if (error) throw new Error(error.message);
+  if (!data) return null;
 
   return data.cleaners;
 }
@@ -79,6 +80,7 @@ export async function getConversationMessages(conversationId: string) {
     user: {
       name: nameMap.get(msg.sender_id) ?? "Unknown",
     },
+    booking_id: msg.booking_id,
   }));
 
   return initialMessages;
