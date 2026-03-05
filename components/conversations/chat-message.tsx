@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types";
+import ChatBookingMessage from "./chat-booking-message";
 
 interface ChatMessageItemProps {
   message: ChatMessage;
@@ -46,16 +47,23 @@ export const ChatMessageItem = ({
             </span>
           </div>
         )}
-        <div
-          className={cn(
-            "py-2 px-3 rounded-xl text-sm w-fit",
-            isOwnMessage
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-foreground",
-          )}
-        >
-          {message.content}
-        </div>
+        {message.booking_id !== null ? (
+          <ChatBookingMessage
+            bookingId={message.booking_id}
+            isOwnMessage={isOwnMessage}
+          />
+        ) : (
+          <div
+            className={cn(
+              "py-2 px-3 rounded-xl text-sm w-fit",
+              isOwnMessage
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-foreground",
+            )}
+          >
+            {message.content}
+          </div>
+        )}
       </div>
     </div>
   );
