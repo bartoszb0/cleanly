@@ -97,7 +97,7 @@ export async function createBookingRequest(
   // Here now send the message with bookingId
   await saveMessage(
     conversationData.conversationId,
-    "AUTOMATICALLY CREATED MESSAGE",
+    "booking_request",
     booking.id,
   );
 
