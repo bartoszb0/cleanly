@@ -122,7 +122,6 @@ export default function BookingFormContent({
         toast.error(result.error);
       } else {
         toast.success("Booking request sent");
-        updateSchedule();
       }
     });
   };
