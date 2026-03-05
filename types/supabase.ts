@@ -222,6 +222,7 @@ export type Database = {
       }
       messages: {
         Row: {
+          booking_id: string | null
           content: string
           conversation_id: string
           created_at: string
@@ -230,6 +231,7 @@ export type Database = {
           sender_type: string
         }
         Insert: {
+          booking_id?: string | null
           content: string
           conversation_id: string
           created_at?: string
@@ -238,6 +240,7 @@ export type Database = {
           sender_type: string
         }
         Update: {
+          booking_id?: string | null
           content?: string
           conversation_id?: string
           created_at?: string
@@ -246,6 +249,20 @@ export type Database = {
           sender_type?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "messages_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "jobs_with_end_time"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "messages_conversation_id_fkey"
             columns: ["conversation_id"]
