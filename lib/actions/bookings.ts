@@ -3,9 +3,11 @@
 import { addHours } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getCurrentCustomer } from "../data/customer";
 import { bookingSchema, BookingValues } from "../schemas/bookCleaner";
 import { createClient } from "../supabase/server";
+import { getOrCreateConversation, saveMessage } from "./conversations";
 
 export async function cancelBooking(jobId: string) {
   const supabase = await createClient();
@@ -71,16 +73,33 @@ export async function createBookingRequest(
   // Typescript Error on insert happens because there is a supabase trigger that
   // automatically pulls the addres and city from customers profile based on his ID,
   // probably should just ignore it
-  const { error } = await supabase.from("jobs").insert({
-    customer_id: user.id,
-    cleaner_id: cleanerId,
-    scheduled_at: scheduled_at.toISOString(),
-    duration_hours: Number(validatedFields.data.duration),
-    end_time: end_time.toISOString(),
-    status: "pending",
-  } as any); // to prevent typescript error
+  const { data: booking, error } = await supabase
+    .from("jobs")
+    .insert({
+      customer_id: user.id,
+      cleaner_id: cleanerId,
+      scheduled_at: scheduled_at.toISOString(),
+      duration_hours: Number(validatedFields.data.duration),
+      end_time: end_time.toISOString(),
+      status: "pending",
+    } as any) // to prevent typescript error
+    .select("id")
+    .single();
 
   if (error) return { success: false, error: error.message };
 
-  return { success: true };
+  // Get conversationId, or create a new one
+  const conversationData = await getOrCreateConversation(cleanerId);
+
+  if (conversationData.error || !conversationData.conversationId)
+    return { success: false, error: "Error" };
+
+  // Here now send the message with bookingId
+  await saveMessage(
+    conversationData.conversationId,
+    "AUTOMATICALLY CREATED MESSAGE",
+    booking.id,
+  );
+
+  redirect(`/customer/messages/${conversationData.conversationId}`);
 }
