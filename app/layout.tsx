@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Geist } from "next/font/google";
@@ -37,15 +38,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col flex-1">{children}</div>
-          <Toaster
-            toastOptions={{
-              style: {
-                background: "#1e293b",
-                border: "1px solid #334155",
-              },
-            }}
-          />
+          <TooltipProvider>
+            <div className="flex flex-col flex-1">{children}</div>
+            <Toaster
+              toastOptions={{
+                style: {
+                  background: "#1e293b",
+                  border: "1px solid #334155",
+                },
+              }}
+            />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

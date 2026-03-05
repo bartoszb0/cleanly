@@ -5,7 +5,6 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Tables } from "@/types/supabase";
@@ -23,28 +22,26 @@ export function ChatBooking({
   const [open, setOpen] = useState(false);
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button type="button">
-                <CalendarPlus />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
+    <Tooltip>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button type="button">
+              <CalendarPlus />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
 
-          <BookingFormContent
-            cleanerId={cleaner.id}
-            daysOffData={daysOffData}
-            cleanerHourlyRate={cleaner.hourly_rate}
-          />
-        </Dialog>
+        <BookingFormContent
+          cleanerId={cleaner.id}
+          daysOffData={daysOffData}
+          cleanerHourlyRate={cleaner.hourly_rate}
+        />
+      </Dialog>
 
-        <TooltipContent>
-          <p>Book cleaning</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+      <TooltipContent>
+        <p>Book cleaning</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
