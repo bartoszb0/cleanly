@@ -8,7 +8,7 @@ export async function getOrCreateConversation(cleanerId: string) {
   const user = await getCurrentCustomer();
 
   // 1. Check if a conversation already exists
-  const { data: existing, error: findError } = await supabase
+  const { data: existing } = await supabase
     .from("conversations")
     .select("id")
     .eq("customer_id", user.id)
@@ -36,7 +36,11 @@ export async function getOrCreateConversation(cleanerId: string) {
   return { conversationId: newRoom.id };
 }
 
-export async function saveMessage(conversationId: string, content: string) {
+export async function saveMessage(
+  conversationId: string,
+  content: string,
+  bookingId?: string,
+) {
   const supabase = await createClient();
   const user = await getCurrentCustomer();
 
@@ -46,6 +50,7 @@ export async function saveMessage(conversationId: string, content: string) {
       sender_id: user.id,
       conversation_id: conversationId,
       content: content,
+      ...(bookingId && { booking_id: bookingId }),
     } as any) // To prevent typescript not knowing about supabase error
     .select("*")
     .single();
