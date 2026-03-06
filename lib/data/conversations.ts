@@ -54,12 +54,12 @@ export async function getConversationMessages(conversationId: string) {
 
   // Get unique sender IDs split by type
   const customerIds = messages
-    .filter((m) => m.sender_type === "customer")
-    .map((m) => m.sender_id);
+    .filter((m) => m.sender_type === "customer" && m.sender_id !== null)
+    .map((m) => m.sender_id as string);
 
   const cleanerIds = messages
-    .filter((m) => m.sender_type === "cleaner")
-    .map((m) => m.sender_id);
+    .filter((m) => m.sender_type === "cleaner" && m.sender_id !== null)
+    .map((m) => m.sender_id as string);
 
   // Fetch names in parallel
   const [{ data: customers }, { data: cleaners }] = await Promise.all([
@@ -73,15 +73,20 @@ export async function getConversationMessages(conversationId: string) {
     ...(cleaners ?? []).map((c) => [c.id, c.name] as [string, string]),
   ]);
 
-  const initialMessages: ChatMessage[] = messages.map((msg) => ({
+  const initialMessages = messages.map((msg) => ({
     id: msg.id,
     content: msg.content,
     createdAt: msg.created_at ?? new Date().toISOString(),
     user: {
-      name: nameMap.get(msg.sender_id) ?? "Unknown",
+      name: nameMap.get(msg.sender_id ?? "") ?? "System",
     },
     booking_id: msg.booking_id,
-  }));
+    message_type: (msg.message_type ?? "text") as
+      | "text"
+      | "booking"
+      | "status_change",
+    metadata: msg.metadata as ChatMessage["metadata"],
+  })) as ChatMessage[];
 
   return initialMessages;
 }
