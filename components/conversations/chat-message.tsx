@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types";
 import ChatBookingMessage from "./chat-booking-message";
+import StatusChangeMessage from "./status-change-message";
 
 interface ChatMessageItemProps {
   message: ChatMessage;
@@ -17,6 +18,10 @@ export const ChatMessageItem = ({
   isPending,
   hasError,
 }: ChatMessageItemProps) => {
+  if (message.message_type === "status_change") {
+    return <StatusChangeMessage metadata={message.metadata} />;
+  }
+
   return (
     <div
       className={`flex mt-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
