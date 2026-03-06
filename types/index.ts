@@ -46,14 +46,15 @@ export type ExtendedChatData = Tables<"conversations"> & {
   };
 };
 
-export type ChatMessage = {
-  id: string;
-  content: string;
+export type ChatMessage = Tables<"messages"> & {
   user: {
     name: string;
   };
   createdAt: string;
-  isPending?: boolean;
-  hasError?: boolean;
-  booking_id: string | null;
+  metadata?: {
+    from?: string;
+    to?: string;
+    scheduled_at?: string;
+    job_id?: string;
+  } | null;
 };
