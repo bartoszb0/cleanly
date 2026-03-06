@@ -227,7 +227,9 @@ export type Database = {
           conversation_id: string
           created_at: string
           id: string
-          sender_id: string
+          message_type: string
+          metadata: Json | null
+          sender_id: string | null
           sender_type: string
         }
         Insert: {
@@ -236,7 +238,9 @@ export type Database = {
           conversation_id: string
           created_at?: string
           id?: string
-          sender_id: string
+          message_type?: string
+          metadata?: Json | null
+          sender_id?: string | null
           sender_type: string
         }
         Update: {
@@ -245,7 +249,9 @@ export type Database = {
           conversation_id?: string
           created_at?: string
           id?: string
-          sender_id?: string
+          message_type?: string
+          metadata?: Json | null
+          sender_id?: string | null
           sender_type?: string
         }
         Relationships: [
@@ -484,7 +490,7 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      auto_update_job_status: { Args: never; Returns: undefined }
     }
     Enums: {
       city_name:
