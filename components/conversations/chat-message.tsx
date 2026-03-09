@@ -45,9 +45,12 @@ export const ChatMessageItem = ({
             <span className={"font-medium"}>{message.user.name}</span>
             <span className="text-foreground/50 text-xs">
               {new Date(message.createdAt).toLocaleTimeString("en-US", {
+                month: "short",
+                day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
+                timeZone: "Europe/Warsaw",
               })}
             </span>
           </div>
