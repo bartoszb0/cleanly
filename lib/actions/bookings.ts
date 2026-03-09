@@ -60,7 +60,7 @@ export async function createBookingRequest(
     .from("jobs")
     .select("id")
     .eq("cleaner_id", cleanerId)
-    .neq("status", "cancelled")
+    .eq("status", "confirmed")
     .lt("scheduled_at", end_time.toISOString())
     .gt("end_time", scheduled_at.toISOString())
     .limit(1);
