@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import React from "react";
-import Navbar from "../../components/customer/navbar";
 
 export const metadata: Metadata = {
   title: "Cleanly",
@@ -14,12 +13,9 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ThemeProvider attribute="class" forcedTheme="customer">
-      <div className="flex flex-col min-h-dvh bg-fixed bg-linear-to-br from-sky-900 via-slate-800 to-slate-800">
-        <Navbar />
-        <main className="flex flex-col flex-1 pt-16 md:pt-0 md:ml-64">
-          {children}
-        </main>
+    <ThemeProvider attribute="class" forcedTheme="cleaner">
+      <div className="flex flex-col min-h-dvh bg-fixed bg-linear-to-br from-slate-800 via-slate-800 to-green-900">
+        <main className="flex flex-col">{children}</main>
       </div>
     </ThemeProvider>
   );
