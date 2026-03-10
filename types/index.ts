@@ -1,3 +1,4 @@
+import { LucideIcon } from "lucide-react";
 import { Tables } from "./supabase";
 
 export type Customer = Tables<"customers">;
@@ -57,4 +58,12 @@ export type ChatMessage = Tables<"messages"> & {
     scheduled_at?: string;
     job_id?: string;
   } | null;
+};
+
+export type NavbarProps = {
+  navLinks: {
+    href: string;
+    label: string;
+    icon: LucideIcon;
+  }[];
 };
