@@ -48,6 +48,8 @@ export type ExtendedChatData = Tables<"conversations"> & {
 };
 
 export type ChatMessage = Tables<"messages"> & {
+  isPending: boolean;
+  hasError: boolean;
   user: {
     name: string;
   };
