@@ -1,4 +1,4 @@
-import { getCleanerOpinions } from "@/lib/data/cleaners";
+import { getCleanerOpinionsForCustomer } from "@/lib/data/cleaners";
 import { getCurrentCustomer } from "@/lib/data/customer";
 import { CustomerProvider } from "@/lib/providers/customer-provider";
 import { Tables } from "@/types/supabase";
@@ -11,7 +11,7 @@ export default async function CleanerOpinions({
   cleaner: Tables<"cleaners">;
 }) {
   const [data, customer] = await Promise.all([
-    getCleanerOpinions(cleaner.id, 0, 4),
+    getCleanerOpinionsForCustomer(cleaner.id, 0, 4),
     getCurrentCustomer(),
   ]);
 

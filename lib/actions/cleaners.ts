@@ -1,14 +1,14 @@
 "use server";
 
 import { OpinionSortOption } from "@/types";
-import { getCleanerOpinions } from "../data/cleaners";
+import { getCleanerOpinionsForCustomer } from "../data/cleaners";
 
 export async function fetchMoreCleanerOpinions(
   id: string,
   opinionsLength: number,
   sortBy: OpinionSortOption = "newest",
 ) {
-  const result = await getCleanerOpinions(
+  const result = await getCleanerOpinionsForCustomer(
     id,
     opinionsLength,
     opinionsLength + 4,

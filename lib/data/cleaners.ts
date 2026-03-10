@@ -126,8 +126,7 @@ export const getCleaner = cache(async (id: string) => {
   return cleaner;
 });
 
-// do this
-export const getCleanerOpinions = cache(
+export const getCleanerOpinionsForCustomer = cache(
   async (
     id: string,
     startingRange: number,
