@@ -1,5 +1,5 @@
 import { getCleanerDaysOff } from "@/lib/data/cleaners";
-import { formatDate, getUppercaseCityName } from "@/lib/utils";
+import { formatDate, getInitials, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import {
   BrushCleaning,
@@ -37,7 +37,7 @@ export default async function CleanerInfo({
                 />
               ) : (
                 <span className="text-white font-bold text-5xl">
-                  {cleaner.name.charAt(0).toUpperCase()}
+                  {getInitials(cleaner.name)}
                 </span>
               )}
             </div>

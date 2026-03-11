@@ -1,4 +1,4 @@
-import { getUppercaseCityName } from "@/lib/utils";
+import { getInitials, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import {
   BrushCleaning,
@@ -34,7 +34,7 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
             ) : (
               /* Adjusted text size for smaller mobile circle */
               <span className="text-white font-bold text-xl sm:text-2xl">
-                {cleaner.name.charAt(0).toUpperCase()}
+                {getInitials(cleaner.name)}
               </span>
             )}
           </div>
