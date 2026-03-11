@@ -1,0 +1,3 @@
+export const CUSTOMER_OPINIONS_PER_PAGE = 5;
+
+export const CLEANER_OPINIONS_PER_PAGE = 4;
