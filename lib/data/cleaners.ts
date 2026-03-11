@@ -1,8 +1,10 @@
 import { Opinion, OpinionSortOption } from "@/types";
 import { format } from "date-fns";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 import { FilterValues } from "../schemas/filterCleaners";
 import { createClient } from "../supabase/server";
+import { getRequiredUser } from "./auth";
 import { getCurrentCustomer } from "./customer";
 
 export const getCleanersByCity = async (
@@ -205,3 +207,66 @@ export const getCleanerDaysOff = cache(async (id: string) => {
 
   return cleanedUpData;
 });
+
+export const getCurrentCleaner = cache(async () => {
+  const supabase = await createClient();
+  const user = await getRequiredUser();
+
+  const { data: profile, error } = await supabase
+    .from("cleaners")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    redirect("/onboarding");
+  }
+
+  return profile;
+});
+
+export const getCleanersOpinions = cache(
+  async (
+    startingRange: number,
+    endingRange: number,
+    sortBy: OpinionSortOption = "newest",
+    rating: number = 0,
+  ) => {
+    const supabase = await createClient();
+    const cleaner = await getCurrentCleaner();
+
+    let column = "created_at";
+    let ascending = false;
+
+    if (sortBy === "oldest") {
+      ascending = true;
+    } else if (sortBy === "highest") {
+      column = "rating";
+      ascending = false;
+    } else if (sortBy === "lowest") {
+      column = "rating";
+      ascending = true;
+    }
+
+    let query = supabase
+      .from("opinions")
+      .select(`*, customers (full_name)`, { count: "exact" })
+      .eq("cleaner_id", cleaner.id);
+
+    if (rating > 0) {
+      query = query.gte("rating", rating).lt("rating", rating + 1);
+    }
+
+    const {
+      data: opinions,
+      error,
+      count,
+    } = await query
+      .range(startingRange, endingRange)
+      .order(column, { ascending });
+
+    if (error) throw new Error(error.message);
+
+    return { opinions: opinions ?? [], count: count ?? 0 };
+  },
+);
