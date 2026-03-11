@@ -23,3 +23,22 @@ export const getBookingsForCustomer = cache(async (customerId: string) => {
 
   return { data };
 });
+
+export const getTodaysBookings = async (cleanerId: string) => {
+  const supabase = await createClient();
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("cleaner_id", cleanerId)
+    .gte("scheduled_at", startOfDay)
+    .lte("scheduled_at", endOfDay)
+    .order("scheduled_at");
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
