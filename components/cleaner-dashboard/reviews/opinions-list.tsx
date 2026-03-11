@@ -67,7 +67,7 @@ export default function OpinionsList({
   return (
     <>
       {/* Filter and sorting*/}
-      <div className="flex items-center justify-between mb-5 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3">
         <StarFilter
           filterRating={filterRating}
           setFilterRating={handleFilterChange}
@@ -93,7 +93,7 @@ export default function OpinionsList({
       ) : (
         <div
           className={cn(
-            "grid grid-cols-2 gap-4",
+            "grid grid-cols-1 md:grid-cols-2 gap-4",
             isPending ? "opacity-50 pointer-events-none" : "opacity-100",
           )}
         >

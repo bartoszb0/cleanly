@@ -12,12 +12,12 @@ export default async function ReviewsPage() {
   );
 
   return (
-    <main className="flex-1 p-10">
+    <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
-            <MessageSquare size={22} /> Reviews
+            <MessageSquare className="text-primary" size={22} /> Reviews
           </h1>
           <p className="text-sm text-muted-foreground">
             What your customers say about you
@@ -33,6 +33,6 @@ export default async function ReviewsPage() {
         initialOpinions={opinionsData.opinions}
         totalCount={opinionsData.count}
       />
-    </main>
+    </div>
   );
 }

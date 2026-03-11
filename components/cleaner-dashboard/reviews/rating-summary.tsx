@@ -15,7 +15,7 @@ export async function RatingSummary() {
   }));
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-6 mb-6 flex gap-10 items-center">
+    <div className="bg-card border border-border rounded-2xl p-6 mb-6 flex flex-col sm:flex-row gap-6 sm:gap-10 items-center">
       {/* Big score */}
       <div className="text-center shrink-0">
         <div className="text-5xl font-bold text-foreground leading-none mb-2">
@@ -27,10 +27,8 @@ export async function RatingSummary() {
         </p>
       </div>
 
-      <div className="w-px h-16 bg-border shrink-0" />
-
       {/* Distribution */}
-      <div className="flex-1 flex flex-col gap-2">
+      <div className="flex-1 w-full flex flex-col gap-2">
         {dist.map(({ rating, count, pct }) => (
           <div key={rating} className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground w-4 text-right">
