@@ -28,7 +28,7 @@ export default async function ReviewsPage() {
       {/* Summary */}
       <RatingSummary />
 
-      {/* List */}
+      {/* List and filtering */}
       <OpinionsList
         initialOpinions={opinionsData.opinions}
         totalCount={opinionsData.count}
