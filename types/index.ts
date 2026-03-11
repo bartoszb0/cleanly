@@ -7,7 +7,7 @@ export type Opinion = Tables<"opinions"> & {
   customers: {
     full_name: string;
   };
-  userVote: "like" | "dislike" | null;
+  userVote?: "like" | "dislike" | null;
 };
 
 export type OpinionSortOption = "newest" | "oldest" | "lowest" | "highest";
