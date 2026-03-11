@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field } from "@/components/ui/field";
-import { StarRating } from "@/components/ui/star-rating";
+import { StarRatingInput } from "@/components/ui/star-rating-input";
 import { Textarea } from "@/components/ui/textarea";
 import { createOpinion } from "@/lib/actions/opinions";
 import { ReviewFormValues, ReviewSchema } from "@/lib/schemas/reviewForm";
@@ -99,7 +99,7 @@ export default function OpinionDialog({
                 render={({ field, fieldState }) => (
                   <Field>
                     <div className="flex flex-col items-center gap-2 mb-5">
-                      <StarRating
+                      <StarRatingInput
                         value={field.value}
                         onChange={field.onChange}
                         size={32}
