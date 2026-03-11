@@ -1,3 +1,5 @@
+import { statusConfig } from "@/components/cleaner-dashboard/dashboard/todays-jobs";
+import { Tables } from "@/types/supabase";
 import { clsx, type ClassValue } from "clsx";
 import { format, parseISO } from "date-fns";
 import { twMerge } from "tailwind-merge";
@@ -68,4 +70,27 @@ export function getTomorrowDate() {
   tomorrow.setHours(0, 0, 0, 0);
   tomorrow.setDate(tomorrow.getDate() + 1);
   return tomorrow;
+}
+
+export function getDisplayStatus(
+  job: Tables<"jobs">,
+): keyof typeof statusConfig {
+  if (job.status === "cancelled") return "cancelled";
+  if (job.status === "completed") return "completed";
+
+  const now = new Date();
+  const start = new Date(job.scheduled_at);
+  const end = new Date(job.end_time);
+
+  if (now >= start && now <= end) return "in_progress";
+
+  return "upcoming";
+}
+
+export function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2);
 }
