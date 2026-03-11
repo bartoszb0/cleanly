@@ -12,7 +12,7 @@ import { OpinionSortOption } from "@/types";
 type SortOpinionsSelectBtnProps = {
   sortBy: OpinionSortOption;
   handleSortChange: (newSort: OpinionSortOption) => void;
-  showSortingByRating: boolean;
+  showSortingByRating?: boolean;
 };
 
 export default function SortOpinionsSelectBtn({
