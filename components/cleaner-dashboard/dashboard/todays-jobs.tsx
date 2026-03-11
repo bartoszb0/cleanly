@@ -1,16 +1,14 @@
+import { JOB_STATUS_CONFIG } from "@/lib/constants/job";
 import { getDisplayStatus } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { format } from "date-fns";
 import {
   CalendarOff,
-  CheckCircle2,
   ChevronRight,
   Clock,
-  Loader2,
   MapPin,
   Sun,
   Wallet,
-  XCircle,
 } from "lucide-react";
 
 function EmptyState() {
@@ -29,39 +27,14 @@ function EmptyState() {
   );
 }
 
-export const statusConfig = {
-  upcoming: {
-    label: "Upcoming",
-    icon: Loader2,
-    classes: "bg-primary/10 text-primary border-primary/20",
-    dot: "bg-primary",
-  },
-  in_progress: {
-    label: "In Progress",
-    icon: Loader2,
-    classes: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    dot: "bg-amber-400 animate-pulse",
-  },
-  completed: {
-    label: "Completed",
-    icon: CheckCircle2,
-    classes: "bg-emerald-500/10 text-emerald-400/40 border-emerald-500/20",
-    dot: "bg-emerald-400/40",
-  },
-  cancelled: {
-    label: "Cancelled",
-    icon: XCircle,
-    classes: "bg-destructive/10 text-destructive border-destructive/20",
-    dot: "bg-destructive",
-  },
-};
-
 function JobCard({ job }: { job: Tables<"jobs"> }) {
   const displayStatus = getDisplayStatus(job);
 
-  const status = statusConfig[displayStatus];
+  const status =
+    JOB_STATUS_CONFIG[displayStatus as keyof typeof JOB_STATUS_CONFIG];
 
-  const time = format(new Date(job.scheduled_at), "hh:mm");
+  const time = format(new Date(job.scheduled_at), "HH:mm");
+
   return (
     <div
       className={`
@@ -118,7 +91,7 @@ export default function TodaysJobs({ jobs }: { jobs: Tables<"jobs">[] }) {
     (j) => j.status === "confirmed" && new Date(j.scheduled_at) > new Date(),
   );
   const totalEarnings = jobs
-    .filter((j) => j.status == "completed" || j.status === "confirmed")
+    .filter((j) => j.status == "completed")
     .reduce((sum, j) => sum + (j.total_price ?? j.price_snapshot), 0);
 
   return (

@@ -34,6 +34,7 @@ export const getTodaysBookings = async (cleanerId: string) => {
     .from("jobs")
     .select("*")
     .eq("cleaner_id", cleanerId)
+    .in("status", ["confirmed", "completed", "cancelled"])
     .gte("scheduled_at", startOfDay)
     .lte("scheduled_at", endOfDay)
     .order("scheduled_at");

@@ -1,8 +1,8 @@
-import { statusConfig } from "@/components/cleaner-dashboard/dashboard/todays-jobs";
 import { Tables } from "@/types/supabase";
 import { clsx, type ClassValue } from "clsx";
 import { format, parseISO } from "date-fns";
 import { twMerge } from "tailwind-merge";
+import { JOB_STATUS_CONFIG } from "./constants/job";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -74,7 +74,7 @@ export function getTomorrowDate() {
 
 export function getDisplayStatus(
   job: Tables<"jobs">,
-): keyof typeof statusConfig {
+): keyof typeof JOB_STATUS_CONFIG {
   if (job.status === "cancelled") return "cancelled";
   if (job.status === "completed") return "completed";
 
@@ -82,7 +82,8 @@ export function getDisplayStatus(
   const start = new Date(job.scheduled_at);
   const end = new Date(job.end_time);
 
-  if (now >= start && now <= end) return "in_progress";
+  if (now >= start && now <= end && job.status === "confirmed")
+    return "in_progress";
 
   return "upcoming";
 }
