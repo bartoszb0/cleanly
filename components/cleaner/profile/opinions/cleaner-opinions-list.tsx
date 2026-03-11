@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { fetchMoreCleanerOpinions } from "@/lib/actions/cleaners";
+import { fetchMoreCleanerOpinionsForCustomer } from "@/lib/actions/cleaners";
 import { cn } from "@/lib/utils";
 import { Opinion, OpinionSortOption } from "@/types";
 import { useState, useTransition } from "react";
@@ -25,7 +25,7 @@ export default function CleanerOpinionsList({
 
   const handleShowMore = () => {
     startTransition(async () => {
-      const result = await fetchMoreCleanerOpinions(
+      const result = await fetchMoreCleanerOpinionsForCustomer(
         cleanerId,
         opinions.length,
         sortBy,
@@ -41,7 +41,11 @@ export default function CleanerOpinionsList({
     setSortBy(newSort);
 
     startTransition(async () => {
-      const result = await fetchMoreCleanerOpinions(cleanerId, 0, newSort);
+      const result = await fetchMoreCleanerOpinionsForCustomer(
+        cleanerId,
+        0,
+        newSort,
+      );
 
       if (result.success) {
         setOpinions(result.data);
