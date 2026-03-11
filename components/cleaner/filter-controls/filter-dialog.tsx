@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
-import { StarRating } from "@/components/ui/star-rating";
+import { StarRatingInput } from "@/components/ui/star-rating-input";
 import {
   filterSchema,
   FilterValues,
@@ -194,7 +194,7 @@ export default function FilterCleanersDialog() {
                     </span>
                   </div>
                   <div className="flex justify-center items-center">
-                    <StarRating
+                    <StarRatingInput
                       value={field.value ?? 0}
                       onChange={field.onChange}
                       disabled={isPending}

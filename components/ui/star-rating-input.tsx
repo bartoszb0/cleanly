@@ -1,4 +1,3 @@
-// components/ui/star-rating.tsx
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -12,7 +11,7 @@ interface StarRatingProps {
   disabled?: boolean;
 }
 
-export function StarRating({
+export function StarRatingInput({
   value,
   onChange,
   size = 32,
