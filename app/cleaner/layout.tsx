@@ -20,7 +20,7 @@ export default function CleanerLayout({
           <CleanerNavbar />
         </Suspense>
         <main className="flex flex-col flex-1 pt-16 md:pt-0 md:ml-64">
-          {children}
+          <div className="p-4 md:p-10">{children}</div>
         </main>
       </div>
     </ThemeProvider>
