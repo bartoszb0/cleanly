@@ -12,18 +12,20 @@ import { OpinionSortOption } from "@/types";
 type SortOpinionsSelectBtnProps = {
   sortBy: OpinionSortOption;
   handleSortChange: (newSort: OpinionSortOption) => void;
+  showSortingByRating: boolean;
 };
 
 export default function SortOpinionsSelectBtn({
   sortBy,
   handleSortChange,
+  showSortingByRating = true,
 }: SortOpinionsSelectBtnProps) {
   return (
     <Select
       value={sortBy}
       onValueChange={(value: OpinionSortOption) => handleSortChange(value)}
     >
-      <SelectTrigger className="w-[180px] h-12 text-lg text-slate-200 focus:ring-sky-500 border-none">
+      <SelectTrigger className="w-45 text-md text-slate-200  border-none">
         <SelectValue placeholder="Sort by" className="bg-slate-800" />
       </SelectTrigger>
       <SelectContent className="bg-slate-800">
@@ -35,12 +37,16 @@ export default function SortOpinionsSelectBtn({
           <SelectItem value="oldest" className="text-base py-3">
             Oldest
           </SelectItem>
-          <SelectItem value="highest" className="text-base py-3">
-            Highest Rated
-          </SelectItem>
-          <SelectItem value="lowest" className="text-base py-3">
-            Lowest Rated
-          </SelectItem>
+          {showSortingByRating && (
+            <>
+              <SelectItem value="highest" className="text-base py-3">
+                Highest Rated
+              </SelectItem>
+              <SelectItem value="lowest" className="text-base py-3">
+                Lowest Rated
+              </SelectItem>
+            </>
+          )}
         </SelectGroup>
       </SelectContent>
     </Select>
