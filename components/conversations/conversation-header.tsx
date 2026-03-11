@@ -1,4 +1,5 @@
 import { getCleanerDaysOff } from "@/lib/data/cleaners";
+import { getInitials } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +24,7 @@ export default async function ConversationHeader({
 
         <div className="w-10 h-10 rounded-full bg-linear-to-br from-sky-400 to-blue-600 flex items-center justify-center shrink-0">
           <span className="text-white font-bold text-base">
-            {cleaner.name.charAt(0).toUpperCase()}
+            {getInitials(cleaner.name)}
           </span>
         </div>
         <div>
