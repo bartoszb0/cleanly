@@ -1,16 +1,20 @@
-import { getCleanersOpinions, getCurrentCleaner } from "@/lib/data/cleaners";
+import {
+  getCleanerRatingDistribution,
+  getCurrentCleaner,
+} from "@/lib/data/cleaners";
 import { Star } from "lucide-react";
 import { StarRating } from "./star-rating";
 
 export async function RatingSummary() {
   const cleaner = await getCurrentCleaner();
-  const { opinions } = await getCleanersOpinions(0, 5, "newest");
+  const ratings = await getCleanerRatingDistribution();
 
   const dist = [5, 4, 3, 2, 1].map((r) => ({
     rating: r,
-    count: opinions.filter((o) => o.rating === r).length,
-    pct: opinions.length
-      ? (opinions.filter((o) => o.rating === r).length / opinions.length) * 100
+    count: ratings.filter((o) => o.rating === r).length,
+    pct: cleaner.total_reviews
+      ? (ratings.filter((o) => o.rating === r).length / cleaner.total_reviews) *
+        100
       : 0,
   }));
 

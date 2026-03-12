@@ -208,6 +208,8 @@ export const getCleanerDaysOff = cache(async (id: string) => {
   return cleanedUpData;
 });
 
+///
+
 export const getCurrentCleaner = cache(async () => {
   const supabase = await createClient();
   const user = await getRequiredUser();
@@ -270,3 +272,17 @@ export const getCleanersOpinions = cache(
     return { opinions: opinions ?? [], count: count ?? 0 };
   },
 );
+
+export const getCleanerRatingDistribution = cache(async () => {
+  const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
+
+  const { data, error } = await supabase
+    .from("opinions")
+    .select("rating")
+    .eq("cleaner_id", cleaner.id);
+
+  if (error) throw new Error(error.message);
+
+  return data ?? [];
+});
