@@ -1,8 +1,10 @@
 import OpinionsList from "@/components/cleaner-dashboard/reviews/opinions-list";
 import { RatingSummary } from "@/components/cleaner-dashboard/reviews/rating-summary";
+import { RatingSummarySkeleton } from "@/components/cleaner-dashboard/reviews/summary-skeleton";
 import { CLEANER_OPINIONS_PER_PAGE } from "@/lib/constants/opinions";
 import { getCleanersOpinions } from "@/lib/data/cleaners";
 import { MessageSquare } from "lucide-react";
+import { Suspense } from "react";
 
 export default async function ReviewsPage() {
   const opinionsData = await getCleanersOpinions(
@@ -26,7 +28,9 @@ export default async function ReviewsPage() {
       </div>
 
       {/* Summary */}
-      <RatingSummary />
+      <Suspense fallback={<RatingSummarySkeleton />}>
+        <RatingSummary />
+      </Suspense>
 
       {/* List and filtering */}
       <OpinionsList

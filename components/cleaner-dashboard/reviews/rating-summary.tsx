@@ -6,6 +6,8 @@ import { Star } from "lucide-react";
 import { StarRating } from "./star-rating";
 
 export async function RatingSummary() {
+  await new Promise((res) => setTimeout(res, 2000));
+
   const cleaner = await getCurrentCleaner();
   const ratings = await getCleanerRatingDistribution();
 
@@ -21,7 +23,7 @@ export async function RatingSummary() {
   return (
     <div className="bg-card border border-border rounded-2xl p-6 mb-6 flex flex-col sm:flex-row gap-6 sm:gap-10 items-center">
       {/* Big score */}
-      <div className="text-center shrink-0">
+      <div className="text-center w-24 shrink-0">
         <div className="text-5xl font-bold text-foreground leading-none mb-2">
           {cleaner.average_rating.toFixed(1)}
         </div>
