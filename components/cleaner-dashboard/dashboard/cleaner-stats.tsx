@@ -30,7 +30,7 @@ export default function CleanerStats({
   cleaner: Tables<"cleaners">;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <StatCard
         label="Completed Jobs"
         value={cleaner.completed_jobs_count}

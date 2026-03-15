@@ -1,9 +1,9 @@
+import ReviewsHeader from "@/components/cleaner-dashboard/reviews/header";
 import OpinionsList from "@/components/cleaner-dashboard/reviews/opinions-list";
 import { RatingSummary } from "@/components/cleaner-dashboard/reviews/rating-summary";
 import { RatingSummarySkeleton } from "@/components/cleaner-dashboard/reviews/summary-skeleton";
 import { CLEANER_OPINIONS_PER_PAGE } from "@/lib/constants/opinions";
 import { getCleanersOpinions } from "@/lib/data/cleaners";
-import { MessageSquare } from "lucide-react";
 import { Suspense } from "react";
 
 export default async function ReviewsPage() {
@@ -16,16 +16,7 @@ export default async function ReviewsPage() {
   return (
     <div>
       {/* Page header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
-            <MessageSquare className="text-primary" size={22} /> Reviews
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            What your customers say about you
-          </p>
-        </div>
-      </div>
+      <ReviewsHeader />
 
       {/* Summary */}
       <Suspense fallback={<RatingSummarySkeleton />}>
