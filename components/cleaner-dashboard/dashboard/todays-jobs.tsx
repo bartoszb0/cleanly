@@ -1,4 +1,5 @@
 import { JOB_STATUS_CONFIG } from "@/lib/constants/job";
+import { getTodaysBookings } from "@/lib/data/bookings";
 import { getDisplayStatus } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { format } from "date-fns";
@@ -84,7 +85,9 @@ function JobCard({ job }: { job: Tables<"jobs"> }) {
   );
 }
 
-export default function TodaysJobs({ jobs }: { jobs: Tables<"jobs">[] }) {
+export default async function TodaysJobs({ cleanerId }: { cleanerId: string }) {
+  const jobs = await getTodaysBookings(cleanerId);
+
   const today = format(new Date(), "eeee, MMMM do, yyyy");
 
   const upcoming = jobs.filter(
