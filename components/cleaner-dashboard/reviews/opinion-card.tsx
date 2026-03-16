@@ -6,11 +6,17 @@ import {
 import { getInitials } from "@/lib/utils";
 import { Opinion } from "@/types";
 import { format } from "date-fns";
-import { Briefcase, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Briefcase, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import { StarRating } from "./star-rating";
 
-export function OpinionCard({ opinion }: { opinion: Opinion }) {
+export function OpinionCard({
+  opinion,
+  isOnReviewsPage = true,
+}: {
+  opinion: Opinion;
+  isOnReviewsPage?: boolean;
+}) {
   const date = format(new Date(opinion.created_at), "MMMM do, yyyy");
   return (
     <div className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-4">
@@ -49,12 +55,22 @@ export function OpinionCard({ opinion }: { opinion: Opinion }) {
         </div>
         <Tooltip>
           <TooltipTrigger>
-            <Link href={`/cleaner/jobs/${opinion.job_id}`}>
-              <Briefcase size={19} />
-            </Link>
+            {isOnReviewsPage ? (
+              <Link href={`/cleaner/jobs/${opinion.job_id}`}>
+                <Briefcase size={19} />
+              </Link>
+            ) : (
+              <Link href={`/cleaner/reviews`}>
+                <Star size={19} />
+              </Link>
+            )}
           </TooltipTrigger>
           <TooltipContent>
-            <p>View job details</p>
+            {isOnReviewsPage ? (
+              <p>View job details</p>
+            ) : (
+              <p>View all reviews</p>
+            )}
           </TooltipContent>
         </Tooltip>
       </div>
