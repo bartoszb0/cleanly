@@ -2,6 +2,7 @@
 
 import {
   Briefcase,
+  CalendarClock,
   LayoutDashboard,
   MessageCircle,
   Star,
@@ -13,6 +14,11 @@ const navLinks = [
   { href: "/cleaner", label: "Dashboard", icon: LayoutDashboard },
   { href: "/cleaner/jobs", label: "My Jobs", icon: Briefcase },
   { href: "/cleaner/messages", label: "Messages", icon: MessageCircle },
+  {
+    href: "/cleaner/schedule",
+    label: "Schedule",
+    icon: CalendarClock,
+  },
   { href: "/cleaner/reviews", label: "Reviews", icon: Star },
   { href: "/cleaner/profile", label: "Edit profile", icon: UserPen },
 ];
