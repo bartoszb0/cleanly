@@ -6,8 +6,6 @@ import { Star } from "lucide-react";
 import { StarRating } from "./star-rating";
 
 export async function RatingSummary() {
-  await new Promise((res) => setTimeout(res, 2000));
-
   const cleaner = await getCurrentCleaner();
   const ratings = await getCleanerRatingDistribution();
 
