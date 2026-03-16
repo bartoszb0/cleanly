@@ -1,6 +1,6 @@
 import { getOpinion } from "@/lib/data/opinions";
 import { MessageSquare } from "lucide-react";
-import { OpinionCard } from "../reviews/opinion-card";
+import { OpinionCard } from "../../reviews/opinion-card";
 
 export default async function JobReview({ jobId }: { jobId: string }) {
   const opinion = await getOpinion(jobId);
