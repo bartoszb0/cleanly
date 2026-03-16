@@ -1,8 +1,10 @@
 import { cache } from "react";
 import { createClient } from "../supabase/server";
+import { getCurrentCustomer } from "./customer";
 
-export const getBookingsForCustomer = cache(async (customerId: string) => {
+export const getBookingsForCustomer = cache(async () => {
   const supabase = await createClient();
+  const customer = await getCurrentCustomer();
 
   const { data, error } = await supabase
     .from("jobs")
@@ -16,7 +18,7 @@ export const getBookingsForCustomer = cache(async (customerId: string) => {
         review:opinions (id)
       `,
     )
-    .eq("customer_id", customerId)
+    .eq("customer_id", customer.id)
     .order("scheduled_at", { ascending: false });
 
   if (error) throw new Error(error.message);

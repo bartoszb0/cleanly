@@ -2,13 +2,10 @@ import { BookingHistoryCard } from "@/components/customer/bookings/booking-card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BOOKING_STATUS } from "@/lib/constants/booking";
 import { getBookingsForCustomer } from "@/lib/data/bookings";
-import { getCurrentCustomer } from "@/lib/data/customer";
 import { ExtendedBooking } from "@/types";
 
 export default async function History() {
-  const user = await getCurrentCustomer();
-
-  const jobs = await getBookingsForCustomer(user.id);
+  const jobs = await getBookingsForCustomer();
 
   return (
     <>
