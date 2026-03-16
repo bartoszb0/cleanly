@@ -25,7 +25,7 @@ import {
   VALID_HOURS,
   VALID_MINUTES,
 } from "@/lib/constants/booking";
-import { fetchDaySchedule } from "@/lib/data/schedule";
+import { getDayScheduleForCustomer } from "@/lib/data/schedule";
 import { bookingSchema, BookingValues } from "@/lib/schemas/bookCleaner";
 import { cn, getTomorrowDate } from "@/lib/utils";
 import { ScheduledBooking } from "@/types";
@@ -106,7 +106,7 @@ export default function BookingFormContent({
 
     try {
       setScheduleError(false);
-      setDayBookings(await fetchDaySchedule(watchedDate, cleanerId));
+      setDayBookings(await getDayScheduleForCustomer(watchedDate, cleanerId));
     } catch (err) {
       setScheduleError(true);
     } finally {

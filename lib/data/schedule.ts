@@ -2,7 +2,7 @@ import { endOfDay, startOfDay } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
 import { createClient } from "../supabase/client";
 
-export async function fetchDaySchedule(date: Date, cleanerId: string) {
+export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
   const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
   const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
 
