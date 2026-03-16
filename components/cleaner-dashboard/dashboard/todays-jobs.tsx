@@ -1,4 +1,4 @@
-import { JOB_STATUS_CONFIG } from "@/lib/constants/job";
+import { JOB_STATUS_CONFIG } from "@/lib/constants/job-status-config";
 import { getTodaysBookings } from "@/lib/data/bookings";
 import { getDisplayStatus } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
@@ -42,7 +42,7 @@ function JobCard({ job }: { job: Tables<"jobs"> }) {
       relative shrink-0 w-64 bg-card border rounded-2xl p-5 
       flex flex-col gap-3 cursor-pointer group
       hover:border-primary/30 transition-all duration-200
-      ${job.status === "completed" ? "border-border opacity-40" : "border-border"}
+      ${job.status === "completed" || job.status === "cancelled" ? "border-border opacity-40" : "border-border"}
     `}
     >
       {/* Status badge */}
