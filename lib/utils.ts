@@ -2,7 +2,7 @@ import { Tables } from "@/types/supabase";
 import { clsx, type ClassValue } from "clsx";
 import { format, parseISO } from "date-fns";
 import { twMerge } from "tailwind-merge";
-import { JOB_STATUS_CONFIG } from "./constants/job";
+import { JOB_STATUS_CONFIG } from "./constants/job-status-config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
