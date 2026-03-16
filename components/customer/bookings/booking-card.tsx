@@ -1,4 +1,4 @@
-import { STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { ExtendedBooking } from "@/types";
 import { addHours, format } from "date-fns";
@@ -9,7 +9,7 @@ import { MessageCleanerButton } from "./message-cleaner-btn";
 import OpinionDialog from "./opinion-dialog";
 
 export const BookingHistoryCard = ({ job }: { job: ExtendedBooking }) => {
-  const config = STATUS_CONFIG[job.status] || {
+  const config = BOOKING_STATUS_CONFIG[job.status] || {
     label: job.status,
     className: "bg-slate-700/50 text-slate-400 border-slate-600/20",
     accent: "from-slate-500/0 via-slate-500/30 to-slate-500/0",

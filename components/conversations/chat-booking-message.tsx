@@ -1,4 +1,4 @@
-import { STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
 import { createClient } from "@/lib/supabase/client";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
@@ -96,11 +96,11 @@ export default function ChatBookingMessage({
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest border",
-            STATUS_CONFIG[booking.status].className ??
+            BOOKING_STATUS_CONFIG[booking.status].className ??
               "bg-slate-700/50 text-slate-400 border-slate-600/20",
           )}
         >
-          {STATUS_CONFIG[booking.status]?.label ?? booking.status}
+          {BOOKING_STATUS_CONFIG[booking.status]?.label ?? booking.status}
         </span>
       </div>
 

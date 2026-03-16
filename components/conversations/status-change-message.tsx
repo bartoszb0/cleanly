@@ -1,4 +1,4 @@
-import { STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types";
 import { format } from "date-fns";
@@ -22,7 +22,7 @@ export default function StatusChangeMessage({
         <span
           className={cn(
             "capitalize font-medium",
-            STATUS_CONFIG[metadata.from as string].className
+            BOOKING_STATUS_CONFIG[metadata.from as string].className
               .split(" ")
               .find((c) => c.startsWith("text-")),
           )}
@@ -33,7 +33,7 @@ export default function StatusChangeMessage({
         <span
           className={cn(
             "capitalize font-medium",
-            STATUS_CONFIG[metadata.to as string].className
+            BOOKING_STATUS_CONFIG[metadata.to as string].className
               .split(" ")
               .find((c) => c.startsWith("text-")),
           )}
