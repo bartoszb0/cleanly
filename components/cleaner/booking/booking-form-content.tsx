@@ -25,7 +25,7 @@ import {
   VALID_HOURS,
   VALID_MINUTES,
 } from "@/lib/constants/booking";
-import { getDayScheduleForCustomer } from "@/lib/data/schedule";
+import { getDayScheduleForCustomer } from "@/lib/data/schedule.cleaner";
 import { bookingSchema, BookingValues } from "@/lib/schemas/bookCleaner";
 import { cn, getTomorrowDate } from "@/lib/utils";
 import { ScheduledBooking } from "@/types";
