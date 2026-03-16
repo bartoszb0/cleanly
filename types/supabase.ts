@@ -171,7 +171,7 @@ export type Database = {
           price_snapshot: number
           scheduled_at: string
           status: string
-          total_price: number | null
+          total_price: number
         }
         Insert: {
           address: string
@@ -186,7 +186,7 @@ export type Database = {
           price_snapshot: number
           scheduled_at: string
           status?: string
-          total_price?: number | null
+          total_price?: number
         }
         Update: {
           address?: string
@@ -201,7 +201,7 @@ export type Database = {
           price_snapshot?: number
           scheduled_at?: string
           status?: string
-          total_price?: number | null
+          total_price?: number
         }
         Relationships: [
           {
