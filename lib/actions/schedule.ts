@@ -1,6 +1,7 @@
 "use server";
 
 import { endOfDay, startOfDay } from "date-fns";
+import { getCurrentCleaner } from "../data/cleaners";
 import { createClient } from "../supabase/server";
 
 export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
@@ -21,4 +22,23 @@ export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
   if (error) throw new Error(error.message);
 
   return data || [];
+}
+
+export async function getDayScheduleForCleaner(date: Date) {
+  const cleaner = await getCurrentCleaner();
+  const supabase = await createClient();
+
+  const start = startOfDay(date).toISOString();
+  const end = endOfDay(date).toISOString();
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("cleaner_id", cleaner.id)
+    .gte("scheduled_at", start)
+    .lte("scheduled_at", end);
+
+  if (error) throw new Error(error.message);
+
+  return data ?? [];
 }
