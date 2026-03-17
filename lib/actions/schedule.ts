@@ -1,14 +1,15 @@
 "use server";
 
 import { endOfDay, startOfDay } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 import { getCurrentCleaner } from "../data/cleaners";
 import { createClient } from "../supabase/server";
 
 export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
-  const start = startOfDay(date).toISOString();
-  const end = endOfDay(date).toISOString();
-
   const supabase = await createClient();
+
+  const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
+  const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
 
   const { data, error } = await supabase
     .from("jobs")
@@ -28,8 +29,8 @@ export async function getDayScheduleForCleaner(date: Date) {
   const cleaner = await getCurrentCleaner();
   const supabase = await createClient();
 
-  const start = startOfDay(date).toISOString();
-  const end = endOfDay(date).toISOString();
+  const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
+  const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
 
   const { data, error } = await supabase
     .from("jobs")
