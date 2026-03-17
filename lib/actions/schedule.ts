@@ -1,12 +1,13 @@
+"use server";
+
 import { endOfDay, startOfDay } from "date-fns";
-import { fromZonedTime } from "date-fns-tz";
-import { createClient } from "../supabase/client";
+import { createClient } from "../supabase/server";
 
 export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
-  const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
-  const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
+  const start = startOfDay(date).toISOString();
+  const end = endOfDay(date).toISOString();
 
-  const supabase = createClient(); // Client call
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("jobs")

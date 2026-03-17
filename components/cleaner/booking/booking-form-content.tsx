@@ -20,12 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createBookingRequest } from "@/lib/actions/bookings";
+import { getDayScheduleForCustomer } from "@/lib/actions/schedule";
 import {
   VALID_DURATIONS,
   VALID_HOURS,
   VALID_MINUTES,
 } from "@/lib/constants/booking";
-import { getDayScheduleForCustomer } from "@/lib/data/schedule.client";
 import { bookingSchema, BookingValues } from "@/lib/schemas/bookCleaner";
 import { cn, getTomorrowDate } from "@/lib/utils";
 import { ScheduledBooking } from "@/types";
