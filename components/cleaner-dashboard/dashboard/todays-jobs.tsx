@@ -1,16 +1,11 @@
+import DayOffBtn from "@/components/ui/day-off-btn";
 import { JOB_STATUS_CONFIG } from "@/lib/constants/job-status-config";
 import { getTodaysBookings } from "@/lib/data/bookings";
 import { getDisplayStatus } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { format } from "date-fns";
-import {
-  CalendarOff,
-  ChevronRight,
-  Clock,
-  MapPin,
-  Sun,
-  Wallet,
-} from "lucide-react";
+import { ChevronRight, Clock, MapPin, Sun, Wallet } from "lucide-react";
+import Link from "next/link";
 
 function EmptyState() {
   return (
@@ -37,51 +32,53 @@ function JobCard({ job }: { job: Tables<"jobs"> }) {
   const time = format(new Date(job.scheduled_at), "HH:mm");
 
   return (
-    <div
-      className={`
+    <Link href={`/cleaner/jobs/${job.id}`}>
+      <div
+        className={`
       relative shrink-0 w-64 bg-card border rounded-2xl p-5 
       flex flex-col gap-3 cursor-pointer group
       hover:border-primary/30 transition-all duration-200
       ${job.status === "completed" || job.status === "cancelled" ? "border-border opacity-40" : "border-border"}
     `}
-    >
-      {/* Status badge */}
-      <div
-        className={`self-start flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${status.classes}`}
       >
-        <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
-        {status.label}
-      </div>
+        {/* Status badge */}
+        <div
+          className={`self-start flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${status.classes}`}
+        >
+          <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
+          {status.label}
+        </div>
 
-      {/* Time + duration */}
-      <div className="flex items-center justify-between">
-        <span className="text-2xl font-bold text-foreground tabular-nums">
-          {time}
-        </span>
-        <span className="text-xs text-muted-foreground flex items-center gap-1">
-          <Clock size={12} />
-          {job.duration_hours}h
-        </span>
-      </div>
+        {/* Time + duration */}
+        <div className="flex items-center justify-between">
+          <span className="text-2xl font-bold text-foreground tabular-nums">
+            {time}
+          </span>
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <Clock size={12} />
+            {job.duration_hours}h
+          </span>
+        </div>
 
-      {/* Address */}
-      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <MapPin size={12} />
-        {job.address}, {job.post_code}
-      </div>
+        {/* Address */}
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin size={12} />
+          {job.address}, {job.post_code}
+        </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-border mt-auto">
-        <span className="text-sm font-bold text-primary flex items-center gap-1">
-          <Wallet size={13} />
-          {job.total_price ?? job.price_snapshot} PLN
-        </span>
-        <ChevronRight
-          size={16}
-          className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all"
-        />
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-2 border-t border-border mt-auto">
+          <span className="text-sm font-bold text-primary flex items-center gap-1">
+            <Wallet size={13} />
+            {job.total_price ?? job.price_snapshot} PLN
+          </span>
+          <ChevronRight
+            size={16}
+            className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all"
+          />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -120,10 +117,7 @@ export default async function TodaysJobs({ cleanerId }: { cleanerId: string }) {
               </div>
             </>
           ) : (
-            <button className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground border border-border hover:border-foreground/30 px-3 py-1.5 rounded-full transition-colors cursor-pointer">
-              <CalendarOff size={12} />
-              Mark day off
-            </button>
+            <DayOffBtn date={new Date()} />
           )}
         </div>
       </div>
