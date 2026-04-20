@@ -1,6 +1,33 @@
 "use server";
 
 import { OpinionSortOption } from "@/types";
+import { revalidatePath } from "next/cache";
+import { CleanerFormValues } from "../schemas/cleanerForm";
+import { createClient } from "../supabase/server";
+import { getCurrentCleaner } from "../data/cleaners";
+
+export async function updateCleanerProfile(values: CleanerFormValues) {
+  const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
+
+  const { error } = await supabase
+    .from("cleaners")
+    .update({
+      name: values.name,
+      bio: values.bio,
+      hourly_rate: values.hourly_rate as number,
+      city: values.city,
+      phone: values.phone,
+      supplies_provided: values.supplies_provided,
+    })
+    .eq("id", cleaner.id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/cleaner/profile");
+  revalidatePath("/cleaner");
+  return { success: true };
+}
 
 import {
   CLEANER_OPINIONS_PER_PAGE,
