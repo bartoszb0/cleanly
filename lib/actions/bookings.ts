@@ -26,6 +26,36 @@ export async function cancelBooking(jobId: string) {
   return { success: true };
 }
 
+export async function confirmJob(jobId: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("jobs")
+    .update({ status: "confirmed" })
+    .eq("id", jobId);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/cleaner/jobs");
+  revalidatePath(`/cleaner/jobs/${jobId}`);
+  return { success: true };
+}
+
+export async function cancelJobByCleaner(jobId: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("jobs")
+    .update({ status: "cancelled" })
+    .eq("id", jobId);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/cleaner/jobs");
+  revalidatePath(`/cleaner/jobs/${jobId}`);
+  return { success: true };
+}
+
 export async function createBookingRequest(
   bookingData: BookingValues,
   cleanerId: string,
