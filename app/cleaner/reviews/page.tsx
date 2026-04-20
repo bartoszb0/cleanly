@@ -14,7 +14,7 @@ export default async function ReviewsPage() {
   );
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto">
       {/* Page header */}
       <ReviewsHeader />
 

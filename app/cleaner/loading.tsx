@@ -50,7 +50,7 @@ function CleanerDetailsSkeleton() {
 
 export default function LoadingDashboard() {
   return (
-    <>
+    <div className="max-w-2xl mx-auto">
       <DashboardHeader>
         <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-md">
           <Loader2 className="animate-spin" />
@@ -59,6 +59,6 @@ export default function LoadingDashboard() {
       <TodaysJobsSkeleton />
       <CleanerStatsSkeleton />
       <CleanerDetailsSkeleton />
-    </>
+    </div>
   );
 }
