@@ -2,32 +2,46 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { addDays } from "date-fns";
-import * as React from "react";
+import { addDays, endOfMonth, startOfMonth } from "date-fns";
 
-export function CleanerCalendar() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(new Date().getFullYear(), 1, 12),
-  );
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-  );
-
+export function CleanerCalendar({
+  date,
+  setDate,
+  currentMonth,
+  setCurrentMonth,
+  daysOff,
+  isPending,
+}: {
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
+  currentMonth: Date;
+  setCurrentMonth: (date: Date) => void;
+  daysOff: Date[];
+  isPending?: boolean;
+}) {
   return (
-    <Card>
-      <CardContent className="flex justify-center p-4">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          fixedWeeks
-          className="p-0 [--cell-size:--spacing(12)]  border"
-        />
-      </CardContent>
-      <CardFooter className="flex flex-wrap gap-2">
+    <div className="relative">
+      {isPending && (
+        <div className="absolute inset-0 flex items-center justify-center bg-card/60 z-10 rounded-xl"></div>
+      )}
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        month={currentMonth}
+        onMonthChange={setCurrentMonth}
+        disabled={[
+          { before: startOfMonth(currentMonth) },
+          { after: endOfMonth(currentMonth) },
+        ]}
+        fixedWeeks
+        className="p-0 w-full bg-card [--cell-size:--spacing(10)] sm:[--cell-size:--spacing(14)] [&_table]:w-full [&_td]:w-full [&_th]:w-full"
+        modifiers={{ daysOff: daysOff }}
+        modifiersClassNames={{
+          daysOff: "text-muted-foreground opacity-70 line-through",
+        }}
+      />
+      <div className="flex flex-wrap gap-2 mt-4">
         {[
           { label: "Today", value: 0 },
           { label: "Tomorrow", value: 1 },
@@ -51,7 +65,7 @@ export function CleanerCalendar() {
             {preset.label}
           </Button>
         ))}
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }

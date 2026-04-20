@@ -1,7 +1,14 @@
 "use server";
 
-import { endOfDay, startOfDay } from "date-fns";
+import {
+  endOfDay,
+  endOfMonth,
+  format,
+  startOfDay,
+  startOfMonth,
+} from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
+import { revalidatePath } from "next/cache";
 import { getCurrentCleaner } from "../data/cleaners";
 import { createClient } from "../supabase/server";
 
@@ -37,9 +44,60 @@ export async function getDayScheduleForCleaner(date: Date) {
     .select("*")
     .eq("cleaner_id", cleaner.id)
     .gte("scheduled_at", start)
-    .lte("scheduled_at", end);
+    .lte("scheduled_at", end)
+    .order("scheduled_at");
 
   if (error) throw new Error(error.message);
 
   return data ?? [];
+}
+
+export async function getMonthDaysOffForCleaner(month: Date) {
+  const cleaner = await getCurrentCleaner();
+  const supabase = await createClient();
+
+  const start = format(startOfMonth(month), "yyyy-MM-dd");
+  const end = format(endOfMonth(month), "yyyy-MM-dd");
+
+  const { data, error } = await supabase
+    .from("unavailability")
+    .select("off_date")
+    .eq("cleaner_id", cleaner.id)
+    .gte("off_date", start)
+    .lte("off_date", end);
+
+  if (error) throw new Error(error.message);
+
+  const refinedData = data.map((d) => new Date(d.off_date));
+
+  return refinedData;
+}
+
+export async function addDayOff(date: Date) {
+  const cleaner = await getCurrentCleaner();
+  const supabase = await createClient();
+
+  const offDate = format(date, "yyyy-MM-dd");
+
+  const { error } = await supabase
+    .from("unavailability")
+    .insert({ cleaner_id: cleaner.id, off_date: offDate });
+
+  if (error) throw new Error(error.message);
+  revalidatePath("/cleaner");
+}
+
+export async function removeDayOff(date: Date) {
+  const cleaner = await getCurrentCleaner();
+  const supabase = await createClient();
+
+  const offDate = format(date, "yyyy-MM-dd");
+
+  const { error } = await supabase
+    .from("unavailability")
+    .delete()
+    .eq("cleaner_id", cleaner.id)
+    .eq("off_date", offDate);
+
+  if (error) throw new Error(error.message);
 }
