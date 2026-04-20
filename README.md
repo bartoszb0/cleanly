@@ -1,109 +1,131 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Cleanly
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+A full-stack two-sided marketplace for booking professional cleaning services. Built to learn and demonstrate Next.js App Router, server-side rendering, and modern full-stack patterns — with Supabase handling the backend so the focus stays entirely on the frontend.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+---
+
+## Tech Stack
+
+| Layer              | Technology                              |
+| ------------------ | --------------------------------------- |
+| Framework          | Next.js 16 (App Router)                 |
+| Language           | TypeScript                              |
+| Database & Auth    | Supabase (PostgreSQL + Auth + Realtime) |
+| Styling            | Tailwind CSS v4                         |
+| UI Components      | shadcn/ui + Radix UI                    |
+| Forms & Validation | React Hook Form + Zod                   |
+| Date Handling      | date-fns + date-fns-tz                  |
+| Notifications      | Sonner                                  |
+
+---
 
 ## Features
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+### Customer
 
-## Demo
+- Browse and filter cleaners by city, price range, rating, experience, and whether supplies are included
+- Book a cleaner with an interactive date/time picker that checks cleaner availability in real time
+- View booking history with status tracking (pending → confirmed → completed)
+- Cancel pending or confirmed bookings
+- Leave reviews and rate cleaners after a completed job
+- Real-time chat with cleaners via Supabase Realtime
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+### Cleaner
 
-## Deploy to Vercel
+- Dashboard with today's jobs, earnings summary, and recent activity
+- Full job list with per-job earnings and month grouping
+- Job detail page with same-day conflict detection — see the day's schedule before confirming a pending request
+- Confirm or cancel incoming booking requests
+- Schedule management — mark days off, browse jobs by date on an interactive calendar
+- Reviews page with rating breakdown and sort/filter controls
+- Profile page with bio, city, hourly rate, and stats
 
-Vercel deployment will guide you through creating a Supabase account and project.
+### Shared
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+- Email/password authentication with email verification
+- Role-based onboarding (separate flows for customers and cleaners)
+- Password reset flow
+- Toast notifications for all user actions
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+---
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## Context & Purpose
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+### Why Supabase
 
-## Clone and run locally
+Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely — no Express server, no ORM configuration, no auth system from scratch. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus where it belonged: the frontend.
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+### Why Server Actions over API Routes
 
-2. Create a Next.js app using the Supabase Starter template npx command
+Next.js Server Actions let you call a TypeScript function directly from a component — no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They run on the server, keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+---
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+## Architecture Overview
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+```
+app/
+├── (auth)/              # Login, sign-up, password reset, email confirm
+├── (protected)/         # Role-aware entry point post-login
+├── onboarding/          # Branching onboarding: customer vs cleaner
+├── customer/            # Customer-facing pages
+│   ├── page.tsx         # Browse & filter cleaners
+│   ├── cleaner/[id]/    # Cleaner profile + reviews
+│   ├── my-bookings/     # Booking history with status tabs
+│   └── messages/[id]/   # Realtime chat
+└── cleaner/             # Cleaner dashboard
+    ├── page.tsx          # Dashboard overview
+    ├── jobs/[id]/        # Job detail + conflict detection + confirmation
+    ├── schedule/         # Calendar + availability management
+    └── reviews/          # Opinion list with filtering
 
-3. Use `cd` to change into the app's directory
+lib/
+├── actions/   # Server Actions — all mutations (bookings, schedule, opinions, auth)
+├── data/      # Server-side read functions — Supabase queries, React cache()
+├── schemas/   # Zod validation schemas
+└── supabase/  # Typed Supabase client setup (server + client)
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+**Read vs. write split:** `lib/data/` contains read-only server functions, many wrapped in React `cache()` to deduplicate identical queries within a single render pass. `lib/actions/` contains Server Actions for all mutations, each calling `revalidatePath()` on success to keep the UI in sync without manual state management.
 
-4. Rename `.env.example` to `.env.local` and update the following:
+**Auth & RLS:** Supabase Row Level Security policies enforce data access at the database level — customers can only see their own bookings, cleaners can only update their own jobs. The application layer doesn't need to re-implement these checks.
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+**Realtime chat:** Supabase Realtime subscriptions are established on the client inside the messages page. Messages are sent via Server Action (persisted to the database immediately) and received via WebSocket subscription, giving instant delivery without polling.
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+---
 
-5. You can now run the Next.js local development server:
+## Technical Highlights
 
-   ```bash
-   npm run dev
-   ```
+### Same-day conflict detection
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+When a cleaner opens a pending booking request, the page fetches their existing confirmed jobs for that day and runs an overlap check. If the incoming job would overlap an existing one, the confirm button is disabled and the day's timeline highlights the conflict visually. The check also runs server-side on confirmation as a safety net.
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+### Live availability during booking
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+The customer booking form fetches the selected cleaner's schedule for the chosen date as you pick it, displaying booked time slots before you select a start time. Combined with a server-side conflict check on submission, double-bookings are structurally prevented.
 
-## Feedback and issues
+### Role-based routing
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+Customers and cleaners share one auth system but have entirely separate route groups (`/customer/`, `/cleaner/`) with their own layouts and middleware-level route protection. Onboarding branches immediately after signup based on role selection and is shown exactly once.
 
-## More Supabase examples
+### Interactive schedule management
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+The schedule page uses a client-side calendar that fetches days-off and job data per month and per selected day via Server Actions. Navigating to a new month re-fetches availability in the background with a spinner overlay while the calendar stays interactive. Marking or removing a day off updates immediately and revalidates the calendar state.
+
+---
+
+## Current State
+
+### Complete
+
+- Full authentication flow (signup, login, email verification, password reset)
+- Customer browsing, filtering, booking, cancellation, reviews, and realtime chat
+- Cleaner dashboard, job management, conflict detection, schedule, and reviews
+
+### Planned
+
+- **Cleaner messages hub** — conversation list and chat view for cleaners (customer side is complete)
+- **Avatar upload** — UI placeholder exists, Supabase Storage integration pending
+- **Role redirect** — smart post-login redirect to the correct dashboard based on role
+- **Notifications** — no push or email notification system yet
+- **Payment integration** — prices are recorded but no payment flow exists
