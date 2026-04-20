@@ -69,3 +69,17 @@ export type NavbarProps = {
     icon: LucideIcon;
   }[];
 };
+
+export type ExtendedJob = Tables<"jobs"> & {
+  customers: {
+    full_name: string;
+    phone: string;
+  };
+};
+
+export type ScheduleSlot = {
+  id: string;
+  scheduled_at: string;
+  end_time: string;
+  status: string;
+};
