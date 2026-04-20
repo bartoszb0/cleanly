@@ -53,7 +53,6 @@ export default function JobCard({ job }: { job: Tables<"jobs"> }) {
           <Wallet size={13} />
           {earnings} PLN
         </p>
-        <p className="text-xs text-muted-foreground mt-0.5">{"lol"}</p>
       </div>
 
       <ChevronRight
