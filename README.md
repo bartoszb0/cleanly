@@ -119,6 +119,7 @@ The schedule page uses a client-side calendar that fetches days-off and job data
 ### Complete
 
 - Full authentication flow (signup, login, email verification, password reset)
+- **Role redirect** — smart post-login redirect to the correct dashboard based on role
 - Customer browsing, filtering, booking, cancellation, reviews, and realtime chat
 - Cleaner dashboard, job management, conflict detection, schedule, and reviews
 
@@ -126,6 +127,5 @@ The schedule page uses a client-side calendar that fetches days-off and job data
 
 - **Cleaner messages hub** — conversation list and chat view for cleaners (customer side is complete)
 - **Avatar upload** — UI placeholder exists, Supabase Storage integration pending
-- **Role redirect** — smart post-login redirect to the correct dashboard based on role
 - **Notifications** — no push or email notification system yet
 - **Payment integration** — prices are recorded but no payment flow exists
