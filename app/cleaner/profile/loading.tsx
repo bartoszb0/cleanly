@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 
 export default function ProfileLoading() {
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
@@ -28,7 +28,10 @@ export default function ProfileLoading() {
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-muted/50 rounded-xl p-4 flex flex-col items-center gap-2">
+            <div
+              key={i}
+              className="bg-muted/50 rounded-xl p-4 flex flex-col items-center gap-2"
+            >
               <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-6 w-8" />
               <Skeleton className="h-3 w-14" />

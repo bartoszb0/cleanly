@@ -11,7 +11,7 @@ function InfoRowSkeleton() {
 
 export default function JobDetailsLoading() {
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       {/* Header card */}
       <div className="bg-card border border-border rounded-2xl p-6 mb-4">
         <div className="flex items-start justify-between gap-4 mb-6">

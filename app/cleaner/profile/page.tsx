@@ -14,7 +14,7 @@ export default async function Profile() {
   const memberSince = format(new Date(cleaner.created_at), "MMMM yyyy");
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">

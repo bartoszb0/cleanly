@@ -26,7 +26,7 @@ export default async function JobDetails({
   const endTime = new Date(job.end_time);
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       <div className="bg-card border border-border rounded-2xl p-6 mb-4">
         {/* Header */}
         <JobHeader job={job} scheduledDate={scheduledDate} />

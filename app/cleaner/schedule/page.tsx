@@ -50,7 +50,7 @@ export default function SchedulePage() {
   }, [currentMonth]);
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
           <CalendarDays className="text-primary" size={22} />
@@ -63,13 +63,13 @@ export default function SchedulePage() {
 
       <div className="bg-card border border-border rounded-2xl p-2 sm:p-4 mb-6">
         <CleanerCalendar
-            date={date}
-            setDate={setDate}
-            currentMonth={currentMonth}
-            setCurrentMonth={setCurrentMonth}
-            daysOff={daysOff}
-            isPending={isMonthPending}
-          />
+          date={date}
+          setDate={setDate}
+          currentMonth={currentMonth}
+          setCurrentMonth={setCurrentMonth}
+          daysOff={daysOff}
+          isPending={isMonthPending}
+        />
       </div>
 
       <SelectedDayView
