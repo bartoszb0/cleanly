@@ -32,7 +32,7 @@ export async function getOrCreateConversation(cleanerId: string) {
     .single();
 
   if (createError) {
-    return { success: false, error: "Could not start a conversation." };
+    return { success: null, error: "Could not start a conversation." };
   }
 
   return { success: newRoom.id };
