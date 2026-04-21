@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -18,6 +19,22 @@ export default function DemoButtons() {
   const [isCustomerDemoPending, startCustomerTransition] = useTransition();
   const [isCleanerDemoPending, startCleanerTransition] = useTransition();
 
+  const handleCustomerLogin = () => {
+    startCustomerTransition(async () => {
+      const result = await loginDemoCustomer();
+      if (result.success) router.push("/customer");
+      else toast.error(result.message);
+    });
+  };
+
+  const handleCleanerLogin = () => {
+    startCleanerTransition(async () => {
+      const result = await loginDemoCleaner();
+      if (result.success) router.push("/cleaner");
+      else toast.error(result.message);
+    });
+  };
+
   return (
     <Card className="mt-5 text-center">
       <CardHeader>
@@ -27,17 +44,13 @@ export default function DemoButtons() {
       <CardContent>
         <div className="flex justify-center gap-4">
           <Button
-            onClick={() =>
-              startCustomerTransition(() => loginDemoCustomer(router))
-            }
+            onClick={handleCustomerLogin}
             disabled={isCustomerDemoPending || isCleanerDemoPending}
           >
             {isCustomerDemoPending ? "Logging in..." : "Customer View"}
           </Button>
           <Button
-            onClick={() =>
-              startCleanerTransition(() => loginDemoCleaner(router))
-            }
+            onClick={handleCleanerLogin}
             disabled={isCleanerDemoPending || isCustomerDemoPending}
           >
             {isCleanerDemoPending ? "Logging in..." : "Cleaner View"}

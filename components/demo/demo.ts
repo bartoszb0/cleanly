@@ -1,35 +1,27 @@
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+"use server";
 
-export async function loginDemoCustomer(router: ReturnType<typeof useRouter>) {
-  const supabase = createClient();
+import { createClient } from "@/lib/supabase/server";
+
+export async function loginDemoCustomer() {
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
-    email: process.env.NEXT_PUBLIC_DEMO_CUSTOMER_EMAIL!,
-    password: process.env.NEXT_PUBLIC_DEMO_CUSTOMER_PASSWORD!,
+    email: process.env.DEMO_CUSTOMER_EMAIL!,
+    password: process.env.DEMO_CUSTOMER_PASSWORD!,
   });
 
-  if (error) {
-    toast.error(error.message);
-    console.error(error);
-  } else {
-    router.push("/customer");
-  }
+  if (error) return { success: false, message: error.message };
+  return { success: true };
 }
 
-export async function loginDemoCleaner(router: ReturnType<typeof useRouter>) {
-  const supabase = createClient();
+export async function loginDemoCleaner() {
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
-    email: process.env.NEXT_PUBLIC_DEMO_CLEANER_EMAIL!,
-    password: process.env.NEXT_PUBLIC_DEMO_CLEANER_PASSWORD!,
+    email: process.env.DEMO_CLEANER_EMAIL!,
+    password: process.env.DEMO_CLEANER_PASSWORD!,
   });
 
-  if (error) {
-    toast.error(error.message);
-    console.error(error);
-  } else {
-    router.push("/cleaner");
-  }
+  if (error) return { success: false, message: error.message };
+  return { success: true };
 }
