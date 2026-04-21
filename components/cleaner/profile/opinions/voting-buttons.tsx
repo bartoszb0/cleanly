@@ -6,6 +6,7 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+// TODO
 // Ok, so I came up with this stupid idea to just use useState instead
 // of useOptimistic, the problem is somwehere here when using useTransition and useOptimistic,
 // I should really try to do this the proper way, for now this is the best, shortest working
