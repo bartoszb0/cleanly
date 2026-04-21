@@ -1,5 +1,4 @@
 import { MessageCircleDashed } from "lucide-react";
-import Link from "next/link";
 
 export default function NoConversationsFound() {
   return (
@@ -11,9 +10,6 @@ export default function NoConversationsFound() {
         <p className="text-slate-300 font-medium text-sm">
           No conversations found
         </p>
-        <Link href={"/"} className="text-slate-500 text-xs mt-1">
-          <span>Find a cleaner to start chatting</span>
-        </Link>
       </div>
     </div>
   );
