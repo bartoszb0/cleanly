@@ -1,4 +1,4 @@
-import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/booking-status-config";
 import { Tables } from "@/types/supabase";
 import { format } from "date-fns";
 

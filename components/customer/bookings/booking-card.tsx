@@ -1,4 +1,4 @@
-import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/booking-status-config";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { ExtendedBooking } from "@/types";
 import { addHours, format } from "date-fns";

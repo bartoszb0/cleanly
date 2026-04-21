@@ -1,4 +1,4 @@
-import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/booking-status-config";
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types";
 import { format } from "date-fns";

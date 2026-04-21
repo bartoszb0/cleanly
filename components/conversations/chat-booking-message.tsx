@@ -1,4 +1,4 @@
-import { BOOKING_STATUS_CONFIG } from "@/lib/constants/status-config";
+import { BOOKING_STATUS_CONFIG } from "@/lib/constants/booking-status-config";
 import { createClient } from "@/lib/supabase/client";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
