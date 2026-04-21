@@ -15,8 +15,8 @@ export default function OpenChat({ cleanerId }: { cleanerId: string }) {
 
       if (result.error) {
         toast.error(result.error);
-      } else if (result.conversationId) {
-        router.push(`/customer/messages/${result.conversationId}`);
+      } else if (result.success) {
+        router.push(`/customer/messages/${result.success}`);
       }
     });
   };

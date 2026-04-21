@@ -12,9 +12,9 @@ export function MessageCleanerButton({ cleanerId }: { cleanerId: string }) {
 
   const handleClick = () => {
     startTransition(async () => {
-      const data = await getOrCreateConversation(cleanerId);
-      if (data.conversationId) {
-        router.push(`/customer/messages/${data.conversationId}`);
+      const result = await getOrCreateConversation(cleanerId);
+      if (result.success) {
+        router.push(`/customer/messages/${result.success}`);
       }
     });
   };
