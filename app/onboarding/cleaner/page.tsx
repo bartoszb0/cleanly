@@ -110,12 +110,6 @@ export default function CleanerForm() {
             )}
           />
 
-          {/* Avatar TODO */}
-          <Field>
-            <label>avatar</label>
-            <Input placeholder="avatar" />
-          </Field>
-
           {/* Hourly Rate */}
           <Controller
             name="hourly_rate"

@@ -18,8 +18,6 @@ export const CleanerSchema = z.object({
     .min(20, "Bio is too short")
     .max(500, "Bio cannot exceed 500 characters."),
 
-  // avatar
-
   hourly_rate: z.coerce
     .number("Hourly rate is required")
     .min(1, "Hourly rate must be positive")
