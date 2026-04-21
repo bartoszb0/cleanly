@@ -11,13 +11,22 @@ import { saveMessage } from "@/lib/actions/conversations";
 import { useChatScroll } from "@/lib/hooks/use-chat-scroll";
 import { useRealtimeChat } from "@/lib/hooks/use-realtime-chat";
 import { ChatMessage } from "@/types";
+import { Tables } from "@/types/supabase";
 import { ChatMessageItem } from "./chat-message";
+
+type SaveMessageFn = (
+  conversationId: string,
+  content: string,
+) => Promise<
+  { success: null; error: string } | { success: Tables<"messages"> }
+>;
 
 interface RealtimeChatProps {
   conversationId: string;
   username: string;
   onMessage?: (messages: ChatMessage[]) => void;
   messages?: ChatMessage[];
+  saveMessageFn?: SaveMessageFn;
 }
 
 /**
@@ -33,6 +42,7 @@ export const RealtimeChat = ({
   username,
   onMessage,
   messages: initialMessages = [],
+  saveMessageFn = saveMessage,
 }: RealtimeChatProps) => {
   const { containerRef, scrollToBottom } = useChatScroll();
 
@@ -92,9 +102,9 @@ export const RealtimeChat = ({
       if (!tempId) return;
 
       // Call Server Action to persist in DB
-      const result = await saveMessage(conversationId, trimmedMessage);
+      const result = await saveMessageFn(conversationId, trimmedMessage);
 
-      if (result.error) {
+      if (result.success === null) {
         markAsFailed(tempId);
       } else if (result.success) {
         const confirmedMessage: ChatMessage = {
@@ -117,7 +127,7 @@ export const RealtimeChat = ({
   );
 
   return (
-    <div className="flex flex-col h-full w-full bg-background text-foreground antialiased">
+    <div className="flex flex-col h-full w-full bg-slate-900/50 text-foreground antialiased">
       {/* Messages */}
       <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {allMessages.length === 0 ? (

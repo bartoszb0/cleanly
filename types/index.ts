@@ -48,7 +48,7 @@ export type ScheduledBooking = {
 export type Conversation = {
   id: string;
   last_message_at: string;
-  cleaners: {
+  user: {
     name: string;
   };
 };

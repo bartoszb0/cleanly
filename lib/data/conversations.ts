@@ -1,5 +1,6 @@
 import { ChatMessage } from "@/types";
 import { createClient } from "../supabase/server";
+import { getCurrentCleaner } from "./cleaners";
 import { getCurrentCustomer } from "./customer";
 
 export async function getCreatedConversations() {
@@ -8,22 +9,17 @@ export async function getCreatedConversations() {
 
   const { data, error } = await supabase
     .from("conversations")
-    .select(
-      `
-      id,
-      last_message_at,
-      cleaners (
-        name,
-        avatar_url
-      )
-    `,
-    )
+    .select(`id, last_message_at, cleaners (name)`)
     .eq("customer_id", user.id)
     .order("last_message_at", { ascending: false });
 
   if (error) throw new Error(error.message);
 
-  return data;
+  return (data ?? []).map((c) => ({
+    id: c.id,
+    last_message_at: c.last_message_at,
+    user: { name: (c.cleaners as { name: string } | null)?.name ?? "Unknown" },
+  }));
 }
 
 export async function getCleanerByConversationId(conversationId: string) {
@@ -39,6 +35,57 @@ export async function getCleanerByConversationId(conversationId: string) {
   if (!data) return null;
 
   return data.cleaners;
+}
+
+export async function getConversationsForCleaner() {
+  const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
+
+  const { data: convos, error } = await supabase
+    .from("conversations")
+    .select("id, last_message_at, customer_id")
+    .eq("cleaner_id", cleaner.id)
+    .order("last_message_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+  if (!convos || convos.length === 0) return [];
+
+  const customerIds = convos.map((c) => c.customer_id);
+  const { data: customers } = await supabase
+    .from("customers")
+    .select("id, full_name")
+    .in("id", customerIds);
+
+  const nameMap = new Map((customers ?? []).map((c) => [c.id, c.full_name]));
+
+  return convos.map((c) => ({
+    id: c.id,
+    last_message_at: c.last_message_at,
+    user: { name: nameMap.get(c.customer_id) ?? "Unknown" },
+  }));
+}
+
+export async function getCustomerByConversationId(conversationId: string) {
+  const supabase = await createClient();
+
+  const { data: convo, error: convoError } = await supabase
+    .from("conversations")
+    .select("customer_id")
+    .eq("id", conversationId)
+    .maybeSingle();
+
+  if (convoError) throw new Error(convoError.message);
+  if (!convo) return null;
+
+  const { data: customer, error: customerError } = await supabase
+    .from("customers")
+    .select("*")
+    .eq("id", convo.customer_id)
+    .single();
+
+  if (customerError) throw new Error(customerError.message);
+
+  return customer;
 }
 
 export async function getConversationMessages(conversationId: string) {

@@ -29,7 +29,7 @@ export default function useReorderChat(initialConversations: Conversation[]) {
                 return {
                   ...c,
                   ...payload.new,
-                  cleaners: c.cleaners, // This ensures 'cleaners' isn't lost
+                  user: c.user,
                 };
               }
               return c;

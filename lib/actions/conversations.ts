@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { MessageInsert } from "@/types";
 import { TablesInsert } from "@/types/supabase";
+import { getCurrentCleaner } from "../data/cleaners";
 import { getCurrentCustomer } from "../data/customer";
 
 export async function getOrCreateConversation(cleanerId: string) {
@@ -49,6 +50,33 @@ export async function saveMessage(
   // sender_type is filled by a DB trigger
   const messageData: MessageInsert = {
     sender_id: user.id,
+    conversation_id: conversationId,
+    content: content,
+    ...(bookingId && { booking_id: bookingId }),
+  };
+
+  const { data, error } = await supabase
+    .from("messages")
+    .insert(messageData as TablesInsert<"messages">)
+    .select("*")
+    .single();
+
+  if (error || !data)
+    return { success: null, error: error?.message ?? "Failed to save message" };
+
+  return { success: data };
+}
+
+export async function saveMessageAsCleaner(
+  conversationId: string,
+  content: string,
+  bookingId?: string,
+) {
+  const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
+
+  const messageData: MessageInsert = {
+    sender_id: cleaner.id,
     conversation_id: conversationId,
     content: content,
     ...(bookingId && { booking_id: bookingId }),
