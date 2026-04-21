@@ -3,17 +3,11 @@ import { createClient } from "@/lib/supabase/client";
 import { cn, getUppercaseCityName } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { addHours, format } from "date-fns";
-import {
-  BrushCleaning,
-  Calendar,
-  Clock,
-  History,
-  Loader2,
-  MapPin,
-} from "lucide-react";
+import { BrushCleaning, Calendar, Clock, History, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import ChatBookingMessageSkeleton from "./chat-booking-message-skeleton";
 
 export default function ChatBookingMessage({
   bookingId,
@@ -47,7 +41,7 @@ export default function ChatBookingMessage({
     if (bookingId) fetchBooking();
   }, [bookingId, supabase]);
 
-  if (loading) return <Loader2 className="animate-spin" />;
+  if (loading) return <ChatBookingMessageSkeleton />;
   if (!booking) return null;
 
   const start = new Date(booking.scheduled_at);
