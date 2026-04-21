@@ -54,6 +54,17 @@ export async function createOpinion(jobId: string, formData: ReviewFormValues) {
   }
 
   const supabase = await createClient();
+  const customer = await getCurrentCustomer();
+
+  const { data: job } = await supabase
+    .from("jobs")
+    .select("id")
+    .eq("id", jobId)
+    .eq("customer_id", customer.id)
+    .eq("status", "completed")
+    .single();
+
+  if (!job) return { success: false, error: "Unauthorized" };
 
   // cleaner_id and customer_id are filled by a DB trigger
   const opinionData: OpinionInsert = {
