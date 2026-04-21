@@ -2,9 +2,17 @@
 
 import { OpinionSortOption } from "@/types";
 import { revalidatePath } from "next/cache";
+import {
+  CLEANER_OPINIONS_PER_PAGE,
+  CUSTOMER_OPINIONS_PER_PAGE,
+} from "../constants/opinions";
+import {
+  getCleanerOpinionsForCustomer,
+  getCleanersOpinions,
+  getCurrentCleaner,
+} from "../data/cleaners";
 import { CleanerFormValues } from "../schemas/cleanerForm";
 import { createClient } from "../supabase/server";
-import { getCurrentCleaner } from "../data/cleaners";
 
 export async function updateCleanerProfile(values: CleanerFormValues) {
   const supabase = await createClient();
@@ -28,15 +36,6 @@ export async function updateCleanerProfile(values: CleanerFormValues) {
   revalidatePath("/cleaner");
   return { success: true };
 }
-
-import {
-  CLEANER_OPINIONS_PER_PAGE,
-  CUSTOMER_OPINIONS_PER_PAGE,
-} from "../constants/opinions";
-import {
-  getCleanerOpinionsForCustomer,
-  getCleanersOpinions,
-} from "../data/cleaners";
 
 export async function fetchMoreCleanerOpinionsForCustomer(
   id: string,
