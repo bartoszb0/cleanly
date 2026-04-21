@@ -96,12 +96,12 @@ export const RealtimeChat = ({
 
       if (result.error) {
         markAsFailed(tempId);
-      } else if (result.data) {
+      } else if (result.success) {
         const confirmedMessage: ChatMessage = {
-          ...result.data,
-          id: result.data.id,
-          content: result.data.content,
-          createdAt: result.data.created_at,
+          ...result.success,
+          id: result.success.id,
+          content: result.success.content,
+          createdAt: result.success.created_at,
           user: {
             name: username,
           },

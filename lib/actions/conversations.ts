@@ -32,7 +32,7 @@ export async function getOrCreateConversation(cleanerId: string) {
     .single();
 
   if (createError) {
-    return { error: "Could not start a conversation." };
+    return { success: false, error: "Could not start a conversation." };
   }
 
   return { success: newRoom.id };
@@ -60,7 +60,8 @@ export async function saveMessage(
     .select("*")
     .single();
 
-  if (error) return { data: null, error: error.message };
+  if (error || !data)
+    return { success: null, error: error?.message ?? "Failed to save message" };
 
-  return { data: data };
+  return { success: data };
 }
