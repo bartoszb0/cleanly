@@ -41,20 +41,15 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const publicRoutes = [
-    "/confirm",
-    "/error",
-    "/forgot-password",
-    "/login",
-    "/sign-up",
-    "/sign-up-success",
-    "/update-password",
-  ];
-  const isPublicRoute = publicRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
-  );
+  const ROUTES = {
+    public: ["/confirm", "/error", "/forgot-password", "/login", "/sign-up", "/sign-up-success", "/update-password"],
+    auth: ["/login", "/sign-up", "/forgot-password"],
+    home: { cleaner: "/cleaner", customer: "/customer" } as Record<string, string>,
+    onboarding: "/onboarding",
+  };
 
-  const authPages = ["/login", "/sign-up", "/forgot-password"];
+  const pathname = request.nextUrl.pathname;
+  const isPublicRoute = ROUTES.public.some((route) => pathname.startsWith(route));
 
   // 1. Handle Unauthenticated Users
   if (!user && !isPublicRoute) {
@@ -71,58 +66,49 @@ export async function updateSession(request: NextRequest) {
       .eq("id", user.id)
       .single();
 
-    const pathname = request.nextUrl.pathname;
     const role = profile?.role; // "cleaner" | "customer" | null
+    const roleHome = ROUTES.home[role ?? ""] ?? "/customer";
 
     // Define onboarding sub-paths
-    const isBaseOnboarding = pathname === "/onboarding";
-    const isRoleOnboarding = pathname.startsWith(`/onboarding/${role}`);
-    const isOnboardingPath = pathname.startsWith("/onboarding");
+    const isBaseOnboarding = pathname === ROUTES.onboarding;
+    const isRoleOnboarding = pathname.startsWith(`${ROUTES.onboarding}/${role}`);
+    const isOnboardingPath = pathname.startsWith(ROUTES.onboarding);
 
     // A. ROOT PATH REDIRECTION ('/')
     if (pathname === "/") {
       const url = request.nextUrl.clone();
       if (!profile?.onboarded) {
-        // Logic: If they have a role, send to step 2. Otherwise, step 1.
-        url.pathname = role ? `/onboarding/${role}` : "/onboarding";
+        url.pathname = role ? `${ROUTES.onboarding}/${role}` : ROUTES.onboarding;
       } else {
-        url.pathname = role === "cleaner" ? "/cleaner" : "/customer";
+        url.pathname = roleHome;
       }
       return NextResponse.redirect(url);
     }
 
     // B. Force Onboarding if not finished
     if (!profile?.onboarded && !isPublicRoute) {
-      // If they have NO role and aren't on base onboarding -> send to /onboarding
       if (!role && !isBaseOnboarding) {
-        return NextResponse.redirect(new URL("/onboarding", request.url));
+        return NextResponse.redirect(new URL(ROUTES.onboarding, request.url));
       }
-      // If they HAVE a role but aren't on their specific step 2 page -> redirect there
       if (role && !isRoleOnboarding) {
-        return NextResponse.redirect(
-          new URL(`/onboarding/${role}`, request.url),
-        );
+        return NextResponse.redirect(new URL(`${ROUTES.onboarding}/${role}`, request.url));
       }
-      // Otherwise, they are where they belong (either /onboarding or /onboarding/[role])
     }
 
     // C. Prevent already onboarded users from seeing Auth/Onboarding pages
-    if (
-      profile?.onboarded &&
-      (authPages.includes(pathname) || isOnboardingPath)
-    ) {
+    if (profile?.onboarded && (ROUTES.auth.includes(pathname) || isOnboardingPath)) {
       const url = request.nextUrl.clone();
-      url.pathname = role === "cleaner" ? "/cleaner" : "/customer";
+      url.pathname = roleHome;
       return NextResponse.redirect(url);
     }
 
-    // D. ROLE PROTECTION (unchanged, but added a check for safety)
+    // D. ROLE PROTECTION
     if (profile?.onboarded) {
       if (pathname.startsWith("/cleaner") && role !== "cleaner") {
-        return NextResponse.redirect(new URL("/customer", request.url));
+        return NextResponse.redirect(new URL(ROUTES.home.customer, request.url));
       }
       if (pathname.startsWith("/customer") && role !== "customer") {
-        return NextResponse.redirect(new URL("/cleaner", request.url));
+        return NextResponse.redirect(new URL(ROUTES.home.cleaner, request.url));
       }
     }
   }
