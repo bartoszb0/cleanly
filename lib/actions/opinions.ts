@@ -1,6 +1,7 @@
 "use server";
 
-import { OpinionVoteType } from "@/types";
+import { OpinionInsert, OpinionVoteType } from "@/types";
+import { TablesInsert } from "@/types/supabase";
 import { revalidatePath } from "next/cache";
 import { getCurrentCustomer } from "../data/customer";
 import { ReviewFormValues, ReviewSchema } from "../schemas/reviewForm";
@@ -54,13 +55,16 @@ export async function createOpinion(jobId: string, formData: ReviewFormValues) {
 
   const supabase = await createClient();
 
-  // Typescript Error on insert happens because there is a supabase trigger that
-  // automatically pulls rest of data
-  const { error } = await supabase.from("opinions").insert({
+  // cleaner_id and customer_id are filled by a DB trigger
+  const opinionData: OpinionInsert = {
     job_id: jobId,
     rating: validatedFields.data.rating,
     content: validatedFields.data.review,
-  } as any); // to prevent typescript error
+  };
+
+  const { error } = await supabase
+    .from("opinions")
+    .insert(opinionData as TablesInsert<"opinions">);
 
   if (error) return { success: false, error: error.message };
 

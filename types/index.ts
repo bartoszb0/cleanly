@@ -1,5 +1,17 @@
 import { LucideIcon } from "lucide-react";
-import { Tables } from "./supabase";
+import { Tables, TablesInsert } from "./supabase";
+
+export type JobInsert = Omit<
+  TablesInsert<"jobs">,
+  "address" | "city" | "post_code" | "price_snapshot"
+>;
+
+export type OpinionInsert = Omit<
+  TablesInsert<"opinions">,
+  "cleaner_id" | "customer_id"
+>;
+
+export type MessageInsert = Omit<TablesInsert<"messages">, "sender_type">;
 
 export type Customer = Tables<"customers">;
 

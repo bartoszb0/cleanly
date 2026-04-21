@@ -1,5 +1,7 @@
 "use server";
 
+import { JobInsert } from "@/types";
+import { TablesInsert } from "@/types/supabase";
 import { addHours } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
 import { revalidatePath } from "next/cache";
@@ -99,20 +101,19 @@ export async function createBookingRequest(
     return { success: false, error: "Slot already taken" };
 
   // Insert data if there is no conflict
+  const jobData: JobInsert = {
+    customer_id: user.id,
+    cleaner_id: cleanerId,
+    scheduled_at: scheduled_at.toISOString(),
+    duration_hours: Number(validatedFields.data.duration),
+    end_time: end_time.toISOString(),
+    status: "pending",
+  };
 
-  // Typescript Error on insert happens because there is a supabase trigger that
-  // automatically pulls the addres and city from customers profile based on his ID,
-  // probably should just ignore it
+  // address, city, post_code, price_snapshot are filled by a DB trigger
   const { data: booking, error } = await supabase
     .from("jobs")
-    .insert({
-      customer_id: user.id,
-      cleaner_id: cleanerId,
-      scheduled_at: scheduled_at.toISOString(),
-      duration_hours: Number(validatedFields.data.duration),
-      end_time: end_time.toISOString(),
-      status: "pending",
-    } as any) // to prevent typescript error
+    .insert(jobData as TablesInsert<"jobs">)
     .select("id")
     .single();
 
