@@ -1,4 +1,4 @@
-import { getDayScheduleForCleaner } from "@/lib/data/schedule";
+import { getScheduleForConflictCheck } from "@/lib/data/schedule";
 import { ScheduleSlot } from "@/types";
 import { Tables } from "@/types/supabase";
 import ConfirmationButtons from "./confirmation-buttons";
@@ -23,7 +23,7 @@ export default async function JobConfirmationSection({
 }: {
   job: Tables<"jobs">;
 }) {
-  const schedule = await getDayScheduleForCleaner(job.scheduled_at);
+  const schedule = await getScheduleForConflictCheck(job.scheduled_at);
 
   const conflict = hasConflict(job, schedule);
 

@@ -3,7 +3,7 @@ import { fromZonedTime } from "date-fns-tz";
 import { createClient } from "../supabase/server";
 import { getCurrentCleaner } from "./cleaners";
 
-export async function getDayScheduleForCleaner(date: string) {
+export async function getScheduleForConflictCheck(date: string) {
   const supabase = await createClient();
   const cleaner = await getCurrentCleaner();
 
