@@ -1,3 +1,4 @@
+import { endOfDay, startOfDay } from "date-fns";
 import { cache } from "react";
 import { createClient } from "../supabase/server";
 import { getCurrentCleaner } from "./cleaners";
@@ -30,16 +31,16 @@ export const getBookingsForCustomer = cache(async () => {
 export const getTodaysBookings = async (cleanerId: string) => {
   const supabase = await createClient();
   const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
+  const start = startOfDay(today).toISOString();
+  const end = endOfDay(today).toISOString();
 
   const { data, error } = await supabase
     .from("jobs")
     .select("*")
     .eq("cleaner_id", cleanerId)
     .in("status", ["confirmed", "completed", "cancelled"])
-    .gte("scheduled_at", startOfDay)
-    .lte("scheduled_at", endOfDay)
+    .gte("scheduled_at", start)
+    .lte("scheduled_at", end)
     .order("scheduled_at");
 
   if (error) throw new Error(error.message);
