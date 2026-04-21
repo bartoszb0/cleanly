@@ -21,7 +21,6 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
       <div className="flex gap-4">
         {/* Avatar */}
         <div className="shrink-0">
-          {/* Changed w-20 h-20 to w-14 h-14 on mobile, and sm:w-20 sm:h-20 for larger screens */}
           <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-linear-to-br from-sky-400 to-blue-600 flex items-center justify-center">
             {cleaner.avatar_url ? (
               <Image
@@ -32,7 +31,6 @@ export default function CleanerCard({ cleaner }: CleanerCardProps) {
                 className="object-cover w-full h-full"
               />
             ) : (
-              /* Adjusted text size for smaller mobile circle */
               <span className="text-white font-bold text-xl sm:text-2xl">
                 {getInitials(cleaner.name)}
               </span>
