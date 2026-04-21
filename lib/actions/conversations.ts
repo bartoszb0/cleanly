@@ -18,7 +18,7 @@ export async function getOrCreateConversation(cleanerId: string) {
     .single();
 
   if (existing) {
-    return { conversationId: existing.id };
+    return { success: existing.id };
   }
 
   // 2. If not, create a new one
@@ -35,7 +35,7 @@ export async function getOrCreateConversation(cleanerId: string) {
     return { error: "Could not start a conversation." };
   }
 
-  return { conversationId: newRoom.id };
+  return { success: newRoom.id };
 }
 
 export async function saveMessage(

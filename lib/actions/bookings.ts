@@ -121,18 +121,14 @@ export async function createBookingRequest(
   // Get conversationId, or create a new one
   const conversationData = await getOrCreateConversation(cleanerId);
 
-  if (conversationData.error || !conversationData.conversationId)
+  if (!conversationData.success)
     return {
       success: false,
       error: conversationData.error ?? "Could not start a conversation",
     };
 
   // Here now send the message with bookingId
-  await saveMessage(
-    conversationData.conversationId,
-    "booking_request",
-    booking.id,
-  );
+  await saveMessage(conversationData.success, "booking_request", booking.id);
 
-  redirect(`/customer/messages/${conversationData.conversationId}`);
+  redirect(`/customer/messages/${conversationData.success}`);
 }
