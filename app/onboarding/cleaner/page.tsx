@@ -53,7 +53,7 @@ export default function CleanerForm() {
         toast.error(result.error);
       } else {
         router.push("/cleaner");
-        toast.success("Cleaner account set up succesfully");
+        toast.success("Cleaner account set up successfully");
       }
     });
   };

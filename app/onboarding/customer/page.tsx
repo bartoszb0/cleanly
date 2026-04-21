@@ -53,7 +53,7 @@ export default function CustomerForm() {
         toast.error(result.error);
       } else {
         router.push("/customer");
-        toast.success("Customer account set up succesfully");
+        toast.success("Customer account set up successfully");
       }
     });
   };
