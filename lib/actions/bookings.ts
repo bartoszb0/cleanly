@@ -20,7 +20,6 @@ export async function cancelBooking(jobId: string) {
     .eq("id", jobId);
 
   if (error) {
-    console.log(error);
     return { success: false, error: error.message };
   }
 
@@ -123,7 +122,10 @@ export async function createBookingRequest(
   const conversationData = await getOrCreateConversation(cleanerId);
 
   if (conversationData.error || !conversationData.conversationId)
-    return { success: false, error: "Error" };
+    return {
+      success: false,
+      error: conversationData.error ?? "Could not start a conversation",
+    };
 
   // Here now send the message with bookingId
   await saveMessage(

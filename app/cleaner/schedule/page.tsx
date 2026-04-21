@@ -31,7 +31,7 @@ export default function SchedulePage() {
         try {
           setSelectedDateJobs(await getDayScheduleForCleaner(date));
         } catch (error) {
-          toast.error("error");
+          toast.error("Could not load schedule for that day");
         }
       } else {
         setSelectedDateJobs([]);
