@@ -6,12 +6,6 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
-// TODO
-// Ok, so I came up with this stupid idea to just use useState instead
-// of useOptimistic, the problem is somwehere here when using useTransition and useOptimistic,
-// I should really try to do this the proper way, for now this is the best, shortest working
-// solution to useOptimistic being stupid.
-
 export default function CleanerOpinionVotingButtons({
   opinion,
 }: {
@@ -31,22 +25,12 @@ export default function CleanerOpinionVotingButtons({
 
   const handleVote = async (type: OpinionVoteType) => {
     const nextVote = opinionUserVote === type ? null : type;
+    const snapshot = { vote: opinionUserVote, likes: opinionLikes, dislikes: opinionDislikes };
 
-    // Remove old vote
-    if (opinionUserVote === "like") {
-      setOpinionLikes((prev) => prev - 1);
-    }
-    if (opinionUserVote === "dislike") {
-      setOpinionDislikes((prev) => prev - 1);
-    }
-
-    // Add new vote
-    if (nextVote === "like") {
-      setOpinionLikes((prev) => prev + 1);
-    }
-    if (nextVote === "dislike") {
-      setOpinionDislikes((prev) => prev + 1);
-    }
+    if (opinionUserVote === "like") setOpinionLikes((prev) => prev - 1);
+    if (opinionUserVote === "dislike") setOpinionDislikes((prev) => prev - 1);
+    if (nextVote === "like") setOpinionLikes((prev) => prev + 1);
+    if (nextVote === "dislike") setOpinionDislikes((prev) => prev + 1);
     setOpinionUserVote(nextVote);
 
     startTransition(async () => {
@@ -54,6 +38,9 @@ export default function CleanerOpinionVotingButtons({
 
       if (result.error) {
         toast.error(result.error);
+        setOpinionUserVote(snapshot.vote);
+        setOpinionLikes(snapshot.likes);
+        setOpinionDislikes(snapshot.dislikes);
       }
     });
   };
