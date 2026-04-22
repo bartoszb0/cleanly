@@ -42,7 +42,7 @@ export default function SchedulePage() {
   useEffect(() => {
     startMonthTransition(async () => {
       try {
-        setDaysOff(await getMonthDaysOffForCleaner(currentMonth));
+        setDaysOff(await getMonthDaysOffForCleaner(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
       } catch {
         toast.error("Failed to load days off");
       }
@@ -80,7 +80,7 @@ export default function SchedulePage() {
         onDayOffChange={() => {
           startMonthTransition(async () => {
             try {
-              setDaysOff(await getMonthDaysOffForCleaner(currentMonth));
+              setDaysOff(await getMonthDaysOffForCleaner(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
             } catch {
               toast.error("Failed to refresh days off");
             }
