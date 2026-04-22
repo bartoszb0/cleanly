@@ -66,7 +66,7 @@ export async function createBookingRequest(
   if (!validatedFields.success) {
     return {
       success: false,
-      error: "Invalid form data",
+      error: validatedFields.error,
     };
   }
 
