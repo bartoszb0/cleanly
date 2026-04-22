@@ -53,11 +53,11 @@ A full-stack two-sided marketplace for booking professional cleaning services. B
 
 ### Why Supabase
 
-Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely - no Express server, no ORM configuration, no auth system from scratch. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus where it belonged: the frontend.
+Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus on the frontend.
 
 ### Why Server Actions over API Routes
 
-Next.js Server Actions let you call a TypeScript function directly from a component - no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They run on the server, keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
+Next.js Server Actions let you call a TypeScript function directly from a component - no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
 
 ---
 
@@ -77,16 +77,17 @@ app/
     ├── page.tsx          # Dashboard overview
     ├── jobs/[id]/        # Job detail + conflict detection + confirmation
     ├── schedule/         # Calendar + availability management
-    └── reviews/          # Opinion list with filtering
+    ├── reviews/          # Opinion list with filtering
+    └── messages/[id]/   # Realtime chat
 
 lib/
-├── actions/   # Server Actions - all mutations (bookings, schedule, opinions, auth)
+├── actions/   # Server Actions - all mutations and client side data fetches (bookings, schedule, opinions, auth)
 ├── data/      # Server-side read functions - Supabase queries, React cache()
 ├── schemas/   # Zod validation schemas
 └── supabase/  # Typed Supabase client setup (server + client)
 ```
 
-**Read vs. write split:** `lib/data/` contains read-only server functions, many wrapped in React `cache()` to deduplicate identical queries within a single render pass. `lib/actions/` contains Server Actions for all mutations, each calling `revalidatePath()` on success to keep the UI in sync without manual state management.
+**Read vs. write split:** `lib/data/` contains read-only server functions, many wrapped in React `cache()` to deduplicate identical queries within a single render pass. `lib/actions/` contains Server Actions for all mutations, calling `revalidatePath()` on success to keep the UI in sync without manual state management.
 
 **Auth & RLS:** Supabase Row Level Security policies enforce data access at the database level - customers can only see their own bookings, cleaners can only update their own jobs. The application layer doesn't need to re-implement these checks.
 
@@ -110,7 +111,7 @@ Customers and cleaners share one auth system but have entirely separate route gr
 
 ### Interactive schedule management
 
-The schedule page uses a client-side calendar that fetches days-off and job data per month and per selected day via Server Actions. Navigating to a new month re-fetches availability in the background with a spinner overlay while the calendar stays interactive. Marking or removing a day off updates immediately and revalidates the calendar state.
+The schedule page uses a client-side calendar that fetches days-off and job data per month and per selected day via Server Actions. Navigating to a new month re-fetches availability in the background while the calendar stays interactive. Marking or removing a day off updates immediately and revalidates the calendar state.
 
 ---
 
