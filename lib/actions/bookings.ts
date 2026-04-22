@@ -4,9 +4,10 @@ import { JobInsert } from "@/types";
 import { TablesInsert } from "@/types/supabase";
 import { addHours } from "date-fns";
 import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
-import { APP_TIMEZONE } from "../constants/booking";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { APP_TIMEZONE } from "../constants/booking";
+import { getCurrentCleaner } from "../data/cleaners";
 import { getCurrentCustomer } from "../data/customer";
 import { bookingSchema, BookingValues } from "../schemas/bookCleaner";
 import { createClient } from "../supabase/server";
@@ -14,11 +15,13 @@ import { getOrCreateConversation, saveMessage } from "./conversations";
 
 export async function cancelBooking(jobId: string) {
   const supabase = await createClient();
+  const user = await getCurrentCustomer();
 
   const { error } = await supabase
     .from("jobs")
     .update({ status: "cancelled" })
-    .eq("id", jobId);
+    .eq("id", jobId)
+    .eq("customer_id", user.id);
 
   if (error) {
     return { success: false, error: error.message };
@@ -30,11 +33,13 @@ export async function cancelBooking(jobId: string) {
 
 export async function confirmJob(jobId: string) {
   const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
 
   const { error } = await supabase
     .from("jobs")
     .update({ status: "confirmed" })
-    .eq("id", jobId);
+    .eq("id", jobId)
+    .eq("cleaner_id", cleaner.id);
 
   if (error) return { success: false, error: error.message };
 
@@ -45,11 +50,13 @@ export async function confirmJob(jobId: string) {
 
 export async function cancelJobByCleaner(jobId: string) {
   const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
 
   const { error } = await supabase
     .from("jobs")
     .update({ status: "cancelled" })
-    .eq("id", jobId);
+    .eq("id", jobId)
+    .eq("cleaner_id", cleaner.id);
 
   if (error) return { success: false, error: error.message };
 
@@ -88,10 +95,21 @@ export async function createBookingRequest(
   const scheduled_at = fromZonedTime(localDate, APP_TIMEZONE);
   const end_time = addHours(scheduled_at, Number(duration));
 
-  const todayInWarsaw = formatInTimeZone(new Date(), APP_TIMEZONE, "yyyy-MM-dd");
-  const bookingDateInWarsaw = formatInTimeZone(scheduled_at, APP_TIMEZONE, "yyyy-MM-dd");
+  const todayInWarsaw = formatInTimeZone(
+    new Date(),
+    APP_TIMEZONE,
+    "yyyy-MM-dd",
+  );
+  const bookingDateInWarsaw = formatInTimeZone(
+    scheduled_at,
+    APP_TIMEZONE,
+    "yyyy-MM-dd",
+  );
   if (bookingDateInWarsaw <= todayInWarsaw)
-    return { success: false, error: "Bookings cannot be made for today or past dates" };
+    return {
+      success: false,
+      error: "Bookings cannot be made for today or past dates",
+    };
 
   // Run the conflict check
   const { data: conflict } = await supabase
