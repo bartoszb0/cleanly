@@ -1,15 +1,9 @@
 "use server";
 
-import {
-  endOfDay,
-  endOfMonth,
-  format,
-  startOfDay,
-  startOfMonth,
-} from "date-fns";
+import { endOfDay, startOfDay } from "date-fns";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-import { APP_TIMEZONE } from "../constants/booking";
 import { revalidatePath } from "next/cache";
+import { APP_TIMEZONE } from "../constants/booking";
 import { getCurrentCleaner } from "../data/cleaners";
 import { createClient } from "../supabase/server";
 
@@ -53,12 +47,14 @@ export async function getDayScheduleForCleaner(date: Date) {
   return data ?? [];
 }
 
-export async function getMonthDaysOffForCleaner(month: Date) {
+export async function getMonthDaysOffForCleaner(year: number, month: number) {
   const cleaner = await getCurrentCleaner();
   const supabase = await createClient();
 
-  const start = format(startOfMonth(month), "yyyy-MM-dd");
-  const end = format(endOfMonth(month), "yyyy-MM-dd");
+  const mm = String(month).padStart(2, "0");
+  const lastDay = new Date(year, month, 0).getDate();
+  const start = `${year}-${mm}-01`;
+  const end = `${year}-${mm}-${lastDay}`;
 
   const { data, error } = await supabase
     .from("unavailability")
