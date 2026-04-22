@@ -1,3 +1,5 @@
+export const APP_TIMEZONE = "Europe/Warsaw";
+
 export const VALID_HOURS = Array.from({ length: 14 }, (_, i) =>
   (i + 7).toString(),
 );

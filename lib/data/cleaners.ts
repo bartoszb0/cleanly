@@ -1,5 +1,6 @@
 import { Opinion, OpinionSortOption } from "@/types";
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
+import { APP_TIMEZONE } from "../constants/booking";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { FilterValues } from "../schemas/filterCleaners";
@@ -20,7 +21,7 @@ export const getCleanersByCity = async (
   let busyCleanerIds: string[] = [];
 
   if (filters.date) {
-    const formattedDate = format(filters.date, "yyyy-MM-dd");
+    const formattedDate = formatInTimeZone(filters.date, APP_TIMEZONE, "yyyy-MM-dd");
     const { data: busyData, error: busyError } = await supabase
       .from("unavailability")
       .select("cleaner_id")
@@ -32,6 +33,7 @@ export const getCleanersByCity = async (
   }
 
   // The Single Source of Truth for Filtering
+  // TODO any
   const applyAllFilters = (query: any) => {
     let q = query.eq("city", city);
 

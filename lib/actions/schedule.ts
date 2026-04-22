@@ -7,7 +7,8 @@ import {
   startOfDay,
   startOfMonth,
 } from "date-fns";
-import { fromZonedTime } from "date-fns-tz";
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { APP_TIMEZONE } from "../constants/booking";
 import { revalidatePath } from "next/cache";
 import { getCurrentCleaner } from "../data/cleaners";
 import { createClient } from "../supabase/server";
@@ -15,8 +16,8 @@ import { createClient } from "../supabase/server";
 export async function getDayScheduleForCustomer(date: Date, cleanerId: string) {
   const supabase = await createClient();
 
-  const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
-  const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
+  const start = fromZonedTime(startOfDay(date), APP_TIMEZONE).toISOString();
+  const end = fromZonedTime(endOfDay(date), APP_TIMEZONE).toISOString();
 
   const { data, error } = await supabase
     .from("jobs")
@@ -36,8 +37,8 @@ export async function getDayScheduleForCleaner(date: Date) {
   const cleaner = await getCurrentCleaner();
   const supabase = await createClient();
 
-  const start = fromZonedTime(startOfDay(date), "Europe/Warsaw").toISOString();
-  const end = fromZonedTime(endOfDay(date), "Europe/Warsaw").toISOString();
+  const start = fromZonedTime(startOfDay(date), APP_TIMEZONE).toISOString();
+  const end = fromZonedTime(endOfDay(date), APP_TIMEZONE).toISOString();
 
   const { data, error } = await supabase
     .from("jobs")
@@ -77,7 +78,7 @@ export async function addDayOff(date: Date) {
   const cleaner = await getCurrentCleaner();
   const supabase = await createClient();
 
-  const offDate = format(date, "yyyy-MM-dd");
+  const offDate = formatInTimeZone(date, APP_TIMEZONE, "yyyy-MM-dd");
 
   const { error } = await supabase
     .from("unavailability")
@@ -91,7 +92,7 @@ export async function removeDayOff(date: Date) {
   const cleaner = await getCurrentCleaner();
   const supabase = await createClient();
 
-  const offDate = format(date, "yyyy-MM-dd");
+  const offDate = formatInTimeZone(date, APP_TIMEZONE, "yyyy-MM-dd");
 
   const { error } = await supabase
     .from("unavailability")

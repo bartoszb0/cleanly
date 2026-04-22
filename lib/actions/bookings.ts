@@ -4,6 +4,7 @@ import { JobInsert } from "@/types";
 import { TablesInsert } from "@/types/supabase";
 import { addHours } from "date-fns";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { APP_TIMEZONE } from "../constants/booking";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentCustomer } from "../data/customer";
@@ -75,7 +76,7 @@ export async function createBookingRequest(
 
   const { date, startHour, startMinute, duration } = validatedFields.data;
 
-  const warsawDate = toZonedTime(date, "Europe/Warsaw");
+  const warsawDate = toZonedTime(date, APP_TIMEZONE);
   const localDate = new Date(
     warsawDate.getFullYear(),
     warsawDate.getMonth(),
@@ -84,7 +85,7 @@ export async function createBookingRequest(
     Number(startMinute),
   );
 
-  const scheduled_at = fromZonedTime(localDate, "Europe/Warsaw"); // correctly converts to UTC
+  const scheduled_at = fromZonedTime(localDate, APP_TIMEZONE); // correctly converts to UTC
   const end_time = addHours(scheduled_at, Number(duration));
 
   // Run the conflict check
