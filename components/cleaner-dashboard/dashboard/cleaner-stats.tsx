@@ -1,6 +1,7 @@
 import { Tables } from "@/types/supabase";
 import { Check, MessageSquareMore, StarIcon } from "lucide-react";
 
+// TODO any
 function StatCard({ label, value, suffix, icon }: any) {
   const Icon = icon;
 
