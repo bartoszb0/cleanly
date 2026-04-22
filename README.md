@@ -1,6 +1,6 @@
 # Cleanly
 
-A full-stack two-sided marketplace for booking professional cleaning services. Built to learn and demonstrate Next.js App Router, server-side rendering, and modern full-stack patterns — with Supabase handling the backend so the focus stays entirely on the frontend.
+A full-stack two-sided marketplace for booking professional cleaning services. Built to learn and demonstrate Next.js App Router, server-side rendering, and modern full-stack patterns - with Supabase handling the backend so the focus stays entirely on the frontend.
 
 ---
 
@@ -34,9 +34,9 @@ A full-stack two-sided marketplace for booking professional cleaning services. B
 
 - Dashboard with today's jobs, earnings summary, and recent activity
 - Full job list with per-job earnings and month grouping
-- Job detail page with same-day conflict detection — see the day's schedule before confirming a pending request
+- Job detail page with same-day conflict detection - see the day's schedule before confirming a pending request
 - Confirm or cancel incoming booking requests
-- Schedule management — mark days off, browse jobs by date on an interactive calendar
+- Schedule management - mark days off, browse jobs by date on an interactive calendar
 - Reviews page with rating breakdown and sort/filter controls
 - Profile page with bio, city, hourly rate, and stats
 
@@ -53,11 +53,11 @@ A full-stack two-sided marketplace for booking professional cleaning services. B
 
 ### Why Supabase
 
-Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely — no Express server, no ORM configuration, no auth system from scratch. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus where it belonged: the frontend.
+Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely - no Express server, no ORM configuration, no auth system from scratch. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus where it belonged: the frontend.
 
 ### Why Server Actions over API Routes
 
-Next.js Server Actions let you call a TypeScript function directly from a component — no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They run on the server, keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
+Next.js Server Actions let you call a TypeScript function directly from a component - no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They run on the server, keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
 
 ---
 
@@ -80,15 +80,15 @@ app/
     └── reviews/          # Opinion list with filtering
 
 lib/
-├── actions/   # Server Actions — all mutations (bookings, schedule, opinions, auth)
-├── data/      # Server-side read functions — Supabase queries, React cache()
+├── actions/   # Server Actions - all mutations (bookings, schedule, opinions, auth)
+├── data/      # Server-side read functions - Supabase queries, React cache()
 ├── schemas/   # Zod validation schemas
 └── supabase/  # Typed Supabase client setup (server + client)
 ```
 
 **Read vs. write split:** `lib/data/` contains read-only server functions, many wrapped in React `cache()` to deduplicate identical queries within a single render pass. `lib/actions/` contains Server Actions for all mutations, each calling `revalidatePath()` on success to keep the UI in sync without manual state management.
 
-**Auth & RLS:** Supabase Row Level Security policies enforce data access at the database level — customers can only see their own bookings, cleaners can only update their own jobs. The application layer doesn't need to re-implement these checks.
+**Auth & RLS:** Supabase Row Level Security policies enforce data access at the database level - customers can only see their own bookings, cleaners can only update their own jobs. The application layer doesn't need to re-implement these checks.
 
 **Realtime chat:** Supabase Realtime subscriptions are established on the client inside the messages page. Messages are sent via Server Action (persisted to the database immediately) and received via WebSocket subscription, giving instant delivery without polling.
 
@@ -119,13 +119,12 @@ The schedule page uses a client-side calendar that fetches days-off and job data
 ### Complete
 
 - Full authentication flow (signup, login, email verification, password reset)
-- **Role redirect** — smart post-login redirect to the correct dashboard based on role
+- **Role redirect** - smart post-login redirect to the correct dashboard based on role
 - Customer browsing, filtering, booking, cancellation, reviews, and realtime chat
 - Cleaner dashboard, job management, conflict detection, schedule, and reviews
 
 ### Planned
 
-- **Cleaner messages hub** — conversation list and chat view for cleaners (customer side is complete)
-- **Avatar upload** — UI placeholder exists, Supabase Storage integration pending
-- **Notifications** — no push or email notification system yet
-- **Payment integration** — prices are recorded but no payment flow exists
+- **Avatar upload**
+- **Notifications** - no push or email notification system yet
+- **Payment integration** - prices are recorded but no payment flow exists
