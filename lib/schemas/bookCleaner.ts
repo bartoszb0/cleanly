@@ -1,4 +1,3 @@
-import { addDays, startOfDay } from "date-fns";
 import { z } from "zod";
 import {
   VALID_DURATIONS,
@@ -42,7 +41,16 @@ export const bookingSchema = z
         0,
       );
 
-      const minAllowed = startOfDay(addDays(new Date(), 1));
+      const now = new Date();
+      const minAllowed = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0,
+        0,
+        0,
+        0,
+      );
 
       return start >= minAllowed;
     },
