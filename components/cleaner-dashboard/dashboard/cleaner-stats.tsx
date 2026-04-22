@@ -1,10 +1,14 @@
 import { Tables } from "@/types/supabase";
-import { Check, MessageSquareMore, StarIcon } from "lucide-react";
+import { Check, LucideIcon, MessageSquareMore, StarIcon } from "lucide-react";
 
-// TODO any
-function StatCard({ label, value, suffix, icon }: any) {
-  const Icon = icon;
+type StatCardProps = {
+  label: string;
+  value: string | number;
+  suffix?: string;
+  icon: LucideIcon;
+};
 
+function StatCard({ label, value, suffix, icon: Icon }: StatCardProps) {
   return (
     <div className="bg-card border border-border rounded-2xl p-6 relative overflow-hidden">
       <div className="text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-3">
