@@ -3,7 +3,7 @@
 import { JobInsert } from "@/types";
 import { TablesInsert } from "@/types/supabase";
 import { addHours } from "date-fns";
-import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
 import { APP_TIMEZONE } from "../constants/booking";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -85,8 +85,13 @@ export async function createBookingRequest(
     Number(startMinute),
   );
 
-  const scheduled_at = fromZonedTime(localDate, APP_TIMEZONE); // correctly converts to UTC
+  const scheduled_at = fromZonedTime(localDate, APP_TIMEZONE);
   const end_time = addHours(scheduled_at, Number(duration));
+
+  const todayInWarsaw = formatInTimeZone(new Date(), APP_TIMEZONE, "yyyy-MM-dd");
+  const bookingDateInWarsaw = formatInTimeZone(scheduled_at, APP_TIMEZONE, "yyyy-MM-dd");
+  if (bookingDateInWarsaw <= todayInWarsaw)
+    return { success: false, error: "Bookings cannot be made for today or past dates" };
 
   // Run the conflict check
   const { data: conflict } = await supabase
