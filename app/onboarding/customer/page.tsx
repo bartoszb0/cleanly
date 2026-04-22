@@ -1,14 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -38,7 +31,6 @@ export default function CustomerForm() {
       address: "",
       postCode: "",
       phone: "",
-      hasPets: false,
     },
   });
 
@@ -189,34 +181,6 @@ export default function CustomerForm() {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
-              </Field>
-            )}
-          />
-
-          {/* Pets */}
-          <Controller
-            name="hasPets"
-            control={control}
-            render={({ field }) => (
-              <Field orientation="horizontal" className="gap-3 py-2">
-                <Checkbox
-                  id={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-                <FieldContent>
-                  <FieldLabel
-                    htmlFor={field.name}
-                    className="cursor-pointer text-base font-medium leading-none"
-                  >
-                    I have pets at home
-                  </FieldLabel>
-                  <FieldDescription>
-                    This helps potential cleaners prepare for allergens and
-                    allocate the extra time needed for pet hair before they
-                    accept your booking.
-                  </FieldDescription>
-                </FieldContent>
               </Field>
             )}
           />

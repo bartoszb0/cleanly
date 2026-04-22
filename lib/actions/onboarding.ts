@@ -45,7 +45,6 @@ export async function finishCustomerOnboarding(userData: CustomerFormValues) {
     address: data.address,
     post_code: data.postCode,
     phone: data.phone,
-    has_pets: data.hasPets,
   });
 
   if (customerError) {

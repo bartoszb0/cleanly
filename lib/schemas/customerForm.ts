@@ -35,8 +35,6 @@ export const CustomerSchema = z.object({
     .string()
     .trim()
     .regex(/^\d{3} \d{3} \d{3}$/, "Invalid phone number format"),
-
-  hasPets: z.boolean(),
 });
 
 export type CustomerFormValues = z.infer<typeof CustomerSchema>;
