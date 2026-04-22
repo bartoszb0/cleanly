@@ -1,3 +1,4 @@
+import { APP_TIMEZONE } from "@/lib/constants/booking";
 import { cn } from "@/lib/utils";
 import { ChatMessage } from "@/types";
 import ChatBookingMessage from "./chat-booking-message";
@@ -50,7 +51,7 @@ export const ChatMessageItem = ({
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
-                timeZone: "Europe/Warsaw",
+                timeZone: APP_TIMEZONE,
               })}
             </span>
           </div>

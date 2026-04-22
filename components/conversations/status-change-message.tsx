@@ -12,13 +12,13 @@ export default function StatusChangeMessage({
 
   return (
     <div className="flex justify-center my-3">
-      <div className="flex items-center gap-2 text-xs bg-slate-800/60 border border-slate-700/50 px-3 py-1.5 rounded-full">
-        <span className="text-slate-500">
+      <div className="flex items-center gap-2 text-xs bg-muted border border-border px-3 py-1.5 rounded-full">
+        <span className="text-muted-foreground">
           {metadata.scheduled_at
             ? format(new Date(metadata.scheduled_at), "MMM d, HH:mm")
             : ""}
         </span>
-        <span className="text-slate-600">·</span>
+        <span className="text-muted-foreground">·</span>
         <span
           className={cn(
             "capitalize font-medium",
@@ -29,7 +29,7 @@ export default function StatusChangeMessage({
         >
           {metadata.from}
         </span>
-        <span className="text-slate-500">→</span>
+        <span className="text-muted-foreground">→</span>
         <span
           className={cn(
             "capitalize font-medium",
