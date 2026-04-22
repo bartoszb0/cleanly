@@ -64,9 +64,10 @@ export async function createBookingRequest(
   const validatedFields = bookingSchema.safeParse(bookingData);
 
   if (!validatedFields.success) {
+    console.log(validatedFields.error);
     return {
       success: false,
-      error: validatedFields.error,
+      error: "Invalid form data",
     };
   }
 
