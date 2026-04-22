@@ -3,7 +3,7 @@
 import { JobInsert } from "@/types";
 import { TablesInsert } from "@/types/supabase";
 import { addHours } from "date-fns";
-import { fromZonedTime } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentCustomer } from "../data/customer";
@@ -75,10 +75,11 @@ export async function createBookingRequest(
 
   const { date, startHour, startMinute, duration } = validatedFields.data;
 
+  const warsawDate = toZonedTime(date, "Europe/Warsaw");
   const localDate = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
+    warsawDate.getFullYear(),
+    warsawDate.getMonth(),
+    warsawDate.getDate(),
     Number(startHour),
     Number(startMinute),
   );
