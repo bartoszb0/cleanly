@@ -24,11 +24,13 @@ export async function getCreatedConversations() {
 
 export async function getCleanerByConversationId(conversationId: string) {
   const supabase = await createClient();
+  const user = await getCurrentCustomer();
 
   const { data, error } = await supabase
     .from("conversations")
     .select(`cleaners (*)`)
     .eq("id", conversationId)
+    .eq("customer_id", user.id)
     .maybeSingle();
 
   if (error) throw new Error(error.message);
@@ -67,11 +69,13 @@ export async function getConversationsForCleaner() {
 
 export async function getCustomerByConversationId(conversationId: string) {
   const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
 
   const { data: convo, error: convoError } = await supabase
     .from("conversations")
     .select("customer_id")
     .eq("id", conversationId)
+    .eq("cleaner_id", cleaner.id)
     .maybeSingle();
 
   if (convoError) throw new Error(convoError.message);
