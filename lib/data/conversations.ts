@@ -88,6 +88,22 @@ export async function getCustomerByConversationId(conversationId: string) {
   return customer;
 }
 
+export async function getConversationIdByCustomer(customerId: string) {
+  const supabase = await createClient();
+  const cleaner = await getCurrentCleaner();
+
+  const { data, error } = await supabase
+    .from("conversations")
+    .select("id")
+    .eq("cleaner_id", cleaner.id)
+    .eq("customer_id", customerId)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+
+  return data?.id ?? null;
+}
+
 export async function getConversationMessages(conversationId: string) {
   const supabase = await createClient();
 

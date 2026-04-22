@@ -5,6 +5,7 @@ import JobInformations from "@/components/cleaner-dashboard/jobs/job/job-details
 import JobReview from "@/components/cleaner-dashboard/jobs/job/job-review";
 import JobLocationInfo from "@/components/cleaner-dashboard/jobs/job/location";
 import JobTimeline from "@/components/cleaner-dashboard/jobs/job/timeline";
+import { getConversationIdByCustomer } from "@/lib/data/conversations";
 import { getJobDetails } from "@/lib/data/bookings";
 import { notFound } from "next/navigation";
 import z from "zod";
@@ -22,6 +23,7 @@ export default async function JobDetails({
 
   if (!job) return notFound();
 
+  const conversationId = await getConversationIdByCustomer(job.customer_id);
   const scheduledDate = new Date(job.scheduled_at);
   const endTime = new Date(job.end_time);
 
@@ -47,7 +49,7 @@ export default async function JobDetails({
         <JobLocationInfo job={job} />
 
         {/* Customer */}
-        <JobCustomerInfo job={job} />
+        <JobCustomerInfo job={job} conversationId={conversationId} />
       </div>
 
       {/* Job info */}
