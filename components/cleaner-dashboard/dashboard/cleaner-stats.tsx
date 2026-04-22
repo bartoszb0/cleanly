@@ -44,7 +44,9 @@ export default function CleanerStats({
       />
       <StatCard
         label="Average Rating"
-        value={cleaner.average_rating.toFixed(1) || "—"}
+        value={
+          cleaner.average_rating > 0 ? cleaner.average_rating.toFixed(1) : "—"
+        }
         suffix={cleaner.average_rating ? "/ 5" : ""}
         icon={StarIcon}
       />
