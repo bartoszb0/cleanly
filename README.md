@@ -53,11 +53,11 @@ A full-stack two-sided marketplace for booking professional cleaning services. B
 
 ### Why Supabase
 
-Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus on the frontend.
+Using Supabase as a backend-as-a-service meant skipping infrastructure setup entirely. Supabase provides a type-safe PostgreSQL client, built-in auth with email verification flows, row-level security policies, and a Realtime WebSocket layer for chat. This kept the focus on the frontend code.
 
 ### Why Server Actions over API Routes
 
-Next.js Server Actions let you call a TypeScript function directly from a component - no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. They're also type-safe end-to-end since there's no HTTP boundary where type information is lost. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
+Next.js Server Actions let you call a TypeScript function directly from a component - no `fetch('/api/...')`, no HTTP method handling, no request body parsing. They keep sensitive logic off the client, and integrate natively with Next.js cache invalidation via `revalidatePath`. For a frontend-focused project they removed an entire layer of boilerplate without any tradeoffs.
 
 ---
 
@@ -66,7 +66,6 @@ Next.js Server Actions let you call a TypeScript function directly from a compon
 ```
 app/
 ├── (auth)/              # Login, sign-up, password reset, email confirm
-├── (protected)/         # Role-aware entry point post-login
 ├── onboarding/          # Branching onboarding: customer vs cleaner
 ├── customer/            # Customer-facing pages
 │   ├── page.tsx         # Browse & filter cleaners
