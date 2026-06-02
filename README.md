@@ -1,5 +1,7 @@
 # Cleanly
 
+Live demo: https://cleanly-black.vercel.app
+
 A full-stack two-sided marketplace for booking professional cleaning services. Built to learn and demonstrate Next.js App Router, server-side rendering, and modern full-stack patterns - with Supabase handling the backend so the focus stays entirely on the frontend.
 
 ---
