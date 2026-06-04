@@ -83,11 +83,11 @@ app/
     ├── page.tsx          # Dashboard overview
     ├── jobs/[id]/        # Job detail + conflict detection + confirmation
     ├── schedule/         # Calendar + availability management
-    ├── reviews/          # Opinion list with filtering
+    ├── reviews/          # Reviews list with filtering
     └── messages/[id]/   # Realtime chat
 
 lib/
-├── actions/   # Server Actions - all mutations and client side data fetches (bookings, schedule, opinions, auth)
+├── actions/   # Server Actions - all mutations and client side data fetches (bookings, schedule, reviews, auth)
 ├── data/      # Server-side read functions - Supabase queries, React cache()
 ├── schemas/   # Zod validation schemas
 └── supabase/  # Typed Supabase client setup (server + client)
